@@ -16,6 +16,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
         # GitHub 리포지토리의 코드를 워크플로우 러너로 가져옵니다.
+
       # gradlew 파일에 실행 권한 부여
       - name: Grant execute permission for Gradle wrapper
         run: chmod +x gradlew
@@ -43,7 +44,7 @@ jobs:
       # ------------------------------------------------------
       - name: Log in to Docker Hub
         run: |
-          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       # ------------------------------------------------------
       # 5. 웹 애플리케이션 Docker 이미지 빌드 및 푸시
@@ -51,17 +52,8 @@ jobs:
       - name: Build and Push Web Docker Image
         run: |
           # 현재 디렉터리의 Dockerfile을 사용하여 'my-repo/my-web-image' 이미지를 빌드합니다.
-          docker build -t my-repo/my-web-image .
-          docker push my-repo/my-web-image
-
-      # ------------------------------------------------------
-      # 6. Nginx용 Docker 이미지 빌드 및 푸시
-      #    별도의 Dockerfile (예: dockerfile-nginx)을 사용합니다.
-      # ------------------------------------------------------
-      - name: Build and Push Nginx Docker Image
-        run: |
-          docker build -f dockerfile-nginx -t my-repo/my-nginx-image .
-          docker push my-repo/my-nginx-image
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/my-web-image .
+          docker push ${{ secrets.DOCKER_USERNAME }}/my-web-image
 
       # ------------------------------------------------------
       # 7. EC2 서버에 SSH로 접속하여 배포 진행
@@ -98,8 +90,7 @@ jobs:
             # ------------------------------------------------------
             # 7-4. 최신 Docker 이미지 Pull 및 docker-compose로 컨테이너 재실행
             # ------------------------------------------------------
-            sudo docker pull my-repo/my-web-image
-            sudo docker pull my-repo/my-nginx-image
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/my-web-image
             sudo docker-compose -f docker-compose.yaml --env-file ./.env up -d
 
             # ------------------------------------------------------
