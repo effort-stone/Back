@@ -16,6 +16,9 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
         # GitHub 리포지토리의 코드를 워크플로우 러너로 가져옵니다.
+      # gradlew 파일에 실행 권한 부여
+      - name: Grant execute permission for Gradle wrapper
+        run: chmod +x gradlew
 
       # ------------------------------------------------------
       # 2. JDK 17 환경 설정 (Temurin 배포판 사용)
