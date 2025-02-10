@@ -31,9 +31,12 @@ services:
       - .env
     volumes:
       - ./application.yml:/app/config/application.yml
+      - /home/ubuntu/config/effort-stone-firebase-admin.json:/app/config/effort-stone-firebase-admin.json
   swagger:
     image: swaggerapi/swagger-ui
     container_name: swagger
+    env_file:
+      - .env
     ports:
       - "8081:8080"
     depends_on:
