@@ -25,6 +25,10 @@ services:
       - FIREBASE_AUTH_API=${FIREBASE_AUTH_API}
     ports:
       - "8080:8080"
+    env_file:
+      - .env
+    volumes:
+      - ./application.yml:/app/config/application.yml
   swagger:
     image: swaggerapi/swagger-ui
     container_name: swagger

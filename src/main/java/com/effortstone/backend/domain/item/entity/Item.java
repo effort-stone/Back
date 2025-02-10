@@ -36,6 +36,7 @@ public class Item extends BaseEntity {
 
     // 아이템 착용 캐릭터을 위함
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<StoneWearableItem> stoneWearableItems = new ArrayList<>();
 
     // 엔티티 업데이트를 위한 도메인 메서드
