@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>투두 생성 및 소셜 로그인</title>
+    <!-- CSRF 토큰 메타 태그 추가 -->
+    <meta name="_csrf" content="${_csrf.token}" />
+    <meta name="_csrf_header" content="${_csrf.headerName}" />
+</head>
+
+<body>
+<h1>메인 페이지</h1>
+<p>소셜 로그인을 테스트해봅니다.</p>
+
+<!-- 카카오 로그인 버튼 -->
+<a href="/login/kakao">
+    <button>카카오 로그인</button>
+</a>
+
+
+<hr/>
+
+<!-- 투두 생성 폼 -->
+<h2>투두 생성</h2>
+<form id="todoForm">
+    <label for="todoName">투두 이름:</label>
+    <input type="text" id="todoName" name="todoName" placeholder="투두 이름을 입력하세요" required><br/><br/>
+
+    <label for="todoAlert">알림 시간:</label>
+    <input type="time" id="todoAlert" name="todoAlert" required><br/><br/>
+
+    <label for="todoDetail">세부 사항:</label>
+    <textarea id="todoDetail" name="todoDetail" placeholder="세부 사항을 입력하세요"></textarea><br/><br/>
+
+    <label for="todoDate">날짜:</label>
+    <input type="date" id="todoDate" name="todoDate" required><br/><br/>
+
+    <button type="button" onclick="submitTodo()">투두 생성</button>
+</form>
+
+<script>
+    function submitTodo() {
+        const form = document.getElementById('todoForm');
+        const formData = new FormData(form);
+
+        const todo = {
+            todoName: formData.get('todoName'),
+            todoAlert: formData.get('todoAlert'),
+            todoDetail: formData.get('todoDetail'),
+            todoDate: formData.get('todoDate')
+        };
+
+        // CSRF 토큰과 헤더 이름이 존재하는지 확인
+        const csrfMeta = document.querySelector('meta[name="_csrf"]');
+        const csrfHeaderMeta = document.querySelector('meta[name="_csrf_header"]');
+
+        let headers = {
+            'Content-Type': 'application/json'
+        };
+
+        if (csrfMeta && csrfHeaderMeta) {
+            const csrfToken = csrfMeta.getAttribute('content');
+            const csrfHeader = csrfHeaderMeta.getAttribute('content');
+            if (csrfHeader) { // csrfHeader 값이 비어있지 않다면
+                headers[csrfHeader] = csrfToken;
+            }
+        }
+
+        fetch('/api/v1/todos', {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(todo)
+        }).then(response => {
+            if (response.ok) {
+                window.location.href = '/'; // 성공 시 메인 페이지로 이동
+            } else {
+                console.error('Failed to create todo');
+            }
+        });
+    }
+
+</script>
+
+</body>
+</html>
