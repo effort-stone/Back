@@ -60,17 +60,25 @@ jobs:
             # 6-1. EC2 서버에 필요한 파일 및 디렉터리 생성
             mkdir -p src/main/resources
             
-            # 6-2. application.yml 파일 생성 (GitHub Secrets의 APPLICATION_YML 내용 사용)
-            #echo "${{ secrets.APPLICATION_YML }}" | sudo tee src/main/resources/application.yml > /dev/null
+            # application.yml 생성
+            sudo tee src/main/resources/application.yml > /dev/null <<'EOF'
+            ${{ secrets.APPLICATION_YML }}
+            EOF
             
-            # 6-3. Firebase Admin JSON 파일 생성
-            echo "${{ secrets.FIREBASE_ADMIN_JSON }}" | sudo tee src/main/resources/effort-stone-firebase-admin.json > /dev/null
+            # Firebase Admin JSON 파일 생성
+            sudo tee config/effort-stone-firebase-admin.json > /dev/null <<'EOF'
+            ${{ secrets.FIREBASE_ADMIN_JSON }}
+            EOF
             
-            # 6-4. .env 파일 생성 (환경 변수 문자열은 ENV_VARS secret에 정의되어 있어야 함)
-            echo "${{ secrets.ENV_VARS }}" | sudo tee .env > /dev/null
+            # .env 파일 생성
+            sudo tee .env > /dev/null <<'EOF'
+            ${{ secrets.ENV_VARS }}
+            EOF
             
-            # 6-5. docker-compose.yml 파일 생성 (내용은 DOCKER_COMPOSE secret에 정의되어 있어야 함)
-            echo "${{ secrets.DOCKER_COMPOSE }}" | sudo tee docker-compose.yml > /dev/null
+            # docker-compose.yml 파일 생성
+            sudo tee docker-compose.yml > /dev/null <<'EOF'
+            ${{ secrets.DOCKER_COMPOSE }}
+            EOF
             
             # 6-6. Docker 소켓 권한 설정 및 기존 컨테이너 종료
             sudo chmod 666 /var/run/docker.sock
