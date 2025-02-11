@@ -42,12 +42,6 @@ jobs:
           json: ${{ secrets.FIREBASE_ADMIN_JSON }}
           dir: 'src/main/resources/'
 
-#      - name: Move JSON file to resources directory
-#        run: |
-#          mkdir -p ./src/main/resources
-#          mv effort-stone-firebase-admin.json ./src/main/resources/effort-stone-firebase-admin.json
-#
-#      - run: cat ./src/main/resources/effort-stone-firebase-admin.json
 
 
       # 3. gradlew 파일 실행 권한 부여
