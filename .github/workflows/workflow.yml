@@ -27,19 +27,27 @@ jobs:
       - run: echo "${{ secrets.APPLICATION_YML }}" > ./src/main/resources/application.yml
       - run: cat ./src/main/resources/application.yml
 
-      - name: Create Firebase Admin JSON
-        id: create-json
-        uses: jsdaniell/create-json@1.1.2
-        with:
-          name: "effort-stone-firebase-admin.json"
-          json: ${{ secrets.FIREBASE_ADMIN_JSON }}
-
-      - name: Move JSON file to resources directory
+      - name: Create Firebase Admin JSON using EOF
         run: |
           mkdir -p ./src/main/resources
-          mv effort-stone-firebase-admin.json ./src/main/resources/effort-stone-firebase-admin.json
+          cat << 'EOF' > ./src/main/resources/effort-stone-firebase-admin.json
+          ${{ secrets.FIREBASE_ADMIN_JSON }}
+          EOF
+      
 
-      - run: cat ./src/main/resources/effort-stone-firebase-admin.json
+      #      - name: Create Firebase Admin JSON
+#        id: create-json
+#        uses: jsdaniell/create-json@1.1.2
+#        with:
+#          name: "effort-stone-firebase-admin.json"
+#          json: ${{ secrets.FIREBASE_ADMIN_JSON }}
+#
+#      - name: Move JSON file to resources directory
+#        run: |
+#          mkdir -p ./src/main/resources
+#          mv effort-stone-firebase-admin.json ./src/main/resources/effort-stone-firebase-admin.json
+#
+#      - run: cat ./src/main/resources/effort-stone-firebase-admin.json
 
 
       # 3. gradlew 파일 실행 권한 부여
