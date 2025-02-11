@@ -27,12 +27,6 @@ jobs:
       - run: echo "${{ secrets.APPLICATION_YML }}" > ./src/main/resources/application.yml
       - run: cat ./src/main/resources/application.yml
 
-#      - name: Create Firebase Admin JSON using EOF
-#        run: |
-#          mkdir -p ./src/main/resources
-#          cat << 'EOF' > ./src/main/resources/effort-stone-firebase-admin.json
-#          ${{ secrets.FIREBASE_ADMIN_JSON }}
-#          EOF
 
       - name: Create Firebase Admin JSON
         id: create-json
