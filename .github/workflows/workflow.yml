@@ -47,11 +47,14 @@ jobs:
       # 8. EC2 서버에 SSH로 접속하여 배포 진행 및 민감 파일 생성
       - name: Deploy to EC2 via SSH
         uses: appleboy/ssh-action@v1.2.0
+        env:
+          COMPOSE: "/home/ubuntu/compose/docker-compose.yml"
         with:
           host: ${{ secrets.HOST }}         # EC2 서버의 퍼블릭 IP 또는 도메인
           username: ubuntu                   # EC2 접속 사용자
           key: ${{ secrets.KEY }}            # SSH 개인키 (GitHub Secrets)
           port: ${{ secrets.PORT }}
+          envs: COMPOSE
           script: |
             cd /home/ubuntu/
             

@@ -10,8 +10,8 @@ RUN gradle clean build -x test --no-daemon
 FROM bellsoft/liberica-openjdk-alpine:17
 WORKDIR /app
 # builder 단계에서 생성된 jar 파일을 복사합니다.
-#COPY --from=builder /home/gradle/project/build/libs/*.jar app.jar
-COPY --from=builder /home/gradle/project/build/libs/*.jar /app/
+COPY --from=builder /home/gradle/project/build/libs/*.jar app.jar
+#COPY --from=builder /home/gradle/project/build/libs/*.jar /app/
 
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
