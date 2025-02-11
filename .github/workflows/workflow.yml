@@ -48,7 +48,7 @@ jobs:
       - name: Deploy to EC2 via SSH
         uses: appleboy/ssh-action@v1.2.0
         env:
-          COMPOSE: "/home/ubuntu/compose/docker-compose.yml"
+          COMPOSE: "/home/ubuntu/docker-compose.yml"
         with:
           host: ${{ secrets.HOST }}         # EC2 서버의 퍼블릭 IP 또는 도메인
           username: ubuntu                   # EC2 접속 사용자
