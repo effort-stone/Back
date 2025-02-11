@@ -22,6 +22,11 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
+      - uses: actions/checkout@v3
+      - run: touch ./src/main/resources/application.yml
+      - run: echo "${{ secrets.APPLICATION_YML }}" > ./src/main/resources/application.yml
+      - run: cat ./src/main/resources/application.yml
+
       # 3. gradlew 파일 실행 권한 부여
       - name: Grant execute permission for Gradle wrapper
         run: chmod +x gradlew
@@ -56,9 +61,9 @@ jobs:
             cd /home/ubuntu/
 
             # 7-1. application.yml 생성 (Secrets에서 멀티라인 그대로)
-            sudo tee application.yml > /dev/null <<'EOF'
-            ${{ secrets.APPLICATION_YML }}
-            EOF
+            #sudo tee application.yml > /dev/null <<'EOF'
+            #${{ secrets.APPLICATION_YML }}
+            #EOF
 
             # 7-2. Firebase Admin JSON 생성 (Secrets에서 멀티라인 그대로)
             sudo tee effort-stone-firebase-admin.json > /dev/null <<'EOF'
