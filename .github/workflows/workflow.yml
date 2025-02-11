@@ -66,7 +66,7 @@ jobs:
             EOF
             
             # Firebase Admin JSON 파일 생성
-            sudo tee config/effort-stone-firebase-admin.json > /dev/null <<'EOF'
+            sudo tee src/main/resources/effort-stone-firebase-admin.json > /dev/null <<'EOF'
             ${{ secrets.FIREBASE_ADMIN_JSON }}
             EOF
             
@@ -75,10 +75,6 @@ jobs:
             ${{ secrets.ENV_VARS }}
             EOF
             
-            # docker-compose.yml 파일 생성
-            sudo tee docker-compose.yml > /dev/null <<'EOF'
-            ${{ secrets.DOCKER_COMPOSE }}
-            EOF
             
             # 6-6. Docker 소켓 권한 설정 및 기존 컨테이너 종료
             sudo chmod 666 /var/run/docker.sock
