@@ -14,10 +14,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # gradlew 파일에 실행 권한 부여
-      - name: Grant execute permission for Gradle wrapper
-        run: chmod +x gradlew
-
       # 2. JDK 17 환경 설정 (Temurin 배포판 사용)
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -25,6 +21,14 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: gradle
+
+      # gradlew 파일에 실행 권한 부여
+      - name: Grant execute permission for Gradle wrapper
+        run: chmod +x gradlew
+
+      # `--stacktrace`로 더 자세한 로그가 출력되게 해줍니다.
+      - name: Build with Gradle (without Test)
+        run: ./gradlew clean build -x test --stacktrace
 
       # 3. Gradle을 사용하여 Spring Boot 애플리케이션 JAR 파일 생성 (bootJar 태스크)
       - name: Build Application with Gradle
@@ -55,13 +59,12 @@ jobs:
             
             # 6-1. EC2 서버에 필요한 파일 및 디렉터리 생성
             mkdir -p src/main/resources
-            mkdir -p config
             
             # 6-2. application.yml 파일 생성 (GitHub Secrets의 APPLICATION_YML 내용 사용)
-            echo "${{ secrets.APPLICATION_YML }}" | sudo tee src/main/resources/application.yml > /dev/null
+            #echo "${{ secrets.APPLICATION_YML }}" | sudo tee src/main/resources/application.yml > /dev/null
             
             # 6-3. Firebase Admin JSON 파일 생성
-            echo "${{ secrets.FIREBASE_ADMIN_JSON }}" | sudo tee config/effort-stone-firebase-admin.json > /dev/null
+            echo "${{ secrets.FIREBASE_ADMIN_JSON }}" | sudo tee src/main/resources/effort-stone-firebase-admin.json > /dev/null
             
             # 6-4. .env 파일 생성 (환경 변수 문자열은 ENV_VARS secret에 정의되어 있어야 함)
             echo "${{ secrets.ENV_VARS }}" | sudo tee .env > /dev/null
