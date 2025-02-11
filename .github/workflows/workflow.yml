@@ -28,7 +28,7 @@ jobs:
       - run: cat ./src/main/resources/application.yml
 
       - uses: actions/checkout@v3
-      - run: touch ./src/main/resources/application.yml
+      - run: touch ./src/main/resources/effort-stone-firebase-admin.json
       - run: echo ${{ secrets.FIREBASE_ADMIN_JSON }} > ./src/main/resources/effort-stone-firebase-admin.json
       - run: cat ./src/main/resources/effort-stone-firebase-admin.json
 
