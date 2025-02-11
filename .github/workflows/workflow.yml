@@ -28,9 +28,12 @@ jobs:
       - run: cat ./src/main/resources/application.yml
 
       - uses: actions/checkout@v3
-      - run: touch ./src/main/resources/effort-stone-firebase-admin.json
-      - run: echo ${{ secrets.FIREBASE_ADMIN_JSON }} > ./src/main/resources/effort-stone-firebase-admin.json
+      - run: |
+          cat << 'EOF' > ./src/main/resources/effort-stone-firebase-admin.json
+          ${{ secrets.FIREBASE_ADMIN_JSON }}
+          EOF
       - run: cat ./src/main/resources/effort-stone-firebase-admin.json
+
 
       # 3. gradlew 파일 실행 권한 부여
       - name: Grant execute permission for Gradle wrapper
