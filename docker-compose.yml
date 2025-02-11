@@ -1,4 +1,4 @@
-## version: '3.8'
+version: '3.8'
 
 services:
   db:
@@ -13,7 +13,7 @@ services:
       - postgres-data:/var/lib/postgresql/data
 
   app:
-    build: .
+    image: ${DOCKER_USERNAME}/my-web-image
     depends_on:
       - db
     environment:
@@ -30,8 +30,10 @@ services:
     env_file:
       - .env
     volumes:
-      - ./application.yml:/app/config/application.yml
-      - ./effort-stone-firebase-admin.json:/src/main/resources/effort-stone-firebase-admin.json
+      # 볼륨 경로를 /home/ubuntu 에 생성된 파일로 변경
+      - ./application.yml:/src/main/resources/application.yml:ro
+      - ./effort-stone-firebase-admin.json:/src/main/resources/effort-stone-firebase-admin.json:ro
+
   swagger:
     image: swaggerapi/swagger-ui
     container_name: swagger

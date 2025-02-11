@@ -1,6 +1,5 @@
 name: workflow.yml
 
-# main 브랜치에 push될 때 자동 실행
 on:
   push:
     branches:
@@ -22,67 +21,62 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
-      # gradlew 파일에 실행 권한 부여
+      # 3. gradlew 파일 실행 권한 부여
       - name: Grant execute permission for Gradle wrapper
         run: chmod +x gradlew
 
-      # `--stacktrace`로 더 자세한 로그가 출력되게 해줍니다.
+      # 4. Gradle 빌드 (테스트 제외, --stacktrace 포함)
       - name: Build with Gradle (without Test)
         run: ./gradlew clean build -x test --stacktrace
 
-      # 3. Gradle을 사용하여 Spring Boot 애플리케이션 JAR 파일 생성 (bootJar 태스크)
+      # 5. Spring Boot JAR 파일 생성 (bootJar 태스크)
       - name: Build Application with Gradle
         run: ./gradlew bootJar
 
-      # 4. Docker Hub 로그인 (이미지 빌드 후 push를 위해)
+      # 6. Docker Hub 로그인
       - name: Log in to Docker Hub
         run: |
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      # 5. 웹 애플리케이션 Docker 이미지 빌드 및 푸시
+      # 7. Docker 이미지 빌드 및 푸시
       - name: Build and Push Web Docker Image
         run: |
           docker build -t ${{ secrets.DOCKER_USERNAME }}/my-web-image .
           docker push ${{ secrets.DOCKER_USERNAME }}/my-web-image
 
-      # 6. EC2 서버에 SSH로 접속하여 배포 진행 및 민감 파일 생성
+      # 8. EC2 서버에 SSH로 접속하여 배포 진행 및 민감 파일 생성
       - name: Deploy to EC2 via SSH
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.HOST }}         # EC2 서버의 퍼블릭 IP 또는 도메인
-          username: ubuntu                   # EC2 접속 사용자 (예: ubuntu)
-          key: ${{ secrets.KEY }}            # SSH 개인키 (GitHub Secrets에 저장)
+          username: ubuntu                   # EC2 접속 사용자
+          key: ${{ secrets.KEY }}            # SSH 개인키 (GitHub Secrets)
           port: ${{ secrets.PORT }}
           script: |
-            # 이동할 디렉터리 (배포용)로 변경
             cd /home/ubuntu/
             
-            # 6-1. EC2 서버에 필요한 파일 및 디렉터리 생성
-            mkdir -p src/main/resources
-            
-            # application.yml 생성
-            sudo tee src/main/resources/application.yml > /dev/null <<'EOF'
+            # 8-1. 필요한 파일 및 디렉터리 생성 (작업 디렉터리: /home/ubuntu)
+            # EC2에 바로 application.yml 및 firebase JSON 파일을 생성
+            sudo tee application.yml > /dev/null <<'EOF'
             ${{ secrets.APPLICATION_YML }}
             EOF
-            
-            # Firebase Admin JSON 파일 생성
-            sudo tee src/main/resources/effort-stone-firebase-admin.json > /dev/null <<'EOF'
+
+            sudo tee effort-stone-firebase-admin.json > /dev/null <<'EOF'
             ${{ secrets.FIREBASE_ADMIN_JSON }}
             EOF
-            
-            # .env 파일 생성
+
+            # 8-2. .env 파일 생성
             sudo tee .env > /dev/null <<'EOF'
             ${{ secrets.ENV_VARS }}
             EOF
             
-            
-            # 6-6. Docker 소켓 권한 설정 및 기존 컨테이너 종료
+            # 8-3. Docker 소켓 권한 설정 및 기존 컨테이너 종료
             sudo chmod 666 /var/run/docker.sock
             sudo docker rm -f $(sudo docker ps -qa) || true
-            
-            # 6-7. 최신 Docker 이미지 Pull 및 컨테이너 실행 (docker-compose.yml 사용)
+
+            # 8-4. 최신 Docker 이미지 Pull 및 컨테이너 실행
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/my-web-image
             sudo docker-compose -f docker-compose.yml --env-file ./.env up -d
-            
-            # 6-8. 사용하지 않는 Docker 이미지 정리
+
+            # 8-5. 사용하지 않는 Docker 이미지 정리
             sudo docker image prune -f
