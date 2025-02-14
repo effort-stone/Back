@@ -1,4 +1,4 @@
-package com.effortstone.backend.test.login;
+package com.effortstone.backend.global.auth;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
