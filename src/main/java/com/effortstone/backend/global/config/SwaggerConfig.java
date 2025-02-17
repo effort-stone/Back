@@ -24,7 +24,7 @@ public class SwaggerConfig {
                 new SecurityScheme()
                         .name(firebaseIdToken)
                         .type(SecurityScheme.Type.HTTP)
-                        .scheme("bearer")
+                        .scheme("Bearer")
                         .bearerFormat("Firebase")   // Firebase 토큰임을 나타내기 위해 "Firebase"로 지정 (원래 JWT 형식)
         );
 
