@@ -65,7 +65,7 @@ jobs:
         with:
           host: ${{ secrets.HOST }}         # EC2 서버의 퍼블릭 IP 또는 도메인
           username: ubuntu                  # EC2 접속 사용자
-            key: ${{ secrets.KEY }}           # SSH 개인키 (GitHub Secrets)
+          key: ${{ secrets.KEY }}           # SSH 개인키 (GitHub Secrets)
           port: ${{ secrets.PORT }}         # SSH 포트
           envs: COMPOSE
           script: |
