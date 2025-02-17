@@ -23,31 +23,7 @@ public enum ErrorCode {
     SEND_EMAIL_TEMP_PASSWORD_FAIL("E113", "임시 비밀번호 발급 실패"),
     SMS_SEND_FAIL("E114", "휴대폰 인증번호 발송 실패"),
     SMS_VERIFY_FAIL("E115", "휴대폰 인증번호 검증 실패"),
-    USER_ADMIN_LOGIN_FAIL("E116", "관리자 권한이 없는 계정입니다."),
-
-    // Account
-    ACCOUNT_NOT_FOUND("E200", "존재하지 않는 계좌입니다."),
-    INSUFFICIENT_BALANCE("E201", "계좌 잔액이 부족합니다."),
-    INVALID_TRANSFER_AMOUNT("E202", "유효하지 않은 이체 금액입니다."),
-    ACCOUNT_TRANSFER_FAIL("E203", "계좌이체 실패"),
-    TRANSFER_LIMIT_EXCEEDED("E204", "이체한도 초과"),
-    FIND_ACCOUNT_HISTORY_FAIL("E205", "거래내역 조회 실패"),
-    LIMIT_MODIFY_FAIL("E206","이체 한도 수정 실패: 이체 한도가 일일 한도보다 큽니다"),
-    ACCOUNT_PWD_FAIL("E207","계좌 비밀번호가 다릅니다"),
-    ACCOUNT_NOT_YOURS("E208", "출금 계좌가 본인 계좌가 아닙니다."),
-    ACCOUNT_STATE_DELETED("E209","해지된 계좌입니다."),
-    ACCOUNT_NOT_MATURED("E210", "만기일 이전에는 이체를 할 수 없습니다."),
-
-
-    // Redis
-    LOCK_NOT_AVAILABLE("E400", "사용할 수 없는 락"),
-    LOCK_INTERRUPTED_ERROR("E401", "락 획득 시 인터럽트 발생"),
-
-    // Product
-    PRODUCT_NOT_SEARCH("E300","해당하는 상품을 찾을 수 없습니다"),
-    AMOUNT_OUT_OF_RANGE("E301","납입 범위를 벗어납니다."),
-    MAX_AMOUNT_EXCEEDED("E302", "최대 납입 금액을 초과했습니다.")
-    ;
+    USER_ADMIN_LOGIN_FAIL("E116", "관리자 권한이 없는 계정입니다.");
 
     private final String code;
     private final String message;

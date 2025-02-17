@@ -16,7 +16,6 @@ import org.springframework.web.client.RestTemplate;
 @RequestMapping("/api/v1/auth")
 public class FirebaseAuthController {
 
-    private final RestTemplate restTemplate = new RestTemplate();
 
     private final KakaoService kakaoService;
     private final FirebaseUserService firebaseUserService;

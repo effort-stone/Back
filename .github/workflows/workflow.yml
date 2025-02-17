@@ -71,8 +71,6 @@ jobs:
           script: |
             cd /home/ubuntu/
 
-            
-
             # 7-3. .env 파일 생성
             sudo tee .env > /dev/null <<'EOF'
             ${{ secrets.ENV_VARS }}

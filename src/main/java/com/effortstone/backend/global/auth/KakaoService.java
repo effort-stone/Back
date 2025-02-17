@@ -167,9 +167,7 @@ public class KakaoService {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
-
         ResponseEntity<Map> response = restTemplate.exchange(firebaseAuthUrl, HttpMethod.POST, entity, Map.class);
-
         if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
             return (String) response.getBody().get("idToken"); // 🔹 여기서 ID Token을 가져옴
         }
@@ -181,10 +179,7 @@ public class KakaoService {
     public String getUserInfoFromIdToken(String idToken) throws FirebaseAuthException {
         // ID Token 검증
         FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
-        String uid = decodedToken.getUid();
-
-
-        return uid;
+        return decodedToken.getUid();
     }
 
 
