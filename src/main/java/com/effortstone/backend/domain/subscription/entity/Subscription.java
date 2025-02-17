@@ -24,11 +24,11 @@ public class Subscription extends BaseEntity {
 
     //상품가격
     @Column(name = "subscription_price")
-    private String subscriptionPrice;
+    private Integer subscriptionPrice;
 
     //상품구독기간
     @Column(name = "subscription_duration")
-    private String subscriptionDuration;
+    private Integer subscriptionDuration;
 
     //상품상세설명
     @Column(name = "subscription_description")
