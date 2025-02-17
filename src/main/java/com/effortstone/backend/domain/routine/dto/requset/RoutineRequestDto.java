@@ -19,7 +19,7 @@ public class RoutineRequestDto {
     public static class RoutineCreateRequest {
         private String routineName;
         private RoutineGoalType routineGoalType;
-        @Schema(example = "08:00:00")
+        @Schema(example = "08:00:00",type = "string")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
         private LocalTime routineFocusTime;
         private List<Integer> routineRepeatFrequency;
@@ -27,13 +27,13 @@ public class RoutineRequestDto {
         private LocalDate routineEndDate;
         private String routineTheme;
         private String routineDetail;
-        @Schema(example = "08:00:00")
+        @Schema(example = "08:00:00",type = "string")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
         private LocalTime routineStartTime;
-        @Schema(example = "08:00:00")
+        @Schema(example = "08:00:00",type = "string")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
         private LocalTime routineEndTime;
-        @Schema(example = "08:00:00")
+        @Schema(example = "08:00:00",type = "string")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
         private LocalTime routineAlertTime;
     }

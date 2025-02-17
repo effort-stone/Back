@@ -1,6 +1,7 @@
 package com.effortstone.backend.domain.todo.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -18,6 +19,7 @@ public class TodoRequestDto {
         private String todoName;
         private String todoDetail;
         //Spring에서 LocalTime을 "HH:mm:ss" 형식의 문자열로 처리하도록 설정.
+        @Schema(example = "08:00:00",type = "string")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
         private LocalTime todoAlert;
         private LocalDate todoDate;
