@@ -24,7 +24,7 @@ jobs:
 
       - uses: actions/checkout@v3
       - run: touch ./src/main/resources/application.yml
-      - run: echo "${{ secrets.APPLICATION_YML }}" > ./src/main/resources/application.yml
+      - run: echo "${{ secrets.APPLICATION_YML }}"| base64 --decode > ./src/main/resources/application.yml
       - run: cat ./src/main/resources/application.yml
 
 
@@ -65,7 +65,7 @@ jobs:
         with:
           host: ${{ secrets.HOST }}         # EC2 서버의 퍼블릭 IP 또는 도메인
           username: ubuntu                  # EC2 접속 사용자
-          key: ${{ secrets.KEY }}           # SSH 개인키 (GitHub Secrets)
+            key: ${{ secrets.KEY }}           # SSH 개인키 (GitHub Secrets)
           port: ${{ secrets.PORT }}         # SSH 포트
           envs: COMPOSE
           script: |
