@@ -82,6 +82,9 @@ public enum SuccessCode {
 
     // APP
     APP_INITIAL_FETCH_SUCCESS(OK,"초기정보조회에 성공했습니다."),
+    // APP
+    APP_SUCCESS_SERVER(OK,"서버점검중입니다."),
+
 
     //SUBSCRIPTION
     SUBSCRIPTION_GET_SUCCESS(OK,"상품 조회 성공했습니다." );

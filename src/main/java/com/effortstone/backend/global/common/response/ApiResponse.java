@@ -18,6 +18,7 @@ public class ApiResponse<T> {
     @JsonInclude(NON_NULL)
     private T data;
 
+
     private ApiResponse() {
         throw new IllegalStateException();
     }
@@ -31,4 +32,6 @@ public class ApiResponse<T> {
     public static <T> ApiResponse<T> success(SuccessCode success, T data){
         return new ApiResponse<>(success.getHttpStatusValue(), success.getMessage(), data);
     }
+
+
 }

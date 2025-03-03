@@ -1,32 +1,17 @@
 package com.effortstone.backend.domain.common;
 
-import com.effortstone.backend.domain.routine.dto.response.RoutineDTO;
-import com.effortstone.backend.domain.routine.entity.Routine;
 import com.effortstone.backend.domain.routine.service.RoutineService;
-import com.effortstone.backend.domain.stone.entity.Stone;
 import com.effortstone.backend.domain.stone.service.StoneService;
-import com.effortstone.backend.domain.stonewearableitme.entity.StoneWearableItem;
-import com.effortstone.backend.domain.todo.dto.response.TodoDto;
-import com.effortstone.backend.domain.todo.entity.Todo;
 import com.effortstone.backend.domain.todo.service.TodoService;
-import com.effortstone.backend.domain.user.entity.User;
 import com.effortstone.backend.domain.user.repository.UserRepository;
 import com.effortstone.backend.domain.user.service.UserService;
 import com.effortstone.backend.global.common.response.ApiResponse;
-import com.effortstone.backend.global.common.response.SuccessCode;
-import com.effortstone.backend.global.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -48,11 +33,21 @@ public class AppInitialController {
      * - 유저 정보 / 오늘 루틴 / TODO 리스트 응답
      * - 캐릭터 정보는 주석 처리
      */
+//    @GetMapping("/initial")
+//    public ResponseEntity<ApiResponse<AppInitialResponseDto>> getAppInitialInfo(
+//            @RequestHeader(value = "X-App-Version", required = false) String clientVersion
+//    ) {
+//        AppInitialResponseDto responseDto = appInitialService.getAppInitialInfo(clientVersion);
+//        return ResponseEntity.ok(ApiResponse.success(SuccessCode.APP_INITIAL_FETCH_SUCCESS, responseDto));
+//    }
+
+
     @GetMapping("/initial")
-    public ResponseEntity<ApiResponse<AppInitialResponseDto>> getAppInitialInfo(
+    public ResponseEntity<ApiResponse<Object>> getAppInitialInfo(
             @RequestHeader(value = "X-App-Version", required = false) String clientVersion
     ) {
-        AppInitialResponseDto responseDto = appInitialService.getAppInitialInfo(clientVersion);
-        return ResponseEntity.ok(ApiResponse.success(SuccessCode.APP_INITIAL_FETCH_SUCCESS, responseDto));
+        // 서버 상태 체크하기로직
+        // oK 이면
+        return ResponseEntity.ok(appInitialService.getAppInitialInfo(clientVersion));
     }
 }
