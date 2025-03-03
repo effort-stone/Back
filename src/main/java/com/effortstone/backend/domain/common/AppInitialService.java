@@ -14,14 +14,18 @@ import com.effortstone.backend.global.common.response.ApiResponse;
 import com.effortstone.backend.global.common.response.SuccessCode;
 import com.effortstone.backend.global.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AppInitialService {
 
     private final UserRepository userRepository;
@@ -69,24 +73,26 @@ public class AppInitialService {
 //                .build();
 //    }
 
-    public ApiResponse<Object> getAppInitialInfo(String clientVersion) {
-        Integer serverState = null;
+    public ApiResponse<Map<String, Integer>> getAppInitialInfo(String clientVersion) {
+        Map<String, Integer> serverStateMap = new HashMap<>();
         SuccessCode successCode = null;
 
+        log.info("clientVersion",clientVersion);
+
         if ("1".equals(CURRENT_APP_STATE)) {
-            serverState = 1;
-            successCode = SuccessCode.APP_SUCCESS_SERVER; // 상태 0일 때의 SuccessCode
+            serverStateMap.put("serverState", 1);
+            successCode = SuccessCode.APP_SUCCESS_SERVER; // 상태 0일 때 정상
         }
 //        } else if ("1".equals(CURRENT_APP_STATE)) {
-//            serverState = 1;
-//            successCode = SuccessCode.APP_UPDATE_REQUIRED; // 예: 상태 1일 때 업데이트 필요
+//            serverStateMap.put("serverState", 1);
+//            successCode = SuccessCode.APP_UPDATE_REQUIRED; // 상태 1일 때 업데이트 필요
 //        } else if ("2".equals(CURRENT_APP_STATE)) {
-//            serverState = 2;
-//            successCode = SuccessCode.APP_MAINTENANCE; // 예: 상태 2일 때 점검 중
+//            serverStateMap.put("serverState", 2);
+//            successCode = SuccessCode.APP_MAINTENANCE; // 상태 2일 때 점검 중
 //        } else {
 //            successCode = SuccessCode.APP_DEFAULT; // 기본값
 //        }
 
-        return ApiResponse.success(successCode, serverState);
+        return ApiResponse.success(successCode, serverStateMap);
     }
 }

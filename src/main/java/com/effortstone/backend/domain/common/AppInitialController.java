@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
@@ -43,7 +45,7 @@ public class AppInitialController {
 
 
     @GetMapping("/initial")
-    public ResponseEntity<ApiResponse<Object>> getAppInitialInfo(
+    public ResponseEntity<ApiResponse<Map<String, Integer>>> getAppInitialInfo(
             @RequestHeader(value = "X-App-Version", required = false) String clientVersion
     ) {
         // 서버 상태 체크하기로직
