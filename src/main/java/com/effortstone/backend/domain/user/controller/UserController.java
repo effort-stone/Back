@@ -65,6 +65,7 @@ public class UserController {
 
         // 예시로, userDetails를 출력
         System.out.println(userDetails);
+        log.info(userDetails.toString());
 
         return "0";  // 해당 값으로 처리 로직을 수정
     }
