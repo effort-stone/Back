@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.YearMonth;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Slf4j
@@ -49,12 +50,25 @@ public class UserController {
         return userService.createUser(user);
     }
 
+//    // 🔹 사용자 정보 수정
+//    @PutMapping("/")
+//    public ApiResponse<User> updateUser(
+//            @RequestBody User userDetails) {
+//        return userService.updateUser(userDetails);
+//    }
+
     // 🔹 사용자 정보 수정
     @PutMapping("/")
-    public ApiResponse<User> updateUser(
-            @RequestBody User userDetails) {
-        return userService.updateUser(userDetails);
+    public String updateUser(@RequestBody Map<String, Object> userDetails) {
+        // 여기서 userDetails는 사용자가 보낸 원본 데이터가 Map 형태로 전달됩니다.
+        // 필요한 처리 로직을 추가하세요.
+
+        // 예시로, userDetails를 출력
+        System.out.println(userDetails);
+
+        return "0";  // 해당 값으로 처리 로직을 수정
     }
+
 
     // 🔹 사용자 삭제
     @DeleteMapping("")
