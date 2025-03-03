@@ -80,7 +80,7 @@ public class AppInitialService {
         log.info("clientVersion",clientVersion);
 
         if ("1".equals(CURRENT_APP_STATE)) {
-            serverStateMap.put("serverState", 1);
+            serverStateMap.put("serverState", 0);
             successCode = SuccessCode.APP_SUCCESS_SERVER; // 상태 0일 때 정상
         }
 //        } else if ("1".equals(CURRENT_APP_STATE)) {
