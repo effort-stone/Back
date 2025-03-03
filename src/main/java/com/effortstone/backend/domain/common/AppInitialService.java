@@ -35,7 +35,7 @@ public class AppInitialService {
 
     // 현재 앱 버전 상수 (프로퍼티로 관리할 수도 있음)
     private static final String CURRENT_APP_VERSION = "1.0.0";
-    private static final String CURRENT_APP_STATE = "1";
+    private static final String CURRENT_APP_STATE = "2";
     private final StoneRepository stoneRepository;
 
 //    public AppInitialResponseDto getAppInitialInfo(String clientVersion) {
@@ -79,19 +79,18 @@ public class AppInitialService {
 
         log.info("clientVersion",clientVersion);
 
-        if ("1".equals(CURRENT_APP_STATE)) {
+        if ("0".equals(CURRENT_APP_STATE)) {
             serverStateMap.put("serverState", 0);
-            successCode = SuccessCode.APP_SUCCESS_SERVER; // 상태 0일 때 정상
+            successCode = SuccessCode.APP_VERSION_UPDATE; // 상태 0일 때 정상
+        } else if ("1".equals(CURRENT_APP_STATE)) {
+            serverStateMap.put("serverState", 1);
+            successCode = SuccessCode.APP_SUCCESS_SERVER_CHECK; // 상태 1일 때 업데이트 필요
+        } else if ("2".equals(CURRENT_APP_STATE)) {
+            serverStateMap.put("serverState", 2);
+            successCode = SuccessCode.APP_SUCCESS_SERVER; // 상태 2일 때 점검 중
+        } else {
+            successCode = SuccessCode.APP_SUCCESS_SERVER; // 기본값
         }
-//        } else if ("1".equals(CURRENT_APP_STATE)) {
-//            serverStateMap.put("serverState", 1);
-//            successCode = SuccessCode.APP_UPDATE_REQUIRED; // 상태 1일 때 업데이트 필요
-//        } else if ("2".equals(CURRENT_APP_STATE)) {
-//            serverStateMap.put("serverState", 2);
-//            successCode = SuccessCode.APP_MAINTENANCE; // 상태 2일 때 점검 중
-//        } else {
-//            successCode = SuccessCode.APP_DEFAULT; // 기본값
-//        }
 
         return ApiResponse.success(successCode, serverStateMap);
     }
