@@ -43,14 +43,14 @@ public class UserController {
         return userService.getUserInfoMY();
     }
 
-//    // 🔹 사용자 생성 (회원가입)
-//    @PostMapping("/")
-//    public ApiResponse<User> createUser(@RequestBody User user) {
-//        return userService.createUser(user);
-//    }
+    // 🔹 사용자 생성 (회원가입)
+    @PostMapping("/")
+    public ApiResponse<User> createUser(@RequestBody User user) {
+        return userService.createUser(user);
+    }
 
     // 🔹 사용자 정보 수정
-    @PostMapping("/")
+    @PutMapping("/")
     public ApiResponse<User> updateUser(
             @RequestBody User userDetails) {
         return userService.updateUser(userDetails);
