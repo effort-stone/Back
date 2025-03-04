@@ -4,6 +4,10 @@ package com.effortstone.backend.domain.user.entity;
 import com.effortstone.backend.domain.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.time.LocalDateTime;
+import java.util.Date;
 
 
 @Entity(name = "users")
@@ -13,6 +17,7 @@ import lombok.*;
 @Builder
 @ToString
 @Getter
+@Setter
 public class User extends BaseEntity {
 
     @Id
@@ -31,16 +36,53 @@ public class User extends BaseEntity {
     @Column(name = "user_gender")
     private String userGender;
 
-    @Column(name = "user_email")
-    private String userEmail;
+//    @Column(name = "user_email")
+//    private String userEmail;
 
     @Column(name = "user_login_provider")
-    private String userLoginProvider;
+    private String userLoginProvider; // enum 으로 수정 하기
+    // 0: 익명, 1 : 구글, 2 : 애플, 3 : 넘버
 
-    // 유저 구독 여부
-    @Column(name = "user_is_sub")
+//    // 유저 구독 여부
+//    @Column(name = "user_is_sub")
+//    @Builder.Default()
+//    private Boolean userIsSub = false;
+
+    // 구독 마감 날짜 추가
+    @Column(name = "user_sub_enddate")
+    private LocalDateTime userSubEnddate;
+
+    // 링크데이트( 계정 연동 시기 ) 추가
+    @Column(name = "user_link_date")
+    private LocalDateTime userLinkDate;
+
+    // 링크데이트( 계정 연동 시기 ) 추가
+    @Column(name = "user_latest_login")
+    private LocalDateTime UserLatestLogin;
+
+    // 무료 구독 썻는지 안썼느지 ( boolean )
+    @Column(name = "user_free_sub")
     @Builder.Default()
-    private Boolean userIsSub = false;
+    private Boolean userFreeSub = false;
+
+    // 캐릭터 정보 ( 캐릭터 정보와 캐릭터가 착용하고 있는 정보에 대한 것 추가 ) 2개
+    @Column()
+    @ColumnDefault("1")
+    private int userStoneLevel;
+
+    @Column()
+    @ColumnDefault("0")
+    private int userStoneExp;
+
+    // 캐릭터가 착용하고 있는 정보에 대한 것 추가
+
+    //sideObj
+    @Column(name = "user_side_obj")
+    private Long userSideObj;
+
+    //topObj
+    @Column(name = "user_top_obj")
+    private Long userTopObj;
 
     //유저 푸시알람 여부
     @Column(name = "user_is_alert")

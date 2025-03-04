@@ -1,6 +1,7 @@
 package com.effortstone.backend.domain.user.service;
 
 
+import com.effortstone.backend.domain.user.dto.request.UserRequestDto;
 import com.effortstone.backend.domain.user.entity.User;
 import com.effortstone.backend.domain.user.repository.UserRepository;
 import com.effortstone.backend.global.common.response.ApiResponse;
@@ -45,22 +46,30 @@ public class UserService {
     }
 
     // 🔹 사용자 정보 수정
-    public ApiResponse<User> updateUser(User userDetails) {
-        String userCode = SecurityUtil.getCurrentUserCode();
-        User user = User.builder()
-                .userCode(userCode)
-                .userBirth(userDetails.getUserBirth())
-                .userEmail(userDetails.getUserEmail())
-                .userGender(userDetails.getUserGender())
-                .userIsSub(userDetails.getUserIsSub())
-                .userIsAlert(userDetails.getUserIsAlert())
-                .userName(userDetails.getUserName())
-                .userPhone(userDetails.getUserPhone())
-                .userLoginProvider(userDetails.getUserLoginProvider())
-                .roleType(userDetails.getRoleType())
-                .build();
-        User updatedUser = userRepository.save(user);
-        return ApiResponse.success(SuccessCode.USER_UPDATE_SUCCESS, updatedUser);
+    public ApiResponse<User> updateUser(String userCode, UserRequestDto.UserUpdateRequest userDetails) {
+        String currentUserCode = SecurityUtil.getCurrentUserCode(); // 현재 사용자 코드 가져오기
+        User user = userRepository.findById(currentUserCode)       // 기존 사용자 조회
+                .orElseThrow(() -> new RuntimeException("User not found")); // 없으면 예외 발생
+        // Setter를 사용해 기존 엔티티 필드 수정 (Null 체크 포함)
+        if (userDetails.getName() != null) user.setUserName(userDetails.getName());
+        if (userDetails.getLatestLogin() != null) user.setUserLatestLogin(userDetails.getLatestLogin()); // UserLatestLogin 가정
+        if (userDetails.getLevel() != null) user.setUserStoneLevel(userDetails.getLevel());
+        if (userDetails.getExp() != null) user.setUserStoneExp(userDetails.getExp());
+        if (userDetails.getSideObj() != null) user.setUserSideObj(userDetails.getSideObj());
+        if (userDetails.getTopObj() != null) user.setUserTopObj(userDetails.getTopObj());
+        if (userDetails.getAccountLinkType() != null) user.setUserLoginProvider(userDetails.getAccountLinkType());
+        if (userDetails.getLinkDate() != null) user.setUserLinkDate(userDetails.getLinkDate());
+        if (userDetails.getGender() != null) user.setUserGender(userDetails.getGender());
+        if (userDetails.getBirthDay() != null) user.setUserBirth(userDetails.getBirthDay());
+        if (userDetails.getNumber() != null) user.setUserPhone(userDetails.getNumber());
+        if (userDetails.getAlram() != null) user.setUserIsAlert(userDetails.getAlram());
+        if (userDetails.getSubscriptionEndDate() != null) user.setUserSubEnddate(userDetails.getSubscriptionEndDate());
+        if (userDetails.getIsFreeTrialUsed() != null) user.setUserFreeSub(userDetails.getIsFreeTrialUsed());
+        // status는 User 엔티티에 없으므로 제외하거나 추가 필드 필요
+
+        User updatedUser = userRepository.save(user); // 수정된 엔티티 저장
+        return ApiResponse.success(SuccessCode.USER_UPDATE_SUCCESS, updatedUser); // 성공 응답 반환User updatedUser = userRepository.save(user);
+
     }
 
     // 🔹 사용자 삭제
