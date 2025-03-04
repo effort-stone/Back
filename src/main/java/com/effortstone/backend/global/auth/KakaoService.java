@@ -92,7 +92,7 @@ public class KakaoService {
         Map<String, Object> profile = kakaoAccount != null ? (Map<String, Object>) kakaoAccount.get("profile") : null;
 
         String nickname = profile != null ? (String) profile.get("nickname") : "No nickname";
-        String email = kakaoAccount != null ? (String) kakaoAccount.get("email") : null;
+
         String userId = userInfo.get("id").toString();
         String profileImage = (profile != null && profile.containsKey("profile_image_url"))
                 ? (String) profile.get("profile_image_url")
@@ -101,9 +101,6 @@ public class KakaoService {
         // 4) 사용자 정보 저장용 데이터 구성
         Map<String, Object> userInfoDetail = new HashMap<>();
         userInfoDetail.put("id", userId);
-        if (email != null && !email.isEmpty()) {
-            userInfoDetail.put("email", email);
-        }
         userInfoDetail.put("nickname", nickname);
         userInfoDetail.put("profileImage", profileImage);
 
@@ -119,16 +116,13 @@ public class KakaoService {
      */
     public String createFirebaseCustomToken(Map<String, Object> userInfo) throws FirebaseAuthException {
         String uid = userInfo.get("id").toString();
-        String email = userInfo.get("email") != null ? userInfo.get("email").toString() : null;
         String displayName = userInfo.get("nickname") != null ? userInfo.get("nickname").toString() : "User";
 
         UserRecord userRecord;
         try {
             // 기존 사용자가 있으면 업데이트
             UserRecord.UpdateRequest updateRequest = new UserRecord.UpdateRequest(uid);
-            if (email != null) {
-                updateRequest.setEmail(email);
-            }
+
             if (displayName != null) {
                 updateRequest.setDisplayName(displayName);
             }
@@ -139,9 +133,7 @@ public class KakaoService {
             UserRecord.CreateRequest createRequest = new UserRecord.CreateRequest()
                     .setUid(uid)
                     .setDisplayName(displayName);
-            if (email != null) {
-                createRequest.setEmail(email);
-            }
+
             userRecord = FirebaseAuth.getInstance().createUser(createRequest);
             log.info("Created new Firebase user: {}", uid);
         }

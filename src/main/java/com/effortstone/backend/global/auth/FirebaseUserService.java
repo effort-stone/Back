@@ -43,7 +43,6 @@ public class FirebaseUserService {
         String uid = decodedToken.getUid();
 
         // 이메일, Provider 등 정보 파싱 (Firebase에서 Provider ID를 가져올 수 있음)
-        String userEmail = decodedToken.getEmail();
         String userName = decodedToken.getName();
         String provider = Provider; // 예: "google.com", "apple.com", "kakao.com"
         String displayName = (String) decodedToken.getClaims().get("name");

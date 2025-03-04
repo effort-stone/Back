@@ -70,7 +70,7 @@ public class FirebaseTestController {
 
         // 3️⃣ ID Token 검증 및 사용자 정보 조회
         UserRecord userRecord = getUserInfoFromIdToken(idToken);
-        System.out.println("User Info: " + userRecord.getEmail() + ", UID: " + userRecord.getUid());
+        System.out.println("UID: " + userRecord.getUid());
     }
 
     /**
