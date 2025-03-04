@@ -14,9 +14,9 @@ import java.util.Optional;
 @Repository
 public interface RoutineProgressRepository extends JpaRepository<RoutineProgress, Long> {
     // 특정 사용자의 특정 기간 동안의 루틴 진행 기록 조회
-    List<RoutineProgress> findByRoutineUserAndRoutineProgressDateBetween(User user, LocalDate startDate, LocalDate endDate);
-    List<RoutineProgress> findByRoutineInAndRoutineProgressDateBetween(
-            List<Routine> routines, LocalDate start, LocalDate end);
+    //List<RoutineProgress> findByRoutineUserAndRoutineProgressDateBetween(User user, LocalDate startDate, LocalDate endDate);
+    //List<RoutineProgress> findByRoutineInAndRoutineProgressDateBetween(
+     //       List<Routine> routines, LocalDate start, LocalDate end);
 
     Optional<RoutineProgress> findByRoutineAndRoutineProgressCompletionTime(Routine routine, LocalDateTime date);
 }

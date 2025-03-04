@@ -83,21 +83,21 @@ public class RoutineProgressService {
         return mapToDTO(progress);
     }
 
-    /**
-     * 루틴 진행 기록 취소
-     * 해당 날짜의 진행 기록을 삭제하거나, 상태를 초기화합니다.
-     */
-    @Transactional
-    public void cancelRoutineProgress(User user, Routine routine, LocalDate progressDate) {
-        Optional<RoutineProgress> optionalProgress = routineProgressRepository.findByRoutineUserAndRoutineProgressDateBetween(
-                user, progressDate, progressDate).stream().filter(p -> p.getRoutine().equals(routine)).findFirst();
-        if (optionalProgress.isPresent()) {
-            RoutineProgress progress = optionalProgress.get();
-            // 상황에 따라 삭제하거나, 상태만 업데이트할 수 있습니다.
-            // 여기서는 삭제 예시를 들겠습니다.
-            routineProgressRepository.delete(progress);
-        }
-    }
+//    /**
+//     * 루틴 진행 기록 취소
+//     * 해당 날짜의 진행 기록을 삭제하거나, 상태를 초기화합니다.
+//     */
+//    @Transactional
+//    public void cancelRoutineProgress(User user, Routine routine, LocalDate progressDate) {
+//        Optional<RoutineProgress> optionalProgress = routineProgressRepository.findByRoutineUserAndRoutineProgressDateBetween(
+//                user, progressDate, progressDate).stream().filter(p -> p.getRoutine().equals(routine)).findFirst();
+//        if (optionalProgress.isPresent()) {
+//            RoutineProgress progress = optionalProgress.get();
+//            // 상황에 따라 삭제하거나, 상태만 업데이트할 수 있습니다.
+//            // 여기서는 삭제 예시를 들겠습니다.
+//            routineProgressRepository.delete(progress);
+//        }
+//    }
 
     /**
      * 엔티티를 DTO로 변환
