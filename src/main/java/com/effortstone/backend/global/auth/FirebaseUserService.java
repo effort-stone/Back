@@ -62,7 +62,6 @@ public class FirebaseUserService {
             User updatedUser = User.builder()
                     .userCode(user.getUserCode()) // ID는 변경하지 않음
                     .userName((userName != null) ? userName : user.getUserName())
-                    .userEmail((userEmail != null) ? userEmail : user.getUserEmail())
                     .userLoginProvider((provider != null) ? provider : user.getUserLoginProvider())
                     .roleType(user.getRoleType()) // 기본값 유지
                     .build();
@@ -80,9 +79,7 @@ public class FirebaseUserService {
                     .userBirth(null)
                     .userPhone(null)
                     .userGender(null)
-                    .userEmail(userEmail)
                     .userLoginProvider("COMMON")
-                    .userIsSub(false)
                     .userIsAlert(false)
                     .roleType(RoleType.USER) // 기본값 적용
                     .build();
