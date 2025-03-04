@@ -1,6 +1,8 @@
 package com.effortstone.backend.domain.routine.dto.response;
 
 import com.effortstone.backend.domain.routine.entity.Routine;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 
@@ -10,9 +12,12 @@ import java.time.LocalTime;
 @Data
 @Builder
 public class RoutineProgressDTO {
-    private Routine routine;
-    private String routineName;
+    private Long goalId; // routineCode;
+    private Long goalRecodeId; // 루틴내역 코드 routineProgressCode
     private Boolean completed;
-    private LocalDateTime completionTime; // 체크형일 경우
-    private Integer recordedAmount;   // 시간 기록형일 경우(분 단위 등)
+    @Schema(example = "2025-05-05 15:33:22.777", type = "string")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+    private LocalDateTime recodeTime; //completionTime;
+    private Integer currentEffortTime;  // routineProgressRecordedAmount
+    private boolean status; // status
 }

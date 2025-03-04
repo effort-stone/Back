@@ -1,40 +1,50 @@
 package com.effortstone.backend.domain.routine.dto.requset;
 
 import com.effortstone.backend.domain.routine.entity.RoutineGoalType;
+import com.effortstone.backend.domain.routine.entity.RoutineTheme;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
 public class RoutineRequestDto {
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
+    public static class RoutineCreateRequest {
+        private String title;              // SQLite: title - Routine: routineName
+        private List<Integer> repeatDays;  // SQLite: repeatDays - Routine: routineRepeatFrequency
+        private RoutineGoalType goalType;  // SQLite: goalType - Routine: routineGoalType
+        private RoutineTheme goalTheme;    // SQLite: goalTheme - Routine: routineTheme
+        private Integer targetTime;        // SQLite: targetTime - Routine: routineFocusTime
+        private LocalTime limitStartTime;  // SQLite: limitStartTime - Routine: routineStartTime
+        private LocalTime limitEndTime;    // SQLite: limitEndTime - Routine: routineEndTime
+        private LocalDate goalStartDate;   // SQLite: goalStartDate - Routine: routineStartDate
+        private LocalDate goalEndDate;     // SQLite: goalEndDate - Routine: routineEndDate
+        private LocalTime alramTime;       // SQLite: alramTime - Routine: routineAlertTime
+        private String memo;               // SQLite: memo - Routine: routineDetail
+    }
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
-    @Data
-    public static class RoutineCreateRequest {
-        private String routineName;
-        private RoutineGoalType routineGoalType;
-        @Schema(example = "08:00:00",type = "string")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
-        private LocalTime routineFocusTime;
-        private List<Integer> routineRepeatFrequency;
-        private LocalDate routineStartDate;
-        private LocalDate routineEndDate;
-        private String routineTheme;
-        private String routineDetail;
-        @Schema(example = "08:00:00",type = "string")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
-        private LocalTime routineStartTime;
-        @Schema(example = "08:00:00",type = "string")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
-        private LocalTime routineEndTime;
-        @Schema(example = "08:00:00",type = "string")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
-        private LocalTime routineAlertTime;
+    public static class RoutineUpdateRequest {
+        private Long goalId;               // SQLite: goalId - Routine: routineCode
+        private String title;              // SQLite: title - Routine: routineName
+        private List<Integer> repeatDays;  // SQLite: repeatDays - Routine: routineRepeatFrequency
+        private RoutineGoalType goalType;  // SQLite: goalType - Routine: routineGoalType
+        private RoutineTheme goalTheme;    // SQLite: goalTheme - Routine: routineTheme
+        private Integer targetTime;        // SQLite: targetTime - Routine: routineFocusTime
+        private LocalTime limitStartTime;  // SQLite: limitStartTime - Routine: routineStartTime
+        private LocalTime limitEndTime;    // SQLite: limitEndTime - Routine: routineEndTime
+        private LocalDate goalStartDate;   // SQLite: goalStartDate - Routine: routineStartDate
+        private LocalDate goalEndDate;     // SQLite: goalEndDate - Routine: routineEndDate
+        private LocalTime alramTime;       // SQLite: alramTime - Routine: routineAlertTime
+        private String memo;               // SQLite: memo - Routine: routineDetail
     }
 }

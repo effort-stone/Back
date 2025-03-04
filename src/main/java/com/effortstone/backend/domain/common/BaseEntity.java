@@ -21,7 +21,6 @@ public abstract class BaseEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @Enumerated(EnumType.ORDINAL)
     @Column(name = "status")
-    private Status status = Status.ACTIVE;
+    private Boolean status = Boolean.TRUE;
 }

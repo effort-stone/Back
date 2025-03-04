@@ -1,5 +1,6 @@
 package com.effortstone.backend.domain.routine.entity;
 
+import com.effortstone.backend.domain.common.BaseEntity;
 import com.effortstone.backend.domain.user.entity.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
@@ -16,7 +17,8 @@ import java.util.List;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor
 @Table(name = "routines")
-public class Routine {
+@Setter
+public class Routine extends BaseEntity {
 
     @Id
     @Column(name = "routine_code")
@@ -36,12 +38,12 @@ public class Routine {
 
     // 루틴 목표
     @Enumerated(EnumType.STRING)
-    @Column(name = "routine_goal_type", nullable = false)
+    @Column(name = "routine_goal_type", nullable = false) //
     private RoutineGoalType routineGoalType;
 
-    // 시간 기록형일 경우만 입력 (null 가능)
+    // 시간 기록형일 경우만 입력 (null 가능) - front와 합의해 integer 값으로 변경
     @Column(name = "routine_focus_time")
-    private LocalTime routineFocusTime;
+    private Integer routineFocusTime;
 
     // 반복주기 ( 월,화,수,목,금,매일, JSON형식으로 처리함)
     @ElementCollection
@@ -62,7 +64,8 @@ public class Routine {
 
     // 루틴 테마(건강... 등등)
     @Column(name = "routine_theme")
-    private String routineTheme;
+    @Enumerated(EnumType.ORDINAL) // Enum 이름을 숫자로 저장
+    private RoutineTheme routineTheme;
 
     // 루틴 세부정보(메모)
     @Column(name = "routine_detail")

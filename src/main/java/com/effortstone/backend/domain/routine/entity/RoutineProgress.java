@@ -1,5 +1,6 @@
 package com.effortstone.backend.domain.routine.entity;
 
+import com.effortstone.backend.domain.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
-public class RoutineProgress {
+public class RoutineProgress extends BaseEntity {
 
     @Id
     @SequenceGenerator(name = "routineProgressCode_seq", sequenceName = "routineProgressCode_sequence", allocationSize = 1)
@@ -26,15 +27,11 @@ public class RoutineProgress {
     @JoinColumn(name = "routine_code", nullable = false)
     private Routine routine;
 
-    // 진행 내역이 기록된 날짜 (예: 2025-02-05)
-    @Column(name = "routine_progress_date", nullable = false)
-    private LocalDate routineProgressDate;
-
     // 해당 날짜에 루틴 완료 여부
     @Column(name = "routine_progress_completed", nullable = false)
     private Boolean routineProgressCompleted;
 
-    // 체크형 루틴일 경우 완료 시각 (없으면 null)
+    // 기록시간 ( 체크형이랑 같이도 됌 )
     @Column(name = "routine_progress_completion_time")
     private LocalDateTime routineProgressCompletionTime;
 

@@ -3,6 +3,7 @@ package com.effortstone.backend.domain.routine.controller;
 
 import com.effortstone.backend.domain.routine.dto.requset.RoutineRequestDto;
 import com.effortstone.backend.domain.routine.dto.response.CalendarResponseDTO;
+import com.effortstone.backend.domain.routine.dto.response.RoutineDTO;
 import com.effortstone.backend.domain.routine.entity.Routine;
 import com.effortstone.backend.domain.routine.service.RoutineService;
 import com.effortstone.backend.global.common.response.ApiResponse;
@@ -46,17 +47,17 @@ public class RoutineController {
 
     // 🔹 루틴 생성 (Firebase 토큰 기반)
     @PostMapping
-    public ResponseEntity<ApiResponse<Routine>> createRoutine(@RequestBody RoutineRequestDto.RoutineCreateRequest routine) {
-        Routine createdRoutine = routineService.createRoutine(routine);
+    public ResponseEntity<ApiResponse<RoutineDTO>> createRoutine(@RequestBody RoutineRequestDto.RoutineCreateRequest routine) {
+        RoutineDTO createdRoutine = routineService.createRoutine(routine);
         return ResponseEntity.ok(ApiResponse.success(SuccessCode.ROUTINE_CREATE_SUCCESS, createdRoutine));
     }
 
     // 🔹 루틴 수정
     @PutMapping("/{routineCode}")
-    public ResponseEntity<ApiResponse<Routine>> updateRoutine(
+    public ResponseEntity<ApiResponse<RoutineDTO>> updateRoutine(
             @PathVariable Long routineCode,
-            @RequestBody Routine routineDetails) {
-        Routine updatedRoutine = routineService.updateRoutine(routineCode, routineDetails);
+            @RequestBody RoutineRequestDto.RoutineUpdateRequest routineDetails) {
+        RoutineDTO updatedRoutine = routineService.updateRoutine(routineCode, routineDetails);
         return ResponseEntity.ok(ApiResponse.success(SuccessCode.ROUTINE_UPDATE_SUCCESS, updatedRoutine));
     }
 
@@ -71,13 +72,13 @@ public class RoutineController {
      * 월간 캘린더 데이터 조회 API
      * URL 예시: GET /api/v1/routines/calendar?year=2025&month=4
      */
-    @GetMapping("/calendar")
-    public ResponseEntity<ApiResponse<CalendarResponseDTO>> getCalendar(
-            @RequestParam int year,
-            @RequestParam int month) {
-        YearMonth yearMonth = YearMonth.of(year, month);
-        CalendarResponseDTO responseDTO = routineService.getMonthlyCalendar(yearMonth);
-        return ResponseEntity.ok(ApiResponse.success(SuccessCode.ROUTINE_CALENDAR_FETCH_SUCCESS, responseDTO));
-    }
+//    @GetMapping("/calendar")
+//    public ResponseEntity<ApiResponse<CalendarResponseDTO>> getCalendar(
+//            @RequestParam int year,
+//            @RequestParam int month) {
+//        YearMonth yearMonth = YearMonth.of(year, month);
+//        CalendarResponseDTO responseDTO = routineService.getMonthlyCalendar(yearMonth);
+//        return ResponseEntity.ok(ApiResponse.success(SuccessCode.ROUTINE_CALENDAR_FETCH_SUCCESS, responseDTO));
+//    }
 
 }

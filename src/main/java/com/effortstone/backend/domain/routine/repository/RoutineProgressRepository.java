@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,5 +18,5 @@ public interface RoutineProgressRepository extends JpaRepository<RoutineProgress
     List<RoutineProgress> findByRoutineInAndRoutineProgressDateBetween(
             List<Routine> routines, LocalDate start, LocalDate end);
 
-    Optional<RoutineProgress> findByRoutineAndRoutineProgressDate(Routine routine, LocalDate date);
+    Optional<RoutineProgress> findByRoutineAndRoutineProgressCompletionTime(Routine routine, LocalDateTime date);
 }

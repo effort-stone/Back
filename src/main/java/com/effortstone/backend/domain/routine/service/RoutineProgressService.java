@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.*;
 
@@ -27,25 +26,25 @@ public class RoutineProgressService {
     private final UserRepository userRepository;
     private final RoutineRepository routineRepository;
 
-    /**
-     * 월간 캘린더 데이터 조회
-     * 해당 사용자의 지정된 연월에 해당하는 모든 루틴 진행 데이터를 조회하여,
-     * 날짜별로 그룹핑한 후 DTO로 변환하여 반환합니다.
-     */
-    public Map<LocalDate, List<RoutineProgressDTO>> getMonthlyCalendarData(User user, YearMonth yearMonth) {
-        LocalDate startDate = yearMonth.atDay(1);
-        LocalDate endDate = yearMonth.atEndOfMonth();
-
-        List<RoutineProgress> progressList =
-                routineProgressRepository.findByRoutineUserAndRoutineProgressDateBetween(user, startDate, endDate);
-
-        Map<LocalDate, List<RoutineProgressDTO>> calendarData = new HashMap<>();
-        for (RoutineProgress progress : progressList) {
-            LocalDate date = progress.getRoutineProgressDate();
-            calendarData.computeIfAbsent(date, d -> new ArrayList<>()).add(mapToDTO(progress));
-        }
-        return calendarData;
-    }
+//    /**
+//     * 월간 캘린더 데이터 조회
+//     * 해당 사용자의 지정된 연월에 해당하는 모든 루틴 진행 데이터를 조회하여,
+//     * 날짜별로 그룹핑한 후 DTO로 변환하여 반환합니다.
+//     */
+//    public Map<LocalDate, List<RoutineProgressDTO>> getMonthlyCalendarData(User user, YearMonth yearMonth) {
+//        LocalDate startDate = yearMonth.atDay(1);
+//        LocalDate endDate = yearMonth.atEndOfMonth();
+//
+//        List<RoutineProgress> progressList =
+//                routineProgressRepository.findByRoutineUserAndRoutineProgressDateBetween(user, startDate, endDate);
+//
+//        Map<LocalDate, List<RoutineProgressDTO>> calendarData = new HashMap<>();
+//        for (RoutineProgress progress : progressList) {
+//            LocalDate date = progress.getRoutineProgressDate();
+//            calendarData.computeIfAbsent(date, d -> new ArrayList<>()).add(mapToDTO(progress));
+//        }
+//        return calendarData;
+//    }
 
     /**
      * 루틴 실행 완료/업데이트 처리
@@ -57,28 +56,26 @@ public class RoutineProgressService {
         String userCode = SecurityUtil.getCurrentUserCode();
         User user = userRepository.findById(userCode)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
-        Routine routine = routineRepository.findById(dto.getRoutineCode())
+        Routine routine = routineRepository.findById(dto.getGoalId())
                 .orElseThrow(() -> new RuntimeException("루틴을 찾을 수 없습니다."));;
         // 동일 루틴/날짜에 대한 진행 기록이 있는지 확인
         // ✅ 올바른 단건 조회 사용
         Optional<RoutineProgress> optionalProgress = routineProgressRepository
-                .findByRoutineAndRoutineProgressDate(routine, dto.getProgressDate());
+                .findByRoutineAndRoutineProgressCompletionTime(routine, dto.getRecodeTime());
         RoutineProgress progress;
         if (optionalProgress.isPresent()) {
             // 기존 기록이 있으면 업데이트
             progress = optionalProgress.get();
-            progress.setRoutineProgressDate(dto.getProgressDate());
             progress.setRoutineProgressCompleted(dto.getCompleted());
-            progress.setRoutineProgressCompletionTime(dto.getCompletionTime());
-            progress.setRoutineProgressRecordedAmount(dto.getRecordedAmount());
+            progress.setRoutineProgressCompletionTime(dto.getRecodeTime());
+            progress.setRoutineProgressRecordedAmount(dto.getCurrentEffortTime());
         } else {
             // 없으면 새로 생성 (RoutineProgress 엔티티의 Builder 또는 생성자 사용)
             progress = RoutineProgress.builder()
                     .routine(routine)
-                    .routineProgressDate(dto.getProgressDate())
                     .routineProgressCompleted(dto.getCompleted())
-                    .routineProgressCompletionTime(dto.getCompletionTime())
-                    .routineProgressRecordedAmount(dto.getRecordedAmount())
+                    .routineProgressCompletionTime(dto.getRecodeTime())
+                    .routineProgressRecordedAmount(dto.getCurrentEffortTime())
                     .build();
         }
         routineProgressRepository.save(progress);
@@ -108,10 +105,10 @@ public class RoutineProgressService {
      */
     private RoutineProgressDTO mapToDTO(RoutineProgress progress) {
         return RoutineProgressDTO.builder()
-                .routine(progress.getRoutine())
+                .goalId(progress.getRoutine().getRoutineCode())
                 .completed(progress.getRoutineProgressCompleted())
-                .completionTime(progress.getRoutineProgressCompletionTime() != null ? progress.getRoutineProgressCompletionTime() : null)
-                .recordedAmount(progress.getRoutineProgressRecordedAmount())
+                .currentEffortTime(progress.getRoutineProgressRecordedAmount() != null ? progress.getRoutineProgressRecordedAmount() : null)
+                .recodeTime(progress.getRoutineProgressCompletionTime())
                 .build();
     }
 }
