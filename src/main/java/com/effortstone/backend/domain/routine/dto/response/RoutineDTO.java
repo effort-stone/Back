@@ -24,8 +24,14 @@ public class RoutineDTO {
     private LocalDate goalStartDate; //routineStartDate;
     private LocalDate goalEndDate; //routineEndDate;
     private List<Integer> repeatDays; //routineRepeatFrequency;
+    @Schema(example = "15:33:22", type = "string")
+    @JsonFormat(pattern = "HH:mm:ss")
     private LocalTime limitStartTime; //routineStartTime;
+    @Schema(example = "15:33:22", type = "string")
+    @JsonFormat(pattern = "HH:mm:ss")
     private LocalTime limitEndTime; //routineEndTime;
+    @Schema(example = "15:33:22", type = "string")
+    @JsonFormat(pattern = "HH:mm:ss")
     private LocalTime alramTime; //routineAlertTime;
     @Schema(example = "2025-05-05 15:33:22.777", type = "string")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")

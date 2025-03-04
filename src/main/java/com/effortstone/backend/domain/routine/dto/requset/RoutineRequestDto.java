@@ -22,10 +22,16 @@ public class RoutineRequestDto {
         private RoutineGoalType goalType;  // SQLite: goalType - Routine: routineGoalType
         private RoutineTheme goalTheme;    // SQLite: goalTheme - Routine: routineTheme
         private Integer targetTime;        // SQLite: targetTime - Routine: routineFocusTime
+        @Schema(example = "15:33:22", type = "string")
+        @JsonFormat(pattern = "HH:mm:ss")
         private LocalTime limitStartTime;  // SQLite: limitStartTime - Routine: routineStartTime
+        @Schema(example = "15:33:22", type = "string")
+        @JsonFormat(pattern = "HH:mm:ss")
         private LocalTime limitEndTime;    // SQLite: limitEndTime - Routine: routineEndTime
         private LocalDate goalStartDate;   // SQLite: goalStartDate - Routine: routineStartDate
         private LocalDate goalEndDate;     // SQLite: goalEndDate - Routine: routineEndDate
+        @Schema(example = "15:33:22", type = "string")
+        @JsonFormat(pattern = "HH:mm:ss")
         private LocalTime alramTime;       // SQLite: alramTime - Routine: routineAlertTime
         private String memo;               // SQLite: memo - Routine: routineDetail
     }
@@ -40,10 +46,16 @@ public class RoutineRequestDto {
         private RoutineGoalType goalType;  // SQLite: goalType - Routine: routineGoalType
         private RoutineTheme goalTheme;    // SQLite: goalTheme - Routine: routineTheme
         private Integer targetTime;        // SQLite: targetTime - Routine: routineFocusTime
+        @Schema(example = "15:33:22", type = "string")
+        @JsonFormat(pattern = "HH:mm:ss")
         private LocalTime limitStartTime;  // SQLite: limitStartTime - Routine: routineStartTime
+        @Schema(example = "15:33:22", type = "string")
+        @JsonFormat(pattern = "HH:mm:ss")
         private LocalTime limitEndTime;    // SQLite: limitEndTime - Routine: routineEndTime
         private LocalDate goalStartDate;   // SQLite: goalStartDate - Routine: routineStartDate
         private LocalDate goalEndDate;     // SQLite: goalEndDate - Routine: routineEndDate
+        @Schema(example = "15:33:22", type = "string")
+        @JsonFormat(pattern = "HH:mm:ss")
         private LocalTime alramTime;       // SQLite: alramTime - Routine: routineAlertTime
         private String memo;               // SQLite: memo - Routine: routineDetail
     }
