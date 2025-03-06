@@ -36,7 +36,7 @@ public class FirebaseAuthController {
         System.out.println("ID Token: " + idToken);
 
         // 3️⃣ ID Token 검증 및 사용자 정보 조회
-        return firebaseUserService.verifyIdTokenAndUpdateUser(idToken, Provider.NUMBER);;
+        return firebaseUserService.verifyIdTokenAndUpdateUser(idToken, Provider.NUMBER);
     }
 
     /**
