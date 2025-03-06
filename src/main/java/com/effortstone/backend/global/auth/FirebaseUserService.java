@@ -43,7 +43,7 @@ public class FirebaseUserService {
         return userRecord;
     }
 
-    public ApiResponse<Object> verifyIdTokenAndUpdateUser(String idToken, Provider provider) throws FirebaseAuthException {
+    public ApiResponse<UserResponseDto> verifyIdTokenAndUpdateUser(String idToken, Provider provider) throws FirebaseAuthException {
         // 1) Firebase 토큰 검증
         FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
         String uid = decodedToken.getUid();

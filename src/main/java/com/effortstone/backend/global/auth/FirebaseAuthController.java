@@ -1,6 +1,7 @@
 package com.effortstone.backend.global.auth;
 
 
+import com.effortstone.backend.domain.user.dto.response.UserResponseDto;
 import com.effortstone.backend.domain.user.entity.Provider;
 import com.effortstone.backend.domain.user.entity.User;
 import com.effortstone.backend.global.common.response.ApiResponse;
@@ -25,7 +26,7 @@ public class FirebaseAuthController {
 
 
     @GetMapping("/kakao/login")
-    public ApiResponse<Object> kakaoLogin(@RequestParam("code") String code) throws FirebaseAuthException {
+    public ApiResponse<UserResponseDto> kakaoLogin(@RequestParam("code") String code) throws FirebaseAuthException {
         if (code == null || code.isEmpty()) {
             throw new IllegalArgumentException("Authorization code is missing.");
         }
@@ -48,7 +49,7 @@ public class FirebaseAuthController {
      * 로그인 타입은 "ANONYMOUS" 등으로 구분할 수 있으며, 소셜 계정 연결 시 linkWithCredential을 통해 기존 정보와 통합할 수 있습니다.
      */
     @GetMapping("/login")
-    public ResponseEntity<Object> generalLogin(@RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
+    public ResponseEntity<ApiResponse<UserResponseDto>> generalLogin(@RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             log.error("Authorization token is missing.");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -57,7 +58,7 @@ public class FirebaseAuthController {
         String idToken = authorizationHeader.replace("Bearer ", "").trim();
         try {
             // 로그인 타입을 "ANONYMOUS" 등으로 구분 (추후 소셜 로그인과의 구분이 필요하면 인자값을 조정)
-            ApiResponse<Object> user = firebaseUserService.verifyIdTokenAndUpdateUser(idToken, Provider.ANONYMOUS);
+            ApiResponse<UserResponseDto> user = firebaseUserService.verifyIdTokenAndUpdateUser(idToken, Provider.ANONYMOUS);
             log.info("User logged in: {}", user);
             return ResponseEntity.ok(user);
         } catch (FirebaseAuthException e) {
