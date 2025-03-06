@@ -49,6 +49,7 @@ public class FirebaseUserService {
         // 1) Firebase 토큰 검증
         FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
         String uid = decodedToken.getUid();
+        log.info("update-------------------",uid);
 
         // 이메일, Provider 등 정보 파싱 (Firebase에서 Provider ID를 가져올 수 있음)
         String userName = decodedToken.getName();

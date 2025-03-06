@@ -18,7 +18,7 @@ public class UserResponseDto {
     private String name;                // SQLite: name - User: userName
     @Schema(example = "2025-05-05 15:33:22.777", type = "string")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
-    private LocalDateTime createDate;   // SQLite: createDate - User: 없음 (CreatedAt으로 대체 )
+    private LocalDateTime createdDate;   // SQLite: createDate - User: 없음 (CreatedAt으로 대체 )
     @Schema(example = "2025-05-05 15:33:22.777", type = "string")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private LocalDateTime latestLogin;  // SQLite: latestLogin - User: UserLatestLogin
@@ -42,24 +42,24 @@ public class UserResponseDto {
 
 
     public static UserResponseDto fromEntity(User user) {
-        UserResponseDto dto = new UserResponseDto();
-        dto.setUid(user.getUserCode());
-        dto.setName(user.getUserName());
-        dto.setCreateDate(user.getCreatedAt());  // BaseEntity에서 상속
-        dto.setLatestLogin(user.getUserLatestLogin());
-        dto.setLevel(user.getUserStoneLevel());
-        dto.setExp(user.getUserStoneExp());
-        dto.setSideObj(user.getUserSideObj());
-        dto.setTopObj(user.getUserTopObj());
-        dto.setAccountLinkType(user.getUserLoginProvider().getCode());
-        dto.setLinkDate(user.getUserLinkDate());
-        dto.setGender(user.getUserGender());
-        dto.setBirthDay(user.getUserBirth());
-        dto.setNumber(user.getUserPhone());
-        dto.setAlram(user.getUserIsAlert());
-        dto.setSubscriptionEndDate(user.getUserSubEnddate());
-        dto.setIsFreeTrialUsed(user.getUserFreeSub());
-        dto.setStatus(user.getStatus());
-        return dto;
+        return UserResponseDto.builder()
+                .uid(user.getUserCode())
+                .name(user.getUserName())
+                .createdDate(user.getCreatedAt())
+                .latestLogin(user.getUserLatestLogin())
+                .level(user.getUserStoneLevel())
+                .exp(user.getUserStoneExp())
+                .sideObj(user.getUserSideObj())
+                .topObj(user.getUserTopObj())
+                .accountLinkType(user.getUserLoginProvider().getCode())
+                .linkDate(user.getUserLinkDate())
+                .gender(user.getUserGender())
+                .birthDay(user.getUserBirth())
+                .number(user.getUserPhone())
+                .alram(user.getUserIsAlert())
+                .subscriptionEndDate(user.getUserSubEnddate())
+                .isFreeTrialUsed(user.getUserFreeSub())
+                .status(user.getStatus())
+                .build();
     }
 }
