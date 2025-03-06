@@ -40,7 +40,8 @@ public class User extends BaseEntity {
 //    private String userEmail;
 
     @Column(name = "user_login_provider")
-    private String userLoginProvider; // enum 으로 수정 하기
+    @Enumerated(EnumType.ORDINAL) // Enum 이름을 숫자로 저장
+    private Provider userLoginProvider; // enum 으로 수정 하기
     // 0: 익명, 1 : 구글, 2 : 애플, 3 : 넘버
 
 //    // 유저 구독 여부
@@ -56,9 +57,9 @@ public class User extends BaseEntity {
     @Column(name = "user_link_date")
     private LocalDateTime userLinkDate;
 
-    // 링크데이트( 계정 연동 시기 ) 추가
+    // 마지막 로그인
     @Column(name = "user_latest_login")
-    private LocalDateTime UserLatestLogin;
+    private LocalDateTime userLatestLogin;
 
     // 무료 구독 썻는지 안썼느지 ( boolean )
     @Column(name = "user_free_sub")

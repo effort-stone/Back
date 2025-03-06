@@ -1,6 +1,7 @@
 package com.effortstone.backend.domain.user.dto.request;
 
 
+import com.effortstone.backend.domain.user.entity.Provider;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -25,7 +26,7 @@ public class UserRequestDto {
         private Integer exp;                // SQLite: exp - User: userStoneExp
         private Long sideObj;               // SQLite: sideObj - User: userSideObj
         private Long topObj;                // SQLite: topObj - User: userTopObj
-        private String accountLinkType;     // SQLite: accountLinkType - User: userLoginProvider
+        private Provider accountLinkType;     // SQLite: accountLinkType - User: userLoginProvider
         @Schema(example = "2025-05-05 15:33:22.777", type = "string")
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
         private LocalDateTime linkDate;     // SQLite: linkDate - User: userLinkDate
@@ -53,7 +54,7 @@ public class UserRequestDto {
         private Integer exp;                // SQLite: exp - User: userStoneExp
         private Long sideObj;               // SQLite: 없음 - User: userSideObj
         private Long topObj;                // SQLite: 없음 - User: userTopObj
-        private String accountLinkType;     // SQLite: accountLinkType - User: userLoginProvider
+        private Provider accountLinkType;     // SQLite: accountLinkType - User: userLoginProvider
         @Schema(example = "2025-05-05 15:33:22.777", type = "string")
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
         private LocalDateTime linkDate;     // SQLite: linkDate - User: userLinkDate

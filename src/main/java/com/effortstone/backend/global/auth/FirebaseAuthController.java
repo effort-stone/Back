@@ -1,7 +1,10 @@
 package com.effortstone.backend.global.auth;
 
 
+import com.effortstone.backend.domain.user.entity.Provider;
 import com.effortstone.backend.domain.user.entity.User;
+import com.effortstone.backend.global.common.response.ApiResponse;
+import com.effortstone.backend.global.common.response.SuccessCode;
 import com.google.firebase.auth.FirebaseAuthException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +25,7 @@ public class FirebaseAuthController {
 
 
     @GetMapping("/kakao/login")
-    public User kakaoLogin(@RequestParam("code") String code) throws FirebaseAuthException {
+    public ApiResponse<Object> kakaoLogin(@RequestParam("code") String code) throws FirebaseAuthException {
         if (code == null || code.isEmpty()) {
             throw new IllegalArgumentException("Authorization code is missing.");
         }
@@ -33,10 +36,7 @@ public class FirebaseAuthController {
         System.out.println("ID Token: " + idToken);
 
         // 3️⃣ ID Token 검증 및 사용자 정보 조회
-        User user = firebaseUserService.verifyIdTokenAndUpdateUser(idToken, "KAKAO");
-        //UserEntity user = userRepository.getById(uid)
-        System.out.println("UID: " + user);
-        return user;
+        return firebaseUserService.verifyIdTokenAndUpdateUser(idToken, Provider.NUMBER);;
     }
 
     /**
@@ -57,7 +57,7 @@ public class FirebaseAuthController {
         String idToken = authorizationHeader.replace("Bearer ", "").trim();
         try {
             // 로그인 타입을 "ANONYMOUS" 등으로 구분 (추후 소셜 로그인과의 구분이 필요하면 인자값을 조정)
-            User user = firebaseUserService.verifyIdTokenAndUpdateUser(idToken, "ANONYMOUS");
+            ApiResponse<Object> user = firebaseUserService.verifyIdTokenAndUpdateUser(idToken, Provider.ANONYMOUS);
             log.info("User logged in: {}", user);
             return ResponseEntity.ok(user);
         } catch (FirebaseAuthException e) {

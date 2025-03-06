@@ -1,8 +1,12 @@
 package com.effortstone.backend.global.auth;
 
+import com.effortstone.backend.domain.user.dto.response.UserResponseDto;
+import com.effortstone.backend.domain.user.entity.Provider;
 import com.effortstone.backend.domain.user.entity.RoleType;
 import com.effortstone.backend.domain.user.entity.User;
 import com.effortstone.backend.domain.user.repository.UserRepository;
+import com.effortstone.backend.global.common.response.ApiResponse;
+import com.effortstone.backend.global.common.response.SuccessCode;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
@@ -12,6 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
+import static java.time.LocalDateTime.now;
 
 @Service
 @Slf4j
@@ -37,14 +43,13 @@ public class FirebaseUserService {
         return userRecord;
     }
 
-    public User verifyIdTokenAndUpdateUser(String idToken, String Provider) throws FirebaseAuthException {
+    public ApiResponse<Object> verifyIdTokenAndUpdateUser(String idToken, Provider provider) throws FirebaseAuthException {
         // 1) Firebase 토큰 검증
         FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
         String uid = decodedToken.getUid();
 
         // 이메일, Provider 등 정보 파싱 (Firebase에서 Provider ID를 가져올 수 있음)
         String userName = decodedToken.getName();
-        String provider = Provider; // 예: "google.com", "apple.com", "kakao.com"
         String displayName = (String) decodedToken.getClaims().get("name");
         // -> 주의: 소셜마다 "name"이 존재하지 않을 수도 있음
 
@@ -62,11 +67,12 @@ public class FirebaseUserService {
                     .userCode(user.getUserCode()) // ID는 변경하지 않음
                     .userName((userName != null) ? userName : user.getUserName())
                     .userLoginProvider((provider != null) ? provider : user.getUserLoginProvider())
+                    .userLatestLogin(now())
                     .roleType(user.getRoleType()) // 기본값 유지
                     .build();
             updatedUser = userRepository.save(updatedUser);
-
-            return updatedUser;
+            UserResponseDto userDto= UserResponseDto.fromEntity(updatedUser);
+            return ApiResponse.success(SuccessCode.USER_LOGIN_SUCCESS, userDto);
         } else {
             // 신규 사용자 생성
             if (displayName == null) {
@@ -78,12 +84,15 @@ public class FirebaseUserService {
                     .userBirth(null)
                     .userPhone(null)
                     .userGender(null)
-                    .userLoginProvider("COMMON")
+                    .userLoginProvider(Provider.ANONYMOUS)
                     .userIsAlert(false)
+                    .userLatestLogin(now())
                     .roleType(RoleType.USER) // 기본값 적용
                     .build();
             newUser = userRepository.save(newUser);
-            return newUser;
+
+            UserResponseDto userDto= UserResponseDto.fromEntity(newUser);
+            return ApiResponse.success(SuccessCode.USER_LOGIN_SUCCESS, userDto);
         }
     }
 
