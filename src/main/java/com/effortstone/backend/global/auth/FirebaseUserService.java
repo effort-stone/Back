@@ -53,7 +53,6 @@ public class FirebaseUserService {
         // 1) Firebase 토큰 검증
         FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
         String uid = decodedToken.getUid();
-        log.info("update-------------------", uid);
 
         // 이메일, Provider 등 정보 파싱 (Firebase에서 Provider ID를 가져올 수 있음)
         String userName = decodedToken.getName();
@@ -72,18 +71,15 @@ public class FirebaseUserService {
             User newuser = userRepository.findById(nuser.getUserCode()).orElse(null);
             UserResponseDto userDto= fromEntity(newuser);
 
-            log.info("update-------------------",userDto.toString());
-            log.info("updatwerwerqwrqrwrwrrqw----------",nuser.getCreatedAt().toString());
-            log.info("update********************-",newuser);
             return ApiResponse.success(SuccessCode.USER_LOGIN_SUCCESS, userDto);
         } else {
             // 신규 사용자 생성
             if (displayName == null) {
-                displayName = "User"; // 기본값
+                displayName = "GUEST"; // 기본값
             }
             User newUser = User.builder()
                     .userCode(uid)
-                    .userName((userName != null) ? userName : "User") // 기본값 적용
+                    .userName((userName != null) ? userName : "GUEST") // 기본값 적용
                     .userBirth(null)
                     .userPhone(null)
                     .userGender(null)
@@ -96,8 +92,6 @@ public class FirebaseUserService {
             //createAt 보기
             User newuser = userRepository.findById(user.getUserCode()).orElse(null);
             UserResponseDto userDto= fromEntity(newuser);
-            log.info("-------------------",userDto.toString());
-            log.info("********************-",newuser.toString());
             return ApiResponse.success(SuccessCode.USER_LOGIN_SUCCESS, userDto);
         }
     }
