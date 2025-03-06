@@ -19,7 +19,7 @@ public class RoutineDTO {
     private String title; //routineName;
     private RoutineGoalType goalType ;//routineGoalType;
     private Integer targetTime; //routineFocusTime;
-    private RoutineTheme goalTheme; // routineTheme;
+    private Integer goalTheme; // routineTheme;
     private String memo; //routineDetail;
     private LocalDate goalStartDate; //routineStartDate;
     private LocalDate goalEndDate; //routineEndDate;

@@ -20,5 +20,14 @@ public enum RoutineTheme {
     public int getNumber() {
         return number;
     }
+
+    public static RoutineTheme fromNumber(int number) {
+        for (RoutineTheme theme : RoutineTheme.values()) {
+            if (theme.getNumber() == number) {
+                return theme;
+            }
+        }
+        throw new IllegalArgumentException("Unknown routine theme number: " + number);
+    }
 }
 

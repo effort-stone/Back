@@ -44,7 +44,7 @@ public class RoutineRequestDto {
         private String title;              // SQLite: title - Routine: routineName
         private List<Integer> repeatDays;  // SQLite: repeatDays - Routine: routineRepeatFrequency
         private RoutineGoalType goalType;  // SQLite: goalType - Routine: routineGoalType
-        private RoutineTheme goalTheme;    // SQLite: goalTheme - Routine: routineTheme
+        private Integer goalTheme;    // SQLite: goalTheme - Routine: routineTheme
         private Integer targetTime;        // SQLite: targetTime - Routine: routineFocusTime
         @Schema(example = "15:33:22", type = "string")
         @JsonFormat(pattern = "HH:mm:ss")

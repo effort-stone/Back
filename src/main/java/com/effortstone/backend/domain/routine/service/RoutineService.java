@@ -6,6 +6,7 @@ import com.effortstone.backend.domain.routine.dto.response.CalendarResponseDTO;
 import com.effortstone.backend.domain.routine.dto.response.RoutineDTO;
 import com.effortstone.backend.domain.routine.entity.Routine;
 import com.effortstone.backend.domain.routine.entity.RoutineProgress;
+import com.effortstone.backend.domain.routine.entity.RoutineTheme;
 import com.effortstone.backend.domain.routine.repository.RoutineProgressRepository;
 import com.effortstone.backend.domain.routine.repository.RoutineRepository;
 import com.effortstone.backend.domain.user.entity.User;
@@ -94,7 +95,7 @@ public class RoutineService {
         updatedRoutine.setRoutineRepeatFrequency(routineDetails.getRepeatDays());
         updatedRoutine.setRoutineStartDate(routineDetails.getGoalStartDate());
         updatedRoutine.setRoutineEndDate(routineDetails.getGoalEndDate());
-        updatedRoutine.setRoutineTheme(routineDetails.getGoalTheme());
+        updatedRoutine.setRoutineTheme(RoutineTheme.fromNumber(routineDetails.getGoalTheme()));
         updatedRoutine.setRoutineDetail(routineDetails.getMemo());
         updatedRoutine.setRoutineStartTime(routineDetails.getLimitStartTime());
         updatedRoutine.setRoutineEndTime(routineDetails.getLimitEndTime());
@@ -302,7 +303,7 @@ public class RoutineService {
                 .title(routine.getRoutineName())
                 .goalType(routine.getRoutineGoalType())       // String으로 가정, Enum이면 .name() 추가
                 .targetTime(routine.getRoutineFocusTime())
-                .goalTheme(routine.getRoutineTheme())
+                .goalTheme(routine.getRoutineTheme().getNumber())
                 .memo(routine.getRoutineDetail())
                 .goalStartDate(routine.getRoutineStartDate())
                 .goalEndDate(routine.getRoutineEndDate())
