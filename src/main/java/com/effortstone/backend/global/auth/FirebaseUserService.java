@@ -60,9 +60,6 @@ public class FirebaseUserService {
             // 기존 사용자 업데이트
             User user = existingUser.get();
             // 변경사항 있으면 업데이트
-            // 빌더를 이용하여 새로운 객체 생성, 받은 값만 적용하고 null이면 기존 값 유지
-
-
             User updatedUser = User.builder()
                     .userCode(user.getUserCode()) // ID는 변경하지 않음
                     .userName((userName != null) ? userName : user.getUserName())
@@ -70,8 +67,11 @@ public class FirebaseUserService {
                     .userLatestLogin(now())
                     .roleType(user.getRoleType()) // 기본값 유지
                     .build();
-            updatedUser = userRepository.save(updatedUser);
-            UserResponseDto userDto= UserResponseDto.fromEntity(updatedUser);
+            User nuser = userRepository.save(updatedUser);
+            User newuser = userRepository.findById(nuser.getUserCode()).orElse(null);
+            UserResponseDto userDto= UserResponseDto.fromEntity(newuser);
+            log.info("update-------------------",userDto);
+            log.info("update********************-",newuser);
             return ApiResponse.success(SuccessCode.USER_LOGIN_SUCCESS, userDto);
         } else {
             // 신규 사용자 생성
@@ -90,10 +90,11 @@ public class FirebaseUserService {
                     .roleType(RoleType.USER) // 기본값 적용
                     .build();
             User user = userRepository.save(newUser);
-
             //createAt 보기
             User newuser = userRepository.findById(user.getUserCode()).orElse(null);
             UserResponseDto userDto= UserResponseDto.fromEntity(newuser);
+            log.info("-------------------",userDto);
+            log.info("********************-",newuser);
             return ApiResponse.success(SuccessCode.USER_LOGIN_SUCCESS, userDto);
         }
     }
