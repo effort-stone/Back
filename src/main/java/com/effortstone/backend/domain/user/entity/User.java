@@ -63,6 +63,7 @@ public class User extends BaseEntity {
 
     // 무료 구독 썻는지 안썼느지 ( boolean )
     @Column(name = "user_free_sub", nullable = false, columnDefinition = "boolean default false")
+    @Builder.Default
     private Boolean userFreeSub = false;
 
     // 캐릭터 정보 ( 캐릭터 정보와 캐릭터가 착용하고 있는 정보에 대한 것 추가 ) 2개
@@ -87,6 +88,7 @@ public class User extends BaseEntity {
     //유저 푸시알람 여부
     @Column(name = "user_is_alert", nullable = false, columnDefinition = "boolean default false")
     // columnDefinition = "boolean default false": Hibernate가 DDL을 생성할 때 컬럼에 기본값을 설정하도록 지시합니다.
+    @Builder.Default
     private Boolean userIsAlert = false;
 
     @Enumerated(EnumType.ORDINAL)

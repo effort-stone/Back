@@ -89,9 +89,11 @@ public class FirebaseUserService {
                     .userLatestLogin(now())
                     .roleType(RoleType.USER) // 기본값 적용
                     .build();
-            newUser = userRepository.save(newUser);
+            User user = userRepository.save(newUser);
 
-            UserResponseDto userDto= UserResponseDto.fromEntity(newUser);
+            //createAt 보기
+            User newuser = userRepository.findById(user.getUserCode()).orElse(null);
+            UserResponseDto userDto= UserResponseDto.fromEntity(newuser);
             return ApiResponse.success(SuccessCode.USER_LOGIN_SUCCESS, userDto);
         }
     }
