@@ -1,5 +1,7 @@
 package com.effortstone.backend.global.auth;
 
+import com.effortstone.backend.domain.routine.dto.response.RoutineDTO;
+import com.effortstone.backend.domain.routine.entity.Routine;
 import com.effortstone.backend.domain.user.dto.response.UserResponseDto;
 import com.effortstone.backend.domain.user.entity.Provider;
 import com.effortstone.backend.domain.user.entity.RoleType;
@@ -16,6 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
 
 import static java.time.LocalDateTime.now;
@@ -39,7 +43,7 @@ public class FirebaseUserService {
         FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
         String uid = decodedToken.getUid();
         // UID를 사용하여 사용자 정보를 조회"
-        log.info("------------------",uid);
+        log.info("------------------", uid);
         UserRecord userRecord = FirebaseAuth.getInstance().getUser(uid);
         return userRecord;
     }
@@ -49,7 +53,7 @@ public class FirebaseUserService {
         // 1) Firebase 토큰 검증
         FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
         String uid = decodedToken.getUid();
-        log.info("update-------------------",uid);
+        log.info("update-------------------", uid);
 
         // 이메일, Provider 등 정보 파싱 (Firebase에서 Provider ID를 가져올 수 있음)
         String userName = decodedToken.getName();
@@ -63,17 +67,13 @@ public class FirebaseUserService {
             // 기존 사용자 업데이트
             User user = existingUser.get();
             // 변경사항 있으면 업데이트
-            User updatedUser = User.builder()
-                    .userCode(user.getUserCode()) // ID는 변경하지 않음
-                    .userName((userName != null) ? userName : user.getUserName())
-                    .userLoginProvider((provider != null) ? provider : user.getUserLoginProvider())
-                    .userLatestLogin(now())
-                    .roleType(user.getRoleType()) // 기본값 유지
-                    .build();
-            User nuser = userRepository.save(updatedUser);
+            user.setUserLatestLogin(LocalDateTime.now()); // 최신 로그인 시간 갱신
+            User nuser = userRepository.save(user);
             User newuser = userRepository.findById(nuser.getUserCode()).orElse(null);
-            UserResponseDto userDto= UserResponseDto.fromEntity(newuser);
-            log.info("update-------------------",userDto);
+            UserResponseDto userDto= fromEntity(newuser);
+
+            log.info("update-------------------",userDto.toString());
+            log.info("updatwerwerqwrqrwrwrrqw----------",nuser.getCreatedAt().toString());
             log.info("update********************-",newuser);
             return ApiResponse.success(SuccessCode.USER_LOGIN_SUCCESS, userDto);
         } else {
@@ -95,11 +95,34 @@ public class FirebaseUserService {
             User user = userRepository.save(newUser);
             //createAt 보기
             User newuser = userRepository.findById(user.getUserCode()).orElse(null);
-            UserResponseDto userDto= UserResponseDto.fromEntity(newuser);
-            log.info("-------------------",userDto);
-            log.info("********************-",newuser);
+            UserResponseDto userDto= fromEntity(newuser);
+            log.info("-------------------",userDto.toString());
+            log.info("********************-",newuser.toString());
             return ApiResponse.success(SuccessCode.USER_LOGIN_SUCCESS, userDto);
         }
+    }
+
+    // 🔹 Routine을 RoutineDTO로 변환하는 헬퍼 메서드
+    private UserResponseDto fromEntity(User user) {
+        return UserResponseDto.builder()
+                .uid(user.getUserCode())
+                .name(user.getUserName())
+                .createdDate(user.getCreatedAt())
+                .latestLogin(user.getUserLatestLogin())
+                .level(user.getUserStoneLevel())
+                .exp(user.getUserStoneExp())
+                .sideObj(user.getUserSideObj())
+                .topObj(user.getUserTopObj())
+                .accountLinkType(user.getUserLoginProvider().getCode())
+                .linkDate(user.getUserLinkDate())
+                .gender(user.getUserGender())
+                .birthDay(user.getUserBirth())
+                .number(user.getUserPhone())
+                .alram(user.getUserIsAlert())
+                .subscriptionEndDate(user.getUserSubEnddate())
+                .isFreeTrialUsed(user.getUserFreeSub())
+                .status(user.getStatus())
+                .build();
     }
 
 
