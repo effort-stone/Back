@@ -59,7 +59,7 @@ public class FirebaseAuthController {
         try {
             // 로그인 타입을 "ANONYMOUS" 등으로 구분 (추후 소셜 로그인과의 구분이 필요하면 인자값을 조정)
             ApiResponse<UserResponseDto> user = firebaseUserService.verifyIdTokenAndUpdateUser(idToken, Provider.ANONYMOUS);
-            log.info("User logged in: {}", user);
+            log.info("User logged in: {}", user.getData());
             return ResponseEntity.ok(user);
         } catch (FirebaseAuthException e) {
             log.error("Firebase authentication failed", e);
