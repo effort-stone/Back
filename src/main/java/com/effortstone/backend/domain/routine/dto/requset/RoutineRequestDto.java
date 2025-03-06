@@ -18,20 +18,20 @@ public class RoutineRequestDto {
     @AllArgsConstructor
     public static class RoutineCreateRequest {
         private String title;              // SQLite: title - Routine: routineName
-        private List<Integer> repeatDays;  // SQLite: repeatDays - Routine: routineRepeatFrequency
+        private String repeatDays;  // SQLite: repeatDays - Routine: routineRepeatFrequency
         private RoutineGoalType goalType;  // SQLite: goalType - Routine: routineGoalType
-        private RoutineTheme goalTheme;    // SQLite: goalTheme - Routine: routineTheme
+        private Integer goalTheme;    // SQLite: goalTheme - Routine: routineTheme
         private Integer targetTime;        // SQLite: targetTime - Routine: routineFocusTime
-        @Schema(example = "15:33:22", type = "string")
-        @JsonFormat(pattern = "HH:mm:ss")
+        @Schema(example = "15:33", type = "string")
+        @JsonFormat(pattern = "HH:mm")
         private LocalTime limitStartTime;  // SQLite: limitStartTime - Routine: routineStartTime
-        @Schema(example = "15:33:22", type = "string")
-        @JsonFormat(pattern = "HH:mm:ss")
+        @Schema(example = "15:33", type = "string")
+        @JsonFormat(pattern = "HH:mm")
         private LocalTime limitEndTime;    // SQLite: limitEndTime - Routine: routineEndTime
         private LocalDate goalStartDate;   // SQLite: goalStartDate - Routine: routineStartDate
         private LocalDate goalEndDate;     // SQLite: goalEndDate - Routine: routineEndDate
-        @Schema(example = "15:33:22", type = "string")
-        @JsonFormat(pattern = "HH:mm:ss")
+        @Schema(example = "15:33", type = "string")
+        @JsonFormat(pattern = "HH:mm")
         private LocalTime alramTime;       // SQLite: alramTime - Routine: routineAlertTime
         private String memo;               // SQLite: memo - Routine: routineDetail
     }
@@ -42,20 +42,20 @@ public class RoutineRequestDto {
     public static class RoutineUpdateRequest {
         private Long goalId;               // SQLite: goalId - Routine: routineCode
         private String title;              // SQLite: title - Routine: routineName
-        private List<Integer> repeatDays;  // SQLite: repeatDays - Routine: routineRepeatFrequency
+        private String repeatDays;  // SQLite: repeatDays - Routine: routineRepeatFrequency
         private RoutineGoalType goalType;  // SQLite: goalType - Routine: routineGoalType
         private Integer goalTheme;    // SQLite: goalTheme - Routine: routineTheme
         private Integer targetTime;        // SQLite: targetTime - Routine: routineFocusTime
-        @Schema(example = "15:33:22", type = "string")
-        @JsonFormat(pattern = "HH:mm:ss")
+        @Schema(example = "15:33", type = "string")
+        @JsonFormat(pattern = "HH:mm")
         private LocalTime limitStartTime;  // SQLite: limitStartTime - Routine: routineStartTime
-        @Schema(example = "15:33:22", type = "string")
-        @JsonFormat(pattern = "HH:mm:ss")
+        @Schema(example = "15:33", type = "string")
+        @JsonFormat(pattern = "HH:mm")
         private LocalTime limitEndTime;    // SQLite: limitEndTime - Routine: routineEndTime
         private LocalDate goalStartDate;   // SQLite: goalStartDate - Routine: routineStartDate
         private LocalDate goalEndDate;     // SQLite: goalEndDate - Routine: routineEndDate
-        @Schema(example = "15:33:22", type = "string")
-        @JsonFormat(pattern = "HH:mm:ss")
+        @Schema(example = "15:33", type = "string")
+        @JsonFormat(pattern = "HH:mm")
         private LocalTime alramTime;       // SQLite: alramTime - Routine: routineAlertTime
         private String memo;               // SQLite: memo - Routine: routineDetail
     }

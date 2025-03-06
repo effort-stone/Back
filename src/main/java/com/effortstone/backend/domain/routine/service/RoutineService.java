@@ -62,10 +62,10 @@ public class RoutineService {
                 .routineName(routine.getTitle())                  // title -> routineName
                 .routineGoalType(routine.getGoalType())           // goalType -> routineGoalType
                 .routineFocusTime(routine.getTargetTime())        // targetTime -> routineFocusTime
-                .routineRepeatFrequency(routine.getRepeatDays())  // repeatDays -> routineRepeatFrequency
+                .routineRepeatFrequency(parseRepeatDays(routine.getRepeatDays()))  // repeatDays -> routineRepeatFrequency
                 .routineStartDate(routine.getGoalStartDate())     // goalStartDate -> routineStartDate
                 .routineEndDate(routine.getGoalEndDate())         // goalEndDate -> routineEndDate
-                .routineTheme(routine.getGoalTheme())             // goalTheme -> routineTheme
+                .routineTheme(RoutineTheme.fromNumber(routine.getGoalTheme()))             // goalTheme -> routineTheme
                 .routineDetail(routine.getMemo())                 // memo -> routineDetail
                 .routineStartTime(routine.getLimitStartTime())    // limitStartTime -> routineStartTime
                 .routineEndTime(routine.getLimitEndTime())        // limitEndTime -> routineEndTime
@@ -92,7 +92,7 @@ public class RoutineService {
         updatedRoutine.setRoutineName(routineDetails.getTitle());
         updatedRoutine.setRoutineGoalType(routineDetails.getGoalType());
         updatedRoutine.setRoutineFocusTime(routineDetails.getTargetTime());
-        updatedRoutine.setRoutineRepeatFrequency(routineDetails.getRepeatDays());
+        updatedRoutine.setRoutineRepeatFrequency(parseRepeatDays(routineDetails.getRepeatDays()));
         updatedRoutine.setRoutineStartDate(routineDetails.getGoalStartDate());
         updatedRoutine.setRoutineEndDate(routineDetails.getGoalEndDate());
         updatedRoutine.setRoutineTheme(RoutineTheme.fromNumber(routineDetails.getGoalTheme()));
@@ -313,6 +313,16 @@ public class RoutineService {
                 .alramTime(routine.getRoutineAlertTime())
                 .goalRegisterDate(routine.getCreatedAt())     // createdAt 필드 가정
                 .build();
+    }
+
+    // 저장할 때 "0,1,2" → [0,1,2] (List<Integer>)
+    public static List<Integer> parseRepeatDays(String json) {
+        if (json == null || json.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return Arrays.stream(json.split(",")) // "0,1,2" → ["0", "1", "2"]
+                .map(Integer::parseInt)      // ["0", "1", "2"] → [0, 1, 2]
+                .collect(Collectors.toList());
     }
 
 
