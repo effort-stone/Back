@@ -2,6 +2,7 @@ package com.effortstone.backend.domain.user.service;
 
 
 import com.effortstone.backend.domain.user.dto.request.UserRequestDto;
+import com.effortstone.backend.domain.user.entity.Provider;
 import com.effortstone.backend.domain.user.entity.User;
 import com.effortstone.backend.domain.user.repository.UserRepository;
 import com.effortstone.backend.global.common.response.ApiResponse;
@@ -57,7 +58,7 @@ public class UserService {
         if (userDetails.getExp() != null) user.setUserStoneExp(userDetails.getExp());
         if (userDetails.getSideObj() != null) user.setUserSideObj(userDetails.getSideObj());
         if (userDetails.getTopObj() != null) user.setUserTopObj(userDetails.getTopObj());
-        if (userDetails.getAccountLinkType() != null) user.setUserLoginProvider(userDetails.getAccountLinkType());
+        if (userDetails.getAccountLinkType() != null) user.setUserLoginProvider(Provider.fromCode(userDetails.getAccountLinkType()));
         if (userDetails.getLinkDate() != null) user.setUserLinkDate(userDetails.getLinkDate());
         if (userDetails.getGender() != null) user.setUserGender(userDetails.getGender());
         if (userDetails.getBirthDay() != null) user.setUserBirth(userDetails.getBirthDay());
