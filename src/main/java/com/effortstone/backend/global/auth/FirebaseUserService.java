@@ -14,6 +14,7 @@ import com.google.firebase.auth.UserRecord;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -43,6 +44,7 @@ public class FirebaseUserService {
         return userRecord;
     }
 
+    @Transactional
     public ApiResponse<UserResponseDto> verifyIdTokenAndUpdateUser(String idToken, Provider provider) throws FirebaseAuthException {
         // 1) Firebase 토큰 검증
         FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
