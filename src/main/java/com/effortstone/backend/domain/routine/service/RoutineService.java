@@ -308,7 +308,7 @@ public class RoutineService {
                 .memo(routine.getRoutineDetail())
                 .goalStartDate(routine.getRoutineStartDate())
                 .goalEndDate(routine.getRoutineEndDate())
-                .repeatDays(routine.getRoutineRepeatFrequency())
+                .repeatDays(paresStringRepeatDays(routine.getRoutineRepeatFrequency()))
                 .limitStartTime(routine.getRoutineStartTime())
                 .limitEndTime(routine.getRoutineEndTime())
                 .alramTime(routine.getRoutineAlertTime())
@@ -324,6 +324,17 @@ public class RoutineService {
         return Arrays.stream(json.split(",")) // "0,1,2" → ["0", "1", "2"]
                 .map(Integer::parseInt)      // ["0", "1", "2"] → [0, 1, 2]
                 .collect(Collectors.toList());
+    }
+
+    // 반환할때 [0,1,2] → "0,1,2"  (String)
+    public static String paresStringRepeatDays(List<Integer> listrepeatdays) {
+        if (listrepeatdays == null || listrepeatdays.isEmpty()) {
+            return "";
+        }
+        return listrepeatdays
+                .stream()
+                .map(String::valueOf)
+                .collect(Collectors.joining(","));
     }
 
 

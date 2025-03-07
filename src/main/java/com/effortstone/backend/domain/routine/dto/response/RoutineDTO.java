@@ -23,7 +23,7 @@ public class RoutineDTO {
     private String memo; //routineDetail;
     private LocalDate goalStartDate; //routineStartDate;
     private LocalDate goalEndDate; //routineEndDate;
-    private List<Integer> repeatDays; //routineRepeatFrequency;
+    private String repeatDays; //routineRepeatFrequency;
     @Schema(example = "15:33", type = "string")
     @JsonFormat(pattern = "HH:mm")
     private LocalTime limitStartTime; //routineStartTime;
