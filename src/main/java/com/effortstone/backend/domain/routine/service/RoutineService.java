@@ -101,6 +101,7 @@ public class RoutineService {
         updatedRoutine.setRoutineStartTime(routineDetails.getLimitStartTime());
         updatedRoutine.setRoutineEndTime(routineDetails.getLimitEndTime());
         updatedRoutine.setRoutineAlertTime(routineDetails.getAlramTime());
+        updatedRoutine.setStatus(routineDetails.getIsActive());
 
         Routine savedRoutine = routineRepository.save(updatedRoutine);
 
@@ -313,6 +314,7 @@ public class RoutineService {
                 .limitEndTime(routine.getRoutineEndTime())
                 .alramTime(routine.getRoutineAlertTime())
                 .goalRegisterDate(routine.getCreatedAt())     // createdAt 필드 가정
+                .isActive(routine.getStatus())
                 .build();
     }
 

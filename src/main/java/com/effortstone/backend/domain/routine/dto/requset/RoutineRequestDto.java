@@ -58,5 +58,6 @@ public class RoutineRequestDto {
         @JsonFormat(pattern = "HH:mm")
         private LocalTime alramTime;       // SQLite: alramTime - Routine: routineAlertTime
         private String memo;               // SQLite: memo - Routine: routineDetail
+        private Boolean isActive;
     }
 }
