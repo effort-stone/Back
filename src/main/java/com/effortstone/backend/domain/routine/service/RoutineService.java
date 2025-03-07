@@ -5,6 +5,7 @@ import com.effortstone.backend.domain.routine.dto.requset.RoutineRequestDto;
 import com.effortstone.backend.domain.routine.dto.response.CalendarResponseDTO;
 import com.effortstone.backend.domain.routine.dto.response.RoutineDTO;
 import com.effortstone.backend.domain.routine.entity.Routine;
+import com.effortstone.backend.domain.routine.entity.RoutineGoalType;
 import com.effortstone.backend.domain.routine.entity.RoutineProgress;
 import com.effortstone.backend.domain.routine.entity.RoutineTheme;
 import com.effortstone.backend.domain.routine.repository.RoutineProgressRepository;
@@ -60,7 +61,7 @@ public class RoutineService {
         Routine newRoutine = Routine.builder()
                 .user(user)
                 .routineName(routine.getTitle())                  // title -> routineName
-                .routineGoalType(routine.getGoalType())           // goalType -> routineGoalType
+                .routineGoalType(RoutineGoalType.fromNumber(routine.getGoalType()))           // goalType -> routineGoalType
                 .routineFocusTime(routine.getTargetTime())        // targetTime -> routineFocusTime
                 .routineRepeatFrequency(parseRepeatDays(routine.getRepeatDays()))  // repeatDays -> routineRepeatFrequency
                 .routineStartDate(routine.getGoalStartDate())     // goalStartDate -> routineStartDate
@@ -90,7 +91,7 @@ public class RoutineService {
 
         // Setter로 필드 업데이트
         updatedRoutine.setRoutineName(routineDetails.getTitle());
-        updatedRoutine.setRoutineGoalType(routineDetails.getGoalType());
+        updatedRoutine.setRoutineGoalType(RoutineGoalType.fromNumber(routineDetails.getGoalType()));
         updatedRoutine.setRoutineFocusTime(routineDetails.getTargetTime());
         updatedRoutine.setRoutineRepeatFrequency(parseRepeatDays(routineDetails.getRepeatDays()));
         updatedRoutine.setRoutineStartDate(routineDetails.getGoalStartDate());
@@ -301,7 +302,7 @@ public class RoutineService {
         return RoutineDTO.builder()
                 .goalId(routine.getRoutineCode())
                 .title(routine.getRoutineName())
-                .goalType(routine.getRoutineGoalType())       // String으로 가정, Enum이면 .name() 추가
+                .goalType(routine.getRoutineGoalType().getNumber())       // String으로 가정, Enum이면 .name() 추가
                 .targetTime(routine.getRoutineFocusTime())
                 .goalTheme(routine.getRoutineTheme().getNumber())
                 .memo(routine.getRoutineDetail())

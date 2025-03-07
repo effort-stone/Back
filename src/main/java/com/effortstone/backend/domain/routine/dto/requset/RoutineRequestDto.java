@@ -19,7 +19,7 @@ public class RoutineRequestDto {
     public static class RoutineCreateRequest {
         private String title;              // SQLite: title - Routine: routineName
         private String repeatDays;  // SQLite: repeatDays - Routine: routineRepeatFrequency
-        private RoutineGoalType goalType;  // SQLite: goalType - Routine: routineGoalType
+        private Integer goalType;  // SQLite: goalType - Routine: routineGoalType
         private Integer goalTheme;    // SQLite: goalTheme - Routine: routineTheme
         private Integer targetTime;        // SQLite: targetTime - Routine: routineFocusTime
         @Schema(example = "15:33", type = "string")
@@ -43,7 +43,7 @@ public class RoutineRequestDto {
         private Long goalId;               // SQLite: goalId - Routine: routineCode
         private String title;              // SQLite: title - Routine: routineName
         private String repeatDays;  // SQLite: repeatDays - Routine: routineRepeatFrequency
-        private RoutineGoalType goalType;  // SQLite: goalType - Routine: routineGoalType
+        private Integer goalType;  // SQLite: goalType - Routine: routineGoalType
         private Integer goalTheme;    // SQLite: goalTheme - Routine: routineTheme
         private Integer targetTime;        // SQLite: targetTime - Routine: routineFocusTime
         @Schema(example = "15:33", type = "string")

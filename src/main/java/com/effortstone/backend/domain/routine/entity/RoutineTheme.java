@@ -1,7 +1,10 @@
 package com.effortstone.backend.domain.routine.entity;
 
+import lombok.Getter;
+
 import java.util.Arrays;
 
+@Getter
 public enum RoutineTheme {
     HEALTH(0),
     EMOTION(1),
@@ -15,10 +18,6 @@ public enum RoutineTheme {
 
     RoutineTheme(int number) {
         this.number = number;
-    }
-
-    public int getNumber() {
-        return number;
     }
 
     public static RoutineTheme fromNumber(int number) {

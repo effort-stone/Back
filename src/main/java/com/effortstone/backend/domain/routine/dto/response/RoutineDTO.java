@@ -17,21 +17,21 @@ import java.util.List;
 public class RoutineDTO {
     private Long goalId; // routineCode;
     private String title; //routineName;
-    private RoutineGoalType goalType ;//routineGoalType;
+    private Integer goalType ;//routineGoalType;
     private Integer targetTime; //routineFocusTime;
     private Integer goalTheme; // routineTheme;
     private String memo; //routineDetail;
     private LocalDate goalStartDate; //routineStartDate;
     private LocalDate goalEndDate; //routineEndDate;
     private List<Integer> repeatDays; //routineRepeatFrequency;
-    @Schema(example = "15:33:22", type = "string")
-    @JsonFormat(pattern = "HH:mm:ss")
+    @Schema(example = "15:33", type = "string")
+    @JsonFormat(pattern = "HH:mm")
     private LocalTime limitStartTime; //routineStartTime;
-    @Schema(example = "15:33:22", type = "string")
-    @JsonFormat(pattern = "HH:mm:ss")
+    @Schema(example = "15:33", type = "string")
+    @JsonFormat(pattern = "HH:mm")
     private LocalTime limitEndTime; //routineEndTime;
-    @Schema(example = "15:33:22", type = "string")
-    @JsonFormat(pattern = "HH:mm:ss")
+    @Schema(example = "15:33", type = "string")
+    @JsonFormat(pattern = "HH:mm")
     private LocalTime alramTime; //routineAlertTime;
 
     @Schema(example = "2025-05-05 15:33:22.777", type = "string")
