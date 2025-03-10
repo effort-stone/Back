@@ -96,7 +96,7 @@ public class FirebaseUserService {
         }
     }
 
-    // 🔹 Routine을 RoutineDTO로 변환하는 헬퍼 메서드
+    // 유저 변환 메서드
     private UserResponseDto fromEntity(User user) {
         return UserResponseDto.builder()
                 .uid(user.getUserCode())
@@ -115,7 +115,7 @@ public class FirebaseUserService {
                 .alram(user.getUserIsAlert())
                 .subscriptionEndDate(user.getUserSubEnddate())
                 .isFreeTrialUsed(user.getUserFreeSub())
-                .status(user.getStatus())
+                .isActive(user.getStatus())
                 .build();
     }
 
