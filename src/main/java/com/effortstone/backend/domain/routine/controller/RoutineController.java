@@ -26,47 +26,46 @@ public class RoutineController {
 
     // 🔹 모든 루틴 조회
     @GetMapping
-    public ResponseEntity<ApiResponse<List<Routine>>> getAllRoutines() {
+    public ApiResponse<List<Routine>> getAllRoutines() {
         List<Routine> routines = routineService.getAllRoutines();
-        return ResponseEntity.ok(ApiResponse.success(SuccessCode.ROUTINE_LIST_FETCH_SUCCESS, routines));
+        return ApiResponse.success(SuccessCode.ROUTINE_LIST_FETCH_SUCCESS, routines);
     }
 
     // 🔹 특정 루틴 조회
     @GetMapping("/{routineCode}")
-    public ResponseEntity<ApiResponse<Routine>> getRoutine(@PathVariable Long routineCode) {
+    public ApiResponse<Routine> getRoutine(@PathVariable Long routineCode) {
         Routine routine = routineService.getRoutineById(routineCode);
-        return ResponseEntity.ok(ApiResponse.success(SuccessCode.ROUTINE_FETCH_SUCCESS, routine));
+        return ApiResponse.success(SuccessCode.ROUTINE_FETCH_SUCCESS, routine);
     }
 
     // 🔹 내 루틴 목록 조회 (Firebase 토큰 기반)
     @GetMapping("/my")
-    public ResponseEntity<ApiResponse<List<Routine>>> getUserRoutines() {
+    public ApiResponse<List<Routine>> getUserRoutines() {
         List<Routine> userRoutines = routineService.getUserRoutines();
-        return ResponseEntity.ok(ApiResponse.success(SuccessCode.ROUTINE_USER_LIST_FETCH_SUCCESS, userRoutines));
+        return ApiResponse.success(SuccessCode.ROUTINE_USER_LIST_FETCH_SUCCESS, userRoutines);
     }
 
     // 🔹 루틴 생성 (Firebase 토큰 기반)
     @PostMapping
-    public ResponseEntity<ApiResponse<RoutineDTO>> createRoutine(@RequestBody RoutineRequestDto.RoutineCreateRequest routine) {
-        RoutineDTO createdRoutine = routineService.createRoutine(routine);
-        return ResponseEntity.ok(ApiResponse.success(SuccessCode.ROUTINE_CREATE_SUCCESS, createdRoutine));
+    public ApiResponse<RoutineDTO> createRoutine(@RequestBody RoutineRequestDto.RoutineCreateRequest routine) {
+        return routineService.createRoutine(routine);
     }
 
     // 🔹 루틴 수정
     @PutMapping("/{routineCode}")
-    public ResponseEntity<ApiResponse<RoutineDTO>> updateRoutine(
+    public ApiResponse<RoutineDTO> updateRoutine(
             @PathVariable Long routineCode,
             @RequestBody RoutineRequestDto.RoutineUpdateRequest routineDetails) {
-        RoutineDTO updatedRoutine = routineService.updateRoutine(routineCode, routineDetails);
-        return ResponseEntity.ok(ApiResponse.success(SuccessCode.ROUTINE_UPDATE_SUCCESS, updatedRoutine));
+        return routineService.updateRoutine(routineCode, routineDetails);
     }
 
     // 🔹 루틴 삭제
     @DeleteMapping("/{routineCode}")
-    public ResponseEntity<ApiResponse<Void>> deleteRoutine(@PathVariable Long routineCode) {
+    public ApiResponse<Void> deleteRoutine(@PathVariable Long routineCode) {
         routineService.deleteRoutine(routineCode);
-        return ResponseEntity.ok(ApiResponse.success(SuccessCode.ROUTINE_DELETE_SUCCESS));
+        return ApiResponse.success(SuccessCode.ROUTINE_DELETE_SUCCESS);
     }
+
 
     /**
      * 월간 캘린더 데이터 조회 API

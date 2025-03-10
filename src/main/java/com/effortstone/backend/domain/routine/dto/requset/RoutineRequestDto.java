@@ -1,16 +1,11 @@
 package com.effortstone.backend.domain.routine.dto.requset;
 
-import com.effortstone.backend.domain.routine.entity.RoutineGoalType;
-import com.effortstone.backend.domain.routine.entity.RoutineTheme;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-
-import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
 
 public class RoutineRequestDto {
     @Getter

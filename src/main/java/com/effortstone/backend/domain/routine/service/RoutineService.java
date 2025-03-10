@@ -12,6 +12,8 @@ import com.effortstone.backend.domain.routine.repository.RoutineProgressReposito
 import com.effortstone.backend.domain.routine.repository.RoutineRepository;
 import com.effortstone.backend.domain.user.entity.User;
 import com.effortstone.backend.domain.user.repository.UserRepository;
+import com.effortstone.backend.global.common.response.ApiResponse;
+import com.effortstone.backend.global.common.response.SuccessCode;
 import com.effortstone.backend.global.security.SecurityUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -53,7 +55,7 @@ public class RoutineService {
 
 
     // 🔹 루틴 생성 (Builder 적용)
-    public RoutineDTO createRoutine(RoutineRequestDto.RoutineCreateRequest routine) {
+    public ApiResponse<RoutineDTO> createRoutine(RoutineRequestDto.RoutineCreateRequest routine) {
         String userCode = SecurityUtil.getCurrentUserCode();
         User user = userRepository.findById(userCode)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -74,13 +76,12 @@ public class RoutineService {
                 .build();
 
         Routine savedRoutine = routineRepository.save(newRoutine);
-
         // Routine -> RoutineDTO 변환
-        return convertToRoutineDTO(savedRoutine);
+        return ApiResponse.success(SuccessCode.ROUTINE_CREATE_SUCCESS,convertToRoutineDTO(savedRoutine));
     }
 
     // 🔹 루틴 수정 (Builder 적용)
-    public RoutineDTO updateRoutine(Long routineCode, RoutineRequestDto.RoutineUpdateRequest routineDetails) {
+    public ApiResponse<RoutineDTO> updateRoutine(Long routineCode, RoutineRequestDto.RoutineUpdateRequest routineDetails) {
         String userCode = SecurityUtil.getCurrentUserCode();
         Routine updatedRoutine = getRoutineById(routineCode);
 
@@ -104,9 +105,8 @@ public class RoutineService {
         updatedRoutine.setStatus(routineDetails.getIsActive());
 
         Routine savedRoutine = routineRepository.save(updatedRoutine);
-
         // Routine -> RoutineDTO 변환
-        return convertToRoutineDTO(savedRoutine);
+        return ApiResponse.success(SuccessCode.ROUTINE_UPDATE_SUCCESS,convertToRoutineDTO(savedRoutine));
     }
 
 
