@@ -16,10 +16,10 @@ import java.time.LocalDateTime;
 @Data
 public class RoutineProgressRequestDto {
     private Long goalId; // routineCode;
-    private Boolean completed;
+    private Boolean isAchieved;
     @Schema(example = "2025-05-05 15:33:22.777", type = "string")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
-    private LocalDateTime recodeTime; //completionTime;
+    private LocalDateTime recordTime; //completionTime;
     private Integer currentEffortTime;  // routineProgressRecordedAmount
-    private boolean status; // status
+    // private boolean status; // status
 }

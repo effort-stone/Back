@@ -65,20 +65,20 @@ public class RoutineProgressService {
         // 동일 루틴/날짜에 대한 진행 기록이 있는지 확인
         // ✅ 올바른 단건 조회 사용
         Optional<RoutineProgress> optionalProgress = routineProgressRepository
-                .findByRoutineAndRoutineProgressCompletionTime(routine, dto.getRecodeTime());
+                .findByRoutineAndRoutineProgressCompletionTime(routine, dto.getRecordTime());
         RoutineProgress progress;
         if (optionalProgress.isPresent()) {
             // 기존 기록이 있으면 업데이트
             progress = optionalProgress.get();
-            progress.setRoutineProgressCompleted(dto.getCompleted());
-            progress.setRoutineProgressCompletionTime(dto.getRecodeTime());
+            progress.setRoutineProgressCompleted(dto.getIsAchieved());
+            progress.setRoutineProgressCompletionTime(dto.getRecordTime());
             progress.setRoutineProgressRecordedAmount(dto.getCurrentEffortTime());
         } else {
             // 없으면 새로 생성 (RoutineProgress 엔티티의 Builder 또는 생성자 사용)
             progress = RoutineProgress.builder()
                     .routine(routine)
-                    .routineProgressCompleted(dto.getCompleted())
-                    .routineProgressCompletionTime(dto.getRecodeTime())
+                    .routineProgressCompleted(dto.getIsAchieved())
+                    .routineProgressCompletionTime(dto.getRecordTime())
                     .routineProgressRecordedAmount(dto.getCurrentEffortTime())
                     .build();
         }
@@ -102,9 +102,9 @@ public class RoutineProgressService {
         // 동일 루틴/날짜에 대한 진행 기록이 있는지 확인
         // ✅ 단건 조회 사용
         RoutineProgress optionalProgress = routineProgressRepository
-                .findByRoutineAndRoutineProgressCompletionTime(routine, dto.getRecodeTime()).orElseThrow(null);
-        optionalProgress.setRoutineProgressCompleted(dto.getCompleted());
-        optionalProgress.setRoutineProgressCompletionTime(dto.getRecodeTime());
+                .findByRoutineAndRoutineProgressCompletionTime(routine, dto.getRecordTime()).orElseThrow(null);
+        optionalProgress.setRoutineProgressCompleted(dto.getIsAchieved());
+        optionalProgress.setRoutineProgressCompletionTime(dto.getRecordTime());
         routineProgressRepository.save(optionalProgress);
 
         return ApiResponse.success(SuccessCode.ROUTINE_PROGRESS_UPDATE_SUCCESS, mapToDTO(optionalProgress));
@@ -133,9 +133,9 @@ public class RoutineProgressService {
     private RoutineProgressDTO mapToDTO(RoutineProgress progress) {
         return RoutineProgressDTO.builder()
                 .goalId(progress.getRoutine().getRoutineCode())
-                .completed(progress.getRoutineProgressCompleted())
+                .isAchieved(progress.getRoutineProgressCompleted())
                 .currentEffortTime(progress.getRoutineProgressRecordedAmount() != null ? progress.getRoutineProgressRecordedAmount() : null)
-                .recodeTime(progress.getRoutineProgressCompletionTime())
+                .recordTime(progress.getRoutineProgressCompletionTime())
                 .build();
     }
 }
