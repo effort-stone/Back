@@ -133,6 +133,7 @@ public class RoutineProgressService {
     private RoutineProgressDTO mapToDTO(RoutineProgress progress) {
         return RoutineProgressDTO.builder()
                 .goalId(progress.getRoutine().getRoutineCode())
+                .recordId(progress.getRoutineProgressCode())
                 .isAchieved(progress.getRoutineProgressCompleted())
                 .currentEffortTime(progress.getRoutineProgressRecordedAmount() != null ? progress.getRoutineProgressRecordedAmount() : null)
                 .recordTime(progress.getRoutineProgressCompletionTime())
