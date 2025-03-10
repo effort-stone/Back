@@ -2,6 +2,7 @@ package com.effortstone.backend.domain.todo.controller;
 
 
 import com.effortstone.backend.domain.todo.dto.request.TodoRequestDto;
+import com.effortstone.backend.domain.todo.dto.response.TodoDto;
 import com.effortstone.backend.domain.todo.entity.Todo;
 import com.effortstone.backend.domain.todo.service.TodoService;
 import com.effortstone.backend.global.common.response.ApiResponse;
@@ -40,21 +41,17 @@ public class TodoController {
     }
 
     // 🔹 TODO 생성
-    @PostMapping
-    public ResponseEntity<ApiResponse<Todo>> createTodo(@RequestBody TodoRequestDto.TodoCreateRequest todo) {
-        Todo createdTodo = todoService.createTodo(todo);
-        ApiResponse<Todo> response = ApiResponse.success(SuccessCode.TODO_CREATE_SUCCESS, createdTodo);
-        return ResponseEntity.ok(response);
+    @PostMapping("/")
+    public ApiResponse<TodoDto> createTodo(@RequestBody TodoRequestDto.TodoCreateRequest todo) {
+        return todoService.createTodo(todo);
     }
 
     // 🔹 TODO 수정
     @PutMapping("/{todoCode}")
-    public ResponseEntity<ApiResponse<Todo>> updateTodo(
+    public ApiResponse<TodoDto> updateTodo(
             @PathVariable Long todoCode,
-            @RequestBody Todo todoDetails) {
-        Todo updatedTodo = todoService.updateTodo(todoCode, todoDetails);
-        ApiResponse<Todo> response = ApiResponse.success(SuccessCode.TODO_UPDATE_SUCCESS, updatedTodo);
-        return ResponseEntity.ok(response);
+            @RequestBody TodoRequestDto.TodoUpdateRequest todoDetails) {
+        return todoService.updateTodo(todoCode, todoDetails);
     }
 
     // 🔹 TODO 삭제

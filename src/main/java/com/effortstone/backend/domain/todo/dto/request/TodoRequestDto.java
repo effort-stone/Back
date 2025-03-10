@@ -1,6 +1,7 @@
 package com.effortstone.backend.domain.todo.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -8,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class TodoRequestDto {
 
@@ -16,13 +18,16 @@ public class TodoRequestDto {
     @AllArgsConstructor
     @Data
     public static class TodoCreateRequest {
-        private String todoName;
-        private String todoDetail;
-        //Spring에서 LocalTime을 "HH:mm:ss" 형식의 문자열로 처리하도록 설정.
-        @Schema(example = "08:00:00",type = "string")
+        private String title; // todoName -> title
+        private String memo; // todoDetail -> memo
+        private LocalDate dateTime; // todoDate -> dateTime (LocalDate -> String 변경)
+        @Schema(example = "2025-05-05", type = "string")
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        private LocalDateTime completedDate; // 완료된 날짜 (새로 추가됨)
+        @Schema(example = "08:00:00", type = "string")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
-        private LocalTime todoAlert;
-        private LocalDate todoDate;
+        private LocalTime alram; // todoAlert -> alram
+
     }
 
 
@@ -30,13 +35,18 @@ public class TodoRequestDto {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
     @Data
+    @Setter
     public static class TodoUpdateRequest {
-        private String todoName;
-        private String todoDetail;
-        @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) // 시간만 변환
-        private LocalTime todoAlert;
-        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) // 날짜 변환
-        private LocalDate todoDate;
-        private Boolean todoCompleted;
+        private Long id; // PRIMARY KEY AUTOINCREMENT (새로 추가됨)
+        private String title; // todoName -> title
+        private String memo; // todoDetail -> memo
+        private LocalDate dateTime; // todoDate -> dateTime (LocalDate -> String 변경)
+        @Schema(example = "2025-05-05", type = "string")
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        private LocalDateTime completedDate; // 완료된 날짜 (새로 추가됨)
+        @Schema(example = "08:00:00", type = "string")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
+        private LocalTime alram; // todoAlert -> alram
+        private Boolean isActive;
     }
 }

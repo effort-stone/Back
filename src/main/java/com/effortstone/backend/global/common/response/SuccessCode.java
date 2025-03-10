@@ -88,7 +88,10 @@ public enum SuccessCode {
 
 
     //SUBSCRIPTION
-    SUBSCRIPTION_GET_SUCCESS(OK,"상품 조회 성공했습니다." );
+    SUBSCRIPTION_GET_SUCCESS(OK,"상품 조회 성공했습니다." ),
+
+    // ROUTINE_PROGRESS
+    ROUTINE_PROGRESS_UPDATE_SUCCESS(OK,"루틴 상세 수정 성공" );
 
 
 

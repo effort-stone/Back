@@ -7,6 +7,8 @@ import com.effortstone.backend.domain.todo.entity.Todo;
 import com.effortstone.backend.domain.todo.repository.TodoRepository;
 import com.effortstone.backend.domain.user.entity.User;
 import com.effortstone.backend.domain.user.repository.UserRepository;
+import com.effortstone.backend.global.common.response.ApiResponse;
+import com.effortstone.backend.global.common.response.SuccessCode;
 import com.effortstone.backend.global.security.SecurityUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -40,33 +42,39 @@ public class TodoService {
     }
 
     // 🔹 TODO 생성 (Builder 적용)
-    public Todo createTodo(TodoRequestDto.TodoCreateRequest todo) {
+    public ApiResponse<TodoDto> createTodo(TodoRequestDto.TodoCreateRequest todo) {
         String userCode = SecurityUtil.getCurrentUserCode();
         User user = userRepository.findById(userCode)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         Todo newTodo = Todo.builder()
-                .todoName(todo.getTodoName())
-                .todoAlert(todo.getTodoAlert())
-                .todoDetail(todo.getTodoDetail())
-                .todoDate(todo.getTodoDate())
-                .user(user) // 🔹 유저 정보 추가
+                .todoName(todo.getTitle())
+                .todoAlert(todo.getAlram())
+                .todoDetail(todo.getMemo())
+                .todoDate(todo.getDateTime())
+                .todoCompletedDate(todo.getCompletedDate())
+                .user(user)
                 .build();
-        return todoRepository.save(newTodo);
+        todoRepository.save(newTodo);
+        return ApiResponse.success(SuccessCode.TODO_UPDATE_SUCCESS,mapToDTO(newTodo));
     }
 
-    // 🔹 TODO 수정 (Builder 적용)
-    public Todo updateTodo(Long todoCode, Todo todoDetails) {
+    // 🔹 TODO 수정 (setter 적용)
+    public ApiResponse<TodoDto> updateTodo(Long todoCode, TodoRequestDto.TodoUpdateRequest todo) {
+        String userCode = SecurityUtil.getCurrentUserCode();
+        // 유저 검증
+        User user = userRepository.findById(userCode)
+                .orElseThrow(() -> new RuntimeException("User not found"));
         Todo existingTodo = getTodoById(todoCode);
+        // 기존 객체의 필드 업데이트
+        existingTodo.setTodoName(todo.getTitle());
+        existingTodo.setTodoAlert(todo.getAlram());
+        existingTodo.setTodoDetail(todo.getMemo());
+        existingTodo.setTodoDate(todo.getDateTime());
+        existingTodo.setTodoCompletedDate(todo.getCompletedDate());
 
-        Todo updatedTodo = Todo.builder()
-                .todoCode(existingTodo.getTodoCode())  // 기존 ID 유지
-                .todoName(todoDetails.getTodoName())
-                .todoAlert(todoDetails.getTodoAlert())
-                .todoDetail(todoDetails.getTodoDetail())
-                .todoDate(todoDetails.getTodoDate())
-                .build();
+        todoRepository.save(existingTodo);
+        return ApiResponse.success(SuccessCode.TODO_UPDATE_SUCCESS,mapToDTO(existingTodo));
 
-        return todoRepository.save(updatedTodo);
     }
 
     // 🔹 TODO 삭제
@@ -116,12 +124,13 @@ public class TodoService {
 
     private TodoDto mapToDTO(Todo todo) {
         return TodoDto.builder()
-                .todoCode(todo.getTodoCode())
-                .todoName(todo.getTodoName())
-                .todoAlert(todo.getTodoAlert())
-                .todoDate(todo.getTodoDate())
-                .todoDetail(todo.getTodoDetail())
-                .todoCompleted(todo.getTodoCompleted())
+                .id(todo.getTodoCode())              // todoCode
+                .title(todo.getTodoName())           // todoName
+                .alram(todo.getTodoAlert())          // todoAlert
+                .dateTime(todo.getTodoDate())        // todoDate
+                .memo(todo.getTodoDetail())          // todoDetail
+                .completedDate(todo.getTodoCompletedDate()) // todoCompletedDate (이름 수정 반영)
+                .isActive(todo.getStatus())
                 .build();
     }
 

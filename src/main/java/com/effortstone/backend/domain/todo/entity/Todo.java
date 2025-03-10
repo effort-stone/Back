@@ -10,6 +10,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity(name = "todo")
@@ -19,6 +20,7 @@ import java.time.LocalTime;
 @Builder
 @ToString
 @Getter
+@Setter
 public class Todo extends BaseEntity {
 
     @Id
@@ -27,22 +29,24 @@ public class Todo extends BaseEntity {
     @Column(name = "todo_code")
     private Long todoCode;
 
-    @Column()
+    @Column(name = "todo_name")
     private String todoName;
 
-    @Column()
+    @Column(name = "todo_alert")
     private LocalTime todoAlert;
 
-    @Column()
+    @Column(name = "todo_detail")
     private String todoDetail;
 
-    @Column()
+    // 실행해야하는 날짜.
+    @Column(name = "todo_date")
     @CreatedDate
     private LocalDate todoDate;
 
-    @Column()
-    @Builder.Default()
-    private Boolean todoCompleted = false;
+    // 실행완료 날짜.
+    @Column(name = "todo_completed_date")
+    @CreatedDate
+    private LocalDateTime todoCompletedDate;
 
     @ManyToOne
     @JoinColumn(name = "user_code", nullable = false)
