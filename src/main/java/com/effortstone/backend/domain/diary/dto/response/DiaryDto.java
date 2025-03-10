@@ -4,11 +4,12 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
 public class DiaryDto {
     private Long id;
     private String content;
-    private LocalDate date;    // 일기가 작성된 날짜
+    private LocalDateTime date;    // 일기가 작성된 날짜
 }

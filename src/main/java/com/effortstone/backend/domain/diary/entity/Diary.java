@@ -26,9 +26,6 @@ public class Diary extends BaseEntity {
     @Column(name = "diary_code")
     private Long diaryCode;
 
-    @Column(name = "diary_title")
-    private String diaryTitle;
-
     @Column(name = "diary_content")
     private String diaryContent;
 
