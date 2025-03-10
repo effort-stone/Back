@@ -8,6 +8,10 @@ import com.effortstone.backend.domain.routine.repository.RoutineProgressReposito
 import com.effortstone.backend.domain.routine.repository.RoutineRepository;
 import com.effortstone.backend.domain.user.entity.User;
 import com.effortstone.backend.domain.user.repository.UserRepository;
+import com.effortstone.backend.global.common.response.ApiResponse;
+import com.effortstone.backend.global.common.response.SuccessCode;
+import com.effortstone.backend.global.error.ErrorCode;
+import com.effortstone.backend.global.error.exception.CustomException;
 import com.effortstone.backend.global.security.SecurityUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -81,6 +85,29 @@ public class RoutineProgressService {
         routineProgressRepository.save(progress);
 
         return mapToDTO(progress);
+    }
+
+    /**
+     * 루틴 실행 업데이트 처리
+     * 해당 루틴과 날짜에 대한 진행 기록을 업데이트합니다.
+     * 체크형이면 완료 시각을 기록하고, 시간 기록형이면 소요 시간을 기록합니다.
+     */
+    @Transactional
+    public ApiResponse<RoutineProgressDTO> recordUpdateRoutineProgress(RoutineProgressRequestDto dto, Long routine_progress_code) {
+        String userCode = SecurityUtil.getCurrentUserCode();
+        User user = userRepository.findById(userCode)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+        Routine routine = routineRepository.findById(dto.getGoalId())
+                .orElseThrow(() -> new RuntimeException("루틴을 찾을 수 없습니다."));;
+        // 동일 루틴/날짜에 대한 진행 기록이 있는지 확인
+        // ✅ 단건 조회 사용
+        RoutineProgress optionalProgress = routineProgressRepository
+                .findByRoutineAndRoutineProgressCompletionTime(routine, dto.getRecodeTime()).orElseThrow(null);
+        optionalProgress.setRoutineProgressCompleted(dto.getCompleted());
+        optionalProgress.setRoutineProgressCompletionTime(dto.getRecodeTime());
+        routineProgressRepository.save(optionalProgress);
+
+        return ApiResponse.success(SuccessCode.ROUTINE_PROGRESS_UPDATE_SUCCESS, mapToDTO(optionalProgress));
     }
 
 //    /**
