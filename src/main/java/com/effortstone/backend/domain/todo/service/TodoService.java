@@ -51,11 +51,10 @@ public class TodoService {
                 .todoAlert(todo.getAlram())
                 .todoDetail(todo.getMemo())
                 .todoDate(todo.getDateTime())
-                .todoCompletedDate(todo.getCompletedDate())
                 .user(user)
                 .build();
         todoRepository.save(newTodo);
-        return ApiResponse.success(SuccessCode.TODO_UPDATE_SUCCESS,mapToDTO(newTodo));
+        return ApiResponse.success(SuccessCode.TODO_CREATE_SUCCESS,mapToDTO(newTodo));
     }
 
     // 🔹 TODO 수정 (setter 적용)

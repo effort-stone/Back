@@ -40,12 +40,10 @@ public class Todo extends BaseEntity {
 
     // 실행해야하는 날짜.
     @Column(name = "todo_date")
-    @CreatedDate
     private LocalDate todoDate;
 
     // 실행완료 날짜.
     @Column(name = "todo_completed_date")
-    @CreatedDate
     private LocalDateTime todoCompletedDate;
 
     @ManyToOne
