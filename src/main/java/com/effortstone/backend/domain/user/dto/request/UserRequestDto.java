@@ -38,7 +38,6 @@ public class UserRequestDto {
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
         private LocalDateTime subscriptionEndDate; // SQLite: subscriptionEndDate - User: userSubEnddate
         private Boolean isFreeTrialUsed;    // SQLite: isFreeTrialUsed - User: userFreeSub
-        private Boolean status;             // SQLite: status - User: 없음 (status로 대체)
     }
 
     @Getter
@@ -66,6 +65,6 @@ public class UserRequestDto {
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
         private LocalDateTime subscriptionEndDate; // SQLite: subscriptionEndDate - User: userSubEnddate
         private Boolean isFreeTrialUsed;    // SQLite: isFreeTrialUsed - User: userFreeSub
-        private Boolean status;             // SQLite: 없음 - User: 없음 (추가 필드)
+        private Boolean isActive;             // SQLite: 없음 - User: 없음 (추가 필드)
     }
 }

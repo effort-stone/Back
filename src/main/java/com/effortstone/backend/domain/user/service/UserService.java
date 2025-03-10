@@ -66,6 +66,7 @@ public class UserService {
         if (userDetails.getAlram() != null) user.setUserIsAlert(userDetails.getAlram());
         if (userDetails.getSubscriptionEndDate() != null) user.setUserSubEnddate(userDetails.getSubscriptionEndDate());
         if (userDetails.getIsFreeTrialUsed() != null) user.setUserFreeSub(userDetails.getIsFreeTrialUsed());
+        if (userDetails.getIsActive() != null) user.setStatus(userDetails.getIsActive());
         // status는 User 엔티티에 없으므로 제외하거나 추가 필드 필요
 
         User updatedUser = userRepository.save(user); // 수정된 엔티티 저장

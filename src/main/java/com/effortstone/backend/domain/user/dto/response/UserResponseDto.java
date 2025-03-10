@@ -38,7 +38,7 @@ public class UserResponseDto {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private LocalDateTime subscriptionEndDate; // SQLite: subscriptionEndDate - User: userSubEnddate
     private Boolean isFreeTrialUsed;    // SQLite: isFreeTrialUsed - User: userFreeSub
-    private Boolean status;  // // SQLite: status - User: 없음 ( status 으로 대체 )
+    private Boolean isActive;  // // SQLite: status - User: 없음 ( status 으로 대체 )
 
 
     public static UserResponseDto fromEntity(User user) {
@@ -59,7 +59,7 @@ public class UserResponseDto {
                 .alram(user.getUserIsAlert())
                 .subscriptionEndDate(user.getUserSubEnddate())
                 .isFreeTrialUsed(user.getUserFreeSub())
-                .status(user.getStatus())
+                .isActive(user.getStatus())
                 .build();
     }
 }
