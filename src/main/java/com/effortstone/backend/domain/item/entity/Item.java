@@ -33,6 +33,12 @@ public class Item extends BaseEntity {
     @Column(name = "item_price")
     private Integer itemPrice;
 
+    @Column(name = "item_price_type")
+    private Integer itemPriceType;
+
+    @Column(name = "item_url")
+    private String itemUrl;
+
 
     // 아이템 착용 캐릭터을 위함
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
