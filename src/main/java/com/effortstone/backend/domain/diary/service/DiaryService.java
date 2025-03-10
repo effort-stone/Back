@@ -47,7 +47,6 @@ public class DiaryService {
         Diary newDiary = Diary.builder() // 새로운 Diary 객체 생성
                 .user(currentUser) // 현재 사용자 설정
                 .diaryContent(diary.getContent()) // 요청 DTO에서 내용 설정
-                .diaryDate(LocalDate.now()) // 현재 날짜로 날짜 설정
                 .build();
         diaryRepository.save(newDiary); // DB에 저장 후 생성된 Diary 반환
         return ApiResponse.success(SuccessCode.DIARY_CREATE_OK, mapToDTO(newDiary));
@@ -100,7 +99,7 @@ public class DiaryService {
         return DiaryResponseDto.builder()
                 .id(diary.getDiaryCode())
                 .content(diary.getDiaryContent())
-                .dateTime(diary.getDiaryDate())
+                .dateTime(LocalDate.from(diary.getCreatedAt()))
                 .build();
     }
 

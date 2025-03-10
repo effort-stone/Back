@@ -29,10 +29,6 @@ public class Diary extends BaseEntity {
     @Column(name = "diary_content")
     private String diaryContent;
 
-    @Column(name = "diary_Date")
-    @CreatedDate
-    private LocalDate diaryDate;
-
     @ManyToOne
     @JoinColumn(name = "user_code", nullable = false)
     @ToString.Exclude //StackOverflowError방지
