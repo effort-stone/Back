@@ -130,7 +130,6 @@ public class TodoService {
                 .dateTime(todo.getTodoDate())        // todoDate
                 .memo(todo.getTodoDetail())          // todoDetail
                 .completedDate(todo.getTodoCompletedDate()) // todoCompletedDate (이름 수정 반영)
-                .isActive(todo.getStatus())
                 .build();
     }
 
