@@ -15,6 +15,6 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
     //List<Diary> findByUser_UserCode(String user_userCode);
     Optional<Diary> findByDiaryCode(Long diaryCode);
     void deleteByDiaryCode(Long diaryCode);
-    List<Diary> findByUserAndDiaryDateBetween(User user, LocalDate startDate, LocalDate endDate);
+    //List<Diary> findByUserAndDiaryDateBetween(User user, LocalDate startDate, LocalDate endDate);
 
 }
