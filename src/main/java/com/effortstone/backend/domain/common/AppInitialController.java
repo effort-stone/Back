@@ -1,7 +1,6 @@
 package com.effortstone.backend.domain.common;
 
 import com.effortstone.backend.domain.routine.service.RoutineService;
-import com.effortstone.backend.domain.stone.service.StoneService;
 import com.effortstone.backend.domain.todo.service.TodoService;
 import com.effortstone.backend.domain.user.repository.UserRepository;
 import com.effortstone.backend.domain.user.service.UserService;
@@ -19,14 +18,13 @@ import java.util.Map;
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class AppInitialController {
-    private final UserService userService;
-    private final RoutineService routineService;
-    private final TodoService todoService;
-
-    // 서버가 지원하는 현재 버전 (간단 예시)
-    private static final String CURRENT_APP_VERSION = "1.2.0";
-    private final UserRepository userRepository;
-    private final StoneService stoneService;
+//    private final UserService userService;
+//    private final RoutineService routineService;
+//    private final TodoService todoService;
+//
+//    // 서버가 지원하는 현재 버전 (간단 예시)
+//    private static final String CURRENT_APP_VERSION = "1.2.0";
+//    private final UserRepository userRepository;
     private final AppInitialService appInitialService;
 
     /**

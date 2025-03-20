@@ -2,10 +2,6 @@ package com.effortstone.backend.domain.common;
 
 import com.effortstone.backend.domain.routine.dto.response.RoutineDTO;
 import com.effortstone.backend.domain.routine.service.RoutineService;
-import com.effortstone.backend.domain.stone.entity.Stone;
-import com.effortstone.backend.domain.stone.repository.StoneRepository;
-import com.effortstone.backend.domain.stone.service.StoneService;
-import com.effortstone.backend.domain.stonewearableitme.entity.StoneWearableItem;
 import com.effortstone.backend.domain.todo.dto.response.TodoDto;
 import com.effortstone.backend.domain.todo.service.TodoService;
 import com.effortstone.backend.domain.user.entity.User;
@@ -29,14 +25,12 @@ import java.util.stream.Collectors;
 public class AppInitialService {
 
     private final UserRepository userRepository;
-    private final StoneService stoneService;
     private final RoutineService routineService;
     private final TodoService todoService;
 
     // 현재 앱 버전 상수 (프로퍼티로 관리할 수도 있음)
     private static final String CURRENT_APP_VERSION = "1.0.0";
     private static final String CURRENT_APP_STATE = "2";
-    private final StoneRepository stoneRepository;
 
 //    public AppInitialResponseDto getAppInitialInfo(String clientVersion) {
 //        if (clientVersion == null) {
