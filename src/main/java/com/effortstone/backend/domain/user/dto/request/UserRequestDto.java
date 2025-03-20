@@ -53,6 +53,9 @@ public class UserRequestDto {
         private Integer exp;                // SQLite: exp - User: userStoneExp
         private Long sideObj;               // SQLite: 없음 - User: userSideObj
         private Long topObj;                // SQLite: 없음 - User: userTopObj
+        private Integer player;
+        private Integer bgObj;
+        private Integer freeCoin;
         private Integer accountLinkType;     // SQLite: accountLinkType - User: userLoginProvider
         @Schema(example = "2025-05-05 15:33:22.777", type = "string")
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
@@ -65,6 +68,5 @@ public class UserRequestDto {
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
         private LocalDateTime subscriptionEndDate; // SQLite: subscriptionEndDate - User: userSubEnddate
         private Boolean isFreeTrialUsed;    // SQLite: isFreeTrialUsed - User: userFreeSub
-        private Boolean isActive;             // SQLite: 없음 - User: 없음 (추가 필드)
     }
 }

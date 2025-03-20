@@ -24,5 +24,4 @@ public class TodoDto {
     @Schema(example = "2025-05-05 15:33:22.777", type = "string")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private LocalDateTime completedDate;
-
 }

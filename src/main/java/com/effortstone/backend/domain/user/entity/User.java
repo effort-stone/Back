@@ -67,13 +67,13 @@ public class User extends BaseEntity {
     private Boolean userFreeSub = false;
 
     // 캐릭터 정보 ( 캐릭터 정보와 캐릭터가 착용하고 있는 정보에 대한 것 추가 ) 2개
-    @Column()
+    @Column(name = "user_level")
     @ColumnDefault("1")
-    private int userStoneLevel;
+    private int userLevel;
 
-    @Column()
+    @Column(name = "user_Exp")
     @ColumnDefault("0")
-    private int userStoneExp;
+    private int userExp;
 
     // 캐릭터가 착용하고 있는 정보에 대한 것 추가
 
@@ -84,6 +84,18 @@ public class User extends BaseEntity {
     //topObj
     @Column(name = "user_top_obj")
     private Long userTopObj;
+
+    //userPlayer
+    @Column(name = "user_player")
+    private Integer userPlayer;
+
+    //userBackGroundObj
+    @Column(name = "user_background_obj")
+    private Integer userBackGroundObj;
+
+    //userFreeCoin
+    @Column(name = "user_free_coin")
+    private Integer userFreeCoin;
 
     //유저 푸시알람 여부
     @Column(name = "user_is_alert", nullable = false, columnDefinition = "boolean default false")
