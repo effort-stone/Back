@@ -52,11 +52,10 @@ public class UserController {
     }
 
     // 🔹 사용자 정보 수정
-    @PutMapping("/{userCode}")
+    @PutMapping("/")
     public ApiResponse<User> updateUser(
-            @PathVariable String userCode,
             @RequestBody UserRequestDto.UserUpdateRequest userDetails) {
-        return userService.updateUser(userCode, userDetails);
+        return userService.updateUser(userDetails);
     }
 
 //    // 🔹 사용자 정보 수정

@@ -52,7 +52,7 @@ public class UserService {
     }
 
     // 🔹 사용자 정보 수정
-    public ApiResponse<User> updateUser(String userCode, UserRequestDto.UserUpdateRequest userDetails) {
+    public ApiResponse<User> updateUser(UserRequestDto.UserUpdateRequest userDetails) {
         String currentUserCode = SecurityUtil.getCurrentUserCode(); // 현재 사용자 코드 가져오기
         User user = userRepository.findById(currentUserCode)       // 기존 사용자 조회
                 .orElseThrow(() -> new RuntimeException("User not found")); // 없으면 예외 발생
