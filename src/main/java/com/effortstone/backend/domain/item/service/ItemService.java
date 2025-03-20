@@ -78,9 +78,21 @@ public class ItemService {
     private ItemResponseDto convertToDto(Item item) {
         return new ItemResponseDto(
                 item.getItemCode(),
+                item.getItemUrl(),
                 item.getItemName(),
+                item.getItemPriceType(),
+                item.getItemPrice(),
                 item.getItemType(),
-                item.getItemPrice()
+                item.getItemRatio(),
+                item.getItemSrcSizeX(),
+                item.getItemSrcSizeY(),
+                item.getItemRow(),
+                item.getItemStepTime(),
+                item.getItemFrom(),
+                item.getItemTo(),
+                item.getItemPositionX(),
+                item.getItemPositionY()
         );
     }
+
 }

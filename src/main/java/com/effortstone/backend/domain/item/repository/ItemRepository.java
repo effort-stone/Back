@@ -1,7 +1,6 @@
 package com.effortstone.backend.domain.item.repository;
 
 import com.effortstone.backend.domain.item.entity.Item;
-import com.effortstone.backend.domain.stone.entity.Stone;
 import com.effortstone.backend.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
