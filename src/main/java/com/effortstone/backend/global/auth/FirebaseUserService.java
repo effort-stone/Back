@@ -85,6 +85,9 @@ public class FirebaseUserService {
                     .userGender(null)
                     .userLoginProvider(Provider.ANONYMOUS)
                     .userLevel(1)
+                    .userPlayer(0)
+                    .userBackGroundObj(0)
+                    .userFreeCoin(0)
                     .userIsAlert(false)
                     .userLatestLogin(now())
                     .roleType(RoleType.USER) // 기본값 적용
