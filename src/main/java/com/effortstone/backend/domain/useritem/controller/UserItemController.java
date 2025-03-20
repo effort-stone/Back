@@ -23,12 +23,11 @@ public class UserItemController {
     /**
      * 사용자가 아이템을 획득하는 API
      */
+
     @PostMapping("/{itemId}")
-    public ResponseEntity<ApiResponse<String>> acquireItem(
-            @PathVariable Long itemId) {
+    public ApiResponse<Void> acquireItem(@PathVariable Long itemId) {
         userItemService.acquireItem(itemId);
-        return ResponseEntity.ok(
-                ApiResponse.success(SuccessCode.STONE_WEARABLE_ITEM_ACQUIRE_SUCCESS, "아이템 획득에 성공했습니다."));
+        return  ApiResponse.success(SuccessCode.ITEM_GET_SUCCESS);
     }
 
 
