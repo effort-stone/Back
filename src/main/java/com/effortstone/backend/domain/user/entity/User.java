@@ -68,13 +68,12 @@ public class User extends BaseEntity {
 
     // 캐릭터 정보 ( 캐릭터 정보와 캐릭터가 착용하고 있는 정보에 대한 것 추가 ) 2개
     @Column(name = "user_level")
-    @ColumnDefault("1")
-    private int userLevel;
+    @Builder.Default
+    private Integer userLevel = 1;
 
     @Column(name = "user_Exp")
     @ColumnDefault("0")
     private int userExp;
-
     // 캐릭터가 착용하고 있는 정보에 대한 것 추가
 
     //sideObj
