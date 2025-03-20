@@ -111,6 +111,7 @@ public class FirebaseUserService {
                 .exp(user.getUserExp())
                 .sideObj(user.getUserSideObj())
                 .topObj(user.getUserTopObj())
+                .player(user.getUserPlayer())
                 .bgObj(user.getUserBackGroundObj())
                 .freeCoin(user.getUserFreeCoin())
                 .accountLinkType(user.getUserLoginProvider().getCode())
