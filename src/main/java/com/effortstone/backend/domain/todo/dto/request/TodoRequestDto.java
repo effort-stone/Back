@@ -38,9 +38,9 @@ public class TodoRequestDto {
         private String title; // todoName -> title
         private String memo; // todoDetail -> memo
         private LocalDate dateTime; // todoDate -> dateTime (LocalDate -> String 변경)
-        @Schema(example = "2025-05-05", type = "string")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-        private LocalDateTime completedDate; // 완료된 날짜 (새로 추가됨)
+//        @Schema(example = "2025-05-05 15:33:22.777", type = "string")
+//        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+        private LocalDate completedDate; // 완료된 날짜 (새로 추가됨)
         @Schema(example = "08:00", type = "string")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
         private LocalTime alram; // todoAlert -> alram

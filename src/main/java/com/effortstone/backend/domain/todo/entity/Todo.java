@@ -44,7 +44,7 @@ public class Todo extends BaseEntity {
 
     // 실행완료 날짜.
     @Column(name = "todo_completed_date")
-    private LocalDateTime todoCompletedDate;
+    private LocalDate todoCompletedDate;
 
     @ManyToOne
     @JoinColumn(name = "user_code", nullable = false)

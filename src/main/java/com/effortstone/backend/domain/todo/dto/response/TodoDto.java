@@ -21,7 +21,7 @@ public class TodoDto {
     private LocalTime alram;      // todoAlert
     private LocalDate dateTime;   // todoDate
     private String memo;          // todoDetail
-    @Schema(example = "2025-05-05 15:33:22.777", type = "string")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
-    private LocalDateTime completedDate;
+//    @Schema(example = "2025-05-05 15:33:22.777", type = "string")
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+    private LocalDate completedDate;
 }
