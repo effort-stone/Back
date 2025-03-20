@@ -103,10 +103,12 @@ public class FirebaseUserService {
                 .name(user.getUserName())
                 .createdDate(user.getCreatedAt())
                 .latestLogin(user.getUserLatestLogin())
-                .level(user.getUserStoneLevel())
-                .exp(user.getUserStoneExp())
+                .level(user.getUserLevel())
+                .exp(user.getUserExp())
                 .sideObj(user.getUserSideObj())
                 .topObj(user.getUserTopObj())
+                .bgObj(user.getUserBackGroundObj())
+                .freeCoin(user.getUserFreeCoin())
                 .accountLinkType(user.getUserLoginProvider().getCode())
                 .linkDate(user.getUserLinkDate())
                 .gender(user.getUserGender())
@@ -115,7 +117,6 @@ public class FirebaseUserService {
                 .alram(user.getUserIsAlert())
                 .subscriptionEndDate(user.getUserSubEnddate())
                 .isFreeTrialUsed(user.getUserFreeSub())
-                .isActive(user.getStatus())
                 .build();
     }
 
