@@ -78,7 +78,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         uses: appleboy/ssh-action@v1.2.0
         env:
-          COMPOSE: "/home/ubuntu/docker-compose.yml"
+          COMPOSE: "./docker-compose.yml"
         with:
           host: ${{ secrets.HOST }}         # EC2 서버의 퍼블릭 IP 또는 도메인
           username: ubuntu                  # EC2 접속 사용자
@@ -111,7 +111,7 @@ jobs:
         if: github.ref == 'refs/heads/develop'
         uses: appleboy/ssh-action@v1.2.0
         env:
-          COMPOSE: "/home/ubuntu/docker-compose.test.yml"
+          COMPOSE: "./docker-compose.test.yml"
         with:
           host: ${{ secrets.HOST }}         # 테스트 서버 주소 (운영과 다르거나 동일 서버 내 포트 분리)
           username: ubuntu
