@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface DiaryRepository extends JpaRepository<Diary, Long> {
 
-    //List<Diary> findByUser_UserCode(String user_userCode);
+    List<Diary> findByUser_UserCode(String userCode);
     Optional<Diary> findByDiaryCode(Long diaryCode);
     void deleteByDiaryCode(Long diaryCode);
     //List<Diary> findByUserAndDiaryDateBetween(User user, LocalDate startDate, LocalDate endDate);

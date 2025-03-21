@@ -16,4 +16,7 @@ public interface UserItemRepository extends JpaRepository<UserItem, Long> {
 
     // 사용자가 가지고 있는 아이템들 다 보여줌
     List<UserItem> findByUser(User user);
+
+    // 사용자가 가지고 있는 아이템들 다 보여줌
+    List<UserItem> findByUser_UserCode(String userCode);
 }

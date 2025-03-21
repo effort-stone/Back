@@ -1,5 +1,6 @@
 package com.effortstone.backend.domain.todo.repository;
 
+import com.effortstone.backend.domain.diary.entity.Diary;
 import com.effortstone.backend.domain.todo.entity.Todo;
 import com.effortstone.backend.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface TodoRepository extends JpaRepository<Todo, Long> {
-
+    List<Todo> findByUser_UserCode(String userCode);
     List<Todo> findByUserAndTodoDateBetween
             (User user, LocalDate startDate, LocalDate endDate);
 
