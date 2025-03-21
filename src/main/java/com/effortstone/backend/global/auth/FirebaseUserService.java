@@ -1,7 +1,5 @@
 package com.effortstone.backend.global.auth;
 
-import com.effortstone.backend.domain.routine.dto.response.RoutineDTO;
-import com.effortstone.backend.domain.routine.entity.Routine;
 import com.effortstone.backend.domain.user.dto.response.UserResponseDto;
 import com.effortstone.backend.domain.user.entity.Provider;
 import com.effortstone.backend.domain.user.entity.RoleType;
@@ -19,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 import java.util.Optional;
 
 import static java.time.LocalDateTime.now;

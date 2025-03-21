@@ -3,6 +3,7 @@ package com.effortstone.backend.domain.user.controller;
 
 import com.effortstone.backend.domain.user.dto.request.UserRequestDto;
 import com.effortstone.backend.domain.user.dto.response.CalenderResponseDto;
+import com.effortstone.backend.domain.user.dto.response.UserResponseDto;
 import com.effortstone.backend.domain.user.entity.User;
 import com.effortstone.backend.domain.user.repository.UserRepository;
 import com.effortstone.backend.domain.user.service.UserCalenderService;
@@ -41,7 +42,7 @@ public class UserController {
     }
     // 🔹 사용자 본인 조회
     @GetMapping("/my")
-    public ApiResponse<User> getUserSelf() {
+    public ApiResponse<UserResponseDto> getUserSelf() {
         return userService.getUserInfoMY();
     }
 
@@ -53,7 +54,7 @@ public class UserController {
 
     // 🔹 사용자 정보 수정
     @PutMapping("/")
-    public ApiResponse<User> updateUser(
+    public ApiResponse<UserResponseDto> updateUser(
             @RequestBody UserRequestDto.UserUpdateRequest userDetails) {
         return userService.updateUser(userDetails);
     }

@@ -4,6 +4,7 @@ package com.effortstone.backend.domain.user.service;
 import com.effortstone.backend.domain.item.entity.Item;
 import com.effortstone.backend.domain.item.repository.ItemRepository;
 import com.effortstone.backend.domain.user.dto.request.UserRequestDto;
+import com.effortstone.backend.domain.user.dto.response.UserResponseDto;
 import com.effortstone.backend.domain.user.entity.Provider;
 import com.effortstone.backend.domain.user.entity.User;
 import com.effortstone.backend.domain.user.repository.UserRepository;
@@ -34,10 +35,10 @@ public class UserService {
         return ApiResponse.success(SuccessCode.USER_GET_INFO_SUCCESS,user);
     }
     //사용자 본인 호출
-    public ApiResponse<User> getUserInfoMY(){
+    public ApiResponse<UserResponseDto> getUserInfoMY(){
         String userCode = SecurityUtil.getCurrentUserCode();
         User user = getUserById(userCode);
-        return ApiResponse.success(SuccessCode.USER_GET_INFO_SUCCESS,user);
+        return ApiResponse.success(SuccessCode.USER_GET_INFO_SUCCESS, UserResponseDto.fromEntity(user));
     }
     // 🔹 모든 사용자 조회
     public ApiResponse<List<User>> getAllUsers() {
@@ -52,7 +53,7 @@ public class UserService {
     }
 
     // 🔹 사용자 정보 수정
-    public ApiResponse<User> updateUser(UserRequestDto.UserUpdateRequest userDetails) {
+    public ApiResponse<UserResponseDto> updateUser(UserRequestDto.UserUpdateRequest userDetails) {
         String currentUserCode = SecurityUtil.getCurrentUserCode(); // 현재 사용자 코드 가져오기
         User user = userRepository.findById(currentUserCode)       // 기존 사용자 조회
                 .orElseThrow(() -> new RuntimeException("User not found")); // 없으면 예외 발생
@@ -78,7 +79,7 @@ public class UserService {
         // status는 User 엔티티에 없으므로 제외하거나 추가 필드 필요
 
         User updatedUser = userRepository.save(user); // 수정된 엔티티 저장
-        return ApiResponse.success(SuccessCode.USER_UPDATE_SUCCESS, updatedUser); // 성공 응답 반환User updatedUser = userRepository.save(user);
+        return ApiResponse.success(SuccessCode.USER_UPDATE_SUCCESS, UserResponseDto.fromEntity(updatedUser)); // 성공 응답 반환User updatedUser = userRepository.save(user);
 
     }
 
