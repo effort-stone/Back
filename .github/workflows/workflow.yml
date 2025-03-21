@@ -31,15 +31,15 @@ jobs:
 
       - name: Create docker-compose.prod.yml from secret
         run: |
-          touch ./home/ubuntu/docker-compose.prod.yml
-          echo "${{ secrets.DOCKER_COMPOSE_PROD }}" > ./home/ubuntu/docker-compose.prod.yml
-          cat ./home/ubuntu/docker-compose.prod.yml
+          touch ./docker-compose.prod.yml
+          echo "${{ secrets.DOCKER_COMPOSE_PROD }}" > ./docker-compose.prod.yml
+          cat ./docker-compose.prod.yml
 
       - name: Create docker-compose.test.yml from secret
         run: |
-          touch ./home/ubuntu/docker-compose.test.yml
-          echo "${{ secrets.DOCKER_COMPOSE_TEST }}" > ./home/ubuntu/docker-compose.test.yml
-          cat ./home/ubuntu/docker-compose.test.yml
+          touch ./docker-compose.test.yml
+          echo "${{ secrets.DOCKER_COMPOSE_TEST }}" > ./docker-compose.test.yml
+          cat ./docker-compose.test.yml
       
       
       
