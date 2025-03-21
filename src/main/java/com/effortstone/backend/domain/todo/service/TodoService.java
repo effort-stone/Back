@@ -2,7 +2,7 @@ package com.effortstone.backend.domain.todo.service;
 
 
 import com.effortstone.backend.domain.todo.dto.request.TodoRequestDto;
-import com.effortstone.backend.domain.todo.dto.response.TodoDto;
+import com.effortstone.backend.domain.todo.dto.response.TodoResponseDto;
 import com.effortstone.backend.domain.todo.entity.Todo;
 import com.effortstone.backend.domain.todo.repository.TodoRepository;
 import com.effortstone.backend.domain.user.entity.User;
@@ -42,7 +42,7 @@ public class TodoService {
     }
 
     // 🔹 TODO 생성 (Builder 적용)
-    public ApiResponse<TodoDto> createTodo(TodoRequestDto.TodoCreateRequest todo) {
+    public ApiResponse<TodoResponseDto> createTodo(TodoRequestDto.TodoCreateRequest todo) {
         String userCode = SecurityUtil.getCurrentUserCode();
         User user = userRepository.findById(userCode)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -58,7 +58,7 @@ public class TodoService {
     }
 
     // 🔹 TODO 수정 (setter 적용)
-    public ApiResponse<TodoDto> updateTodo(Long todoCode, TodoRequestDto.TodoUpdateRequest todo) {
+    public ApiResponse<TodoResponseDto> updateTodo(Long todoCode, TodoRequestDto.TodoUpdateRequest todo) {
         String userCode = SecurityUtil.getCurrentUserCode();
         // 유저 검증
         User user = userRepository.findById(userCode)
@@ -83,7 +83,7 @@ public class TodoService {
     }
 
     // 🔹 TODO 월별 조회
-    public Map<LocalDate, List<TodoDto>> getMonthlyTodos(YearMonth yearMonth) {
+    public Map<LocalDate, List<TodoResponseDto>> getMonthlyTodos(YearMonth yearMonth) {
         String userCode = SecurityUtil.getCurrentUserCode();
         User user = userRepository.findById(userCode)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -92,7 +92,7 @@ public class TodoService {
         LocalDate monthEnd = yearMonth.atEndOfMonth();
 
         List<Todo> todos = todoRepository.findByUserAndTodoDateBetween(user, monthStart, monthEnd);
-        Map<LocalDate, List<TodoDto>> todoMap = new HashMap<>();
+        Map<LocalDate, List<TodoResponseDto>> todoMap = new HashMap<>();
 
         for (LocalDate date = monthStart; !date.isAfter(monthEnd); date = date.plusDays(1)) {
             todoMap.put(date, new ArrayList<>());
@@ -109,20 +109,20 @@ public class TodoService {
      * 특정 날짜(date)에 해당 사용자가 해야 할 TODO 목록 조회
      */
     // 🔹 TODO 오늘의 사용자 투두 조회
-    public List<TodoDto> findAllTodosForDate(LocalDate date) {
+    public List<TodoResponseDto> findAllTodosForDate(LocalDate date) {
         String userCode = SecurityUtil.getCurrentUserCode();
         User user = userRepository.findById(userCode)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         List<Todo> todos = todoRepository.findByUserAndTodoDate(user, date);
 
-        List<TodoDto> todoDtos = todos.stream()
+        List<TodoResponseDto> todoResponseDtos = todos.stream()
                 .map(this::mapToDTO) // 이미 만들어둔 mapToDTO 메서드를 사용
                 .collect(Collectors.toList());
-        return todoDtos;
+        return todoResponseDtos;
     }
 
-    private TodoDto mapToDTO(Todo todo) {
-        return TodoDto.builder()
+    private TodoResponseDto mapToDTO(Todo todo) {
+        return TodoResponseDto.builder()
                 .id(todo.getTodoCode())              // todoCode
                 .title(todo.getTodoName())           // todoName
                 .alram(todo.getTodoAlert())          // todoAlert

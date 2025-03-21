@@ -1,17 +1,15 @@
 package com.effortstone.backend.domain.routine.dto.response;
 
-import com.effortstone.backend.domain.routine.entity.Routine;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Data
 @Builder
-public class RoutineProgressDTO {
+public class RoutineProgressResponseDto {
     private Long goalId; // routineCode;
     private Long recordId; // 루틴내역 코드 routineProgressCode
     private Boolean isAchieved;

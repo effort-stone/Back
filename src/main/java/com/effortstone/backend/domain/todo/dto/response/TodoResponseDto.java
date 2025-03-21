@@ -7,13 +7,12 @@ import lombok.Data;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Data
 @Builder
 @Setter
-public class TodoDto {
+public class TodoResponseDto {
     private Long id;              // todoCode
     private String title;         // todoName
     @Schema(example = "08:00")

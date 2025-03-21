@@ -2,19 +2,15 @@ package com.effortstone.backend.domain.routine.controller;
 
 
 import com.effortstone.backend.domain.routine.dto.requset.RoutineRequestDto;
-import com.effortstone.backend.domain.routine.dto.response.CalendarResponseDTO;
-import com.effortstone.backend.domain.routine.dto.response.RoutineDTO;
+import com.effortstone.backend.domain.routine.dto.response.RoutineResponseDto;
 import com.effortstone.backend.domain.routine.entity.Routine;
 import com.effortstone.backend.domain.routine.service.RoutineService;
 import com.effortstone.backend.global.common.response.ApiResponse;
 import com.effortstone.backend.global.common.response.SuccessCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.YearMonth;
 import java.util.List;
 
 @RestController
@@ -47,13 +43,13 @@ public class RoutineController {
 
     // 🔹 루틴 생성 (Firebase 토큰 기반)
     @PostMapping
-    public ApiResponse<RoutineDTO> createRoutine(@RequestBody RoutineRequestDto.RoutineCreateRequest routine) {
+    public ApiResponse<RoutineResponseDto> createRoutine(@RequestBody RoutineRequestDto.RoutineCreateRequest routine) {
         return routineService.createRoutine(routine);
     }
 
     // 🔹 루틴 수정
     @PutMapping("/{routineCode}")
-    public ApiResponse<RoutineDTO> updateRoutine(
+    public ApiResponse<RoutineResponseDto> updateRoutine(
             @PathVariable Long routineCode,
             @RequestBody RoutineRequestDto.RoutineUpdateRequest routineDetails) {
         return routineService.updateRoutine(routineCode, routineDetails);

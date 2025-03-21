@@ -2,11 +2,9 @@ package com.effortstone.backend.domain.routine.service;
 
 
 import com.effortstone.backend.domain.routine.dto.requset.RoutineRequestDto;
-import com.effortstone.backend.domain.routine.dto.response.CalendarResponseDTO;
-import com.effortstone.backend.domain.routine.dto.response.RoutineDTO;
+import com.effortstone.backend.domain.routine.dto.response.RoutineResponseDto;
 import com.effortstone.backend.domain.routine.entity.Routine;
 import com.effortstone.backend.domain.routine.entity.RoutineGoalType;
-import com.effortstone.backend.domain.routine.entity.RoutineProgress;
 import com.effortstone.backend.domain.routine.entity.RoutineTheme;
 import com.effortstone.backend.domain.routine.repository.RoutineProgressRepository;
 import com.effortstone.backend.domain.routine.repository.RoutineRepository;
@@ -19,11 +17,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.YearMonth;
-import java.time.chrono.ChronoLocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -55,7 +49,7 @@ public class RoutineService {
 
 
     // 🔹 루틴 생성 (Builder 적용)
-    public ApiResponse<RoutineDTO> createRoutine(RoutineRequestDto.RoutineCreateRequest routine) {
+    public ApiResponse<RoutineResponseDto> createRoutine(RoutineRequestDto.RoutineCreateRequest routine) {
         String userCode = SecurityUtil.getCurrentUserCode();
         User user = userRepository.findById(userCode)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -81,7 +75,7 @@ public class RoutineService {
     }
 
     // 🔹 루틴 수정 (Builder 적용)
-    public ApiResponse<RoutineDTO> updateRoutine(Long routineCode, RoutineRequestDto.RoutineUpdateRequest routineDetails) {
+    public ApiResponse<RoutineResponseDto> updateRoutine(Long routineCode, RoutineRequestDto.RoutineUpdateRequest routineDetails) {
         String userCode = SecurityUtil.getCurrentUserCode();
         Routine updatedRoutine = getRoutineById(routineCode);
 
@@ -299,8 +293,8 @@ public class RoutineService {
 //    }
 
     // 🔹 Routine을 RoutineDTO로 변환하는 헬퍼 메서드
-    private RoutineDTO convertToRoutineDTO(Routine routine) {
-        return RoutineDTO.builder()
+    private RoutineResponseDto convertToRoutineDTO(Routine routine) {
+        return RoutineResponseDto.builder()
                 .goalId(routine.getRoutineCode())
                 .title(routine.getRoutineName())
                 .goalType(routine.getRoutineGoalType().getNumber())       // String으로 가정, Enum이면 .name() 추가

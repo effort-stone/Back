@@ -11,5 +11,5 @@ import java.util.Map;
 @AllArgsConstructor
 public class CalendarResponseDTO {
     // 날짜별로 실행되어야 하는 루틴 목록을 전달 (예: "2025-04-29" → [루틴DTO, ...])
-    private Map<LocalDate, List<RoutineDTO>> dailyRoutines;
+    private Map<LocalDate, List<RoutineResponseDto>> dailyRoutines;
 }

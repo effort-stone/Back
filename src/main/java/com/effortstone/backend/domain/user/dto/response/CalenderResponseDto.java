@@ -1,8 +1,8 @@
 package com.effortstone.backend.domain.user.dto.response;
 
 import com.effortstone.backend.domain.diary.dto.response.DiaryDto;
-import com.effortstone.backend.domain.routine.dto.response.RoutineDTO;
-import com.effortstone.backend.domain.todo.dto.response.TodoDto;
+import com.effortstone.backend.domain.routine.dto.response.RoutineResponseDto;
+import com.effortstone.backend.domain.todo.dto.response.TodoResponseDto;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -13,7 +13,7 @@ import java.util.Map;
 @Builder
 public class CalenderResponseDto {
     // 각 날짜에 해당하는 루틴, 할일, 일기 목록
-    private Map<LocalDate, List<RoutineDTO>> routines;
-    private Map<LocalDate, List<TodoDto>> todos;
+    private Map<LocalDate, List<RoutineResponseDto>> routines;
+    private Map<LocalDate, List<TodoResponseDto>> todos;
     private Map<LocalDate, List<DiaryDto>> diarys;
 }

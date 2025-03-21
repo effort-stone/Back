@@ -1,7 +1,7 @@
 package com.effortstone.backend.domain.routine.controller;
 
 import com.effortstone.backend.domain.routine.dto.requset.RoutineProgressRequestDto;
-import com.effortstone.backend.domain.routine.dto.response.RoutineProgressDTO;
+import com.effortstone.backend.domain.routine.dto.response.RoutineProgressResponseDto;
 import com.effortstone.backend.domain.routine.service.RoutineProgressService;
 import com.effortstone.backend.global.common.response.ApiResponse;
 import com.effortstone.backend.global.common.response.SuccessCode;
@@ -17,13 +17,13 @@ public class RoutineProgressController {
 
     // 🔹 루틴상세 생성
     @PostMapping("/")
-    public ResponseEntity<ApiResponse<RoutineProgressDTO>> createRoutineProgress(@RequestBody RoutineProgressRequestDto routine) {
-        RoutineProgressDTO createdRoutine = routineProgressService.recordRoutineProgress(routine);
+    public ResponseEntity<ApiResponse<RoutineProgressResponseDto>> createRoutineProgress(@RequestBody RoutineProgressRequestDto routine) {
+        RoutineProgressResponseDto createdRoutine = routineProgressService.recordRoutineProgress(routine);
         return ResponseEntity.ok(ApiResponse.success(SuccessCode.ROUTINE_CREATE_SUCCESS, createdRoutine));
     }
     // 🔹 루틴상세 수정
     @PutMapping("")
-    public ApiResponse<RoutineProgressDTO> updateRoutineProgress(@RequestBody RoutineProgressRequestDto routine) {
+    public ApiResponse<RoutineProgressResponseDto> updateRoutineProgress(@RequestBody RoutineProgressRequestDto routine) {
         return routineProgressService.recordUpdateRoutineProgress(routine);
     }
 

@@ -2,7 +2,7 @@ package com.effortstone.backend.domain.todo.controller;
 
 
 import com.effortstone.backend.domain.todo.dto.request.TodoRequestDto;
-import com.effortstone.backend.domain.todo.dto.response.TodoDto;
+import com.effortstone.backend.domain.todo.dto.response.TodoResponseDto;
 import com.effortstone.backend.domain.todo.entity.Todo;
 import com.effortstone.backend.domain.todo.service.TodoService;
 import com.effortstone.backend.global.common.response.ApiResponse;
@@ -10,8 +10,6 @@ import com.effortstone.backend.global.common.response.SuccessCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,13 +40,13 @@ public class TodoController {
 
     // 🔹 TODO 생성
     @PostMapping("/")
-    public ApiResponse<TodoDto> createTodo(@RequestBody TodoRequestDto.TodoCreateRequest todo) {
+    public ApiResponse<TodoResponseDto> createTodo(@RequestBody TodoRequestDto.TodoCreateRequest todo) {
         return todoService.createTodo(todo);
     }
 
     // 🔹 TODO 수정
     @PutMapping("/{todoCode}")
-    public ApiResponse<TodoDto> updateTodo(
+    public ApiResponse<TodoResponseDto> updateTodo(
             @PathVariable Long todoCode,
             @RequestBody TodoRequestDto.TodoUpdateRequest todoDetails) {
         return todoService.updateTodo(todoCode, todoDetails);

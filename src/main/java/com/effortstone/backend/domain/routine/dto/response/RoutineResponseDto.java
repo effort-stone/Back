@@ -1,7 +1,5 @@
 package com.effortstone.backend.domain.routine.dto.response;
 
-import com.effortstone.backend.domain.routine.entity.RoutineGoalType;
-import com.effortstone.backend.domain.routine.entity.RoutineTheme;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -10,11 +8,10 @@ import lombok.Data;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
 
 @Data
 @Builder
-public class RoutineDTO {
+public class RoutineResponseDto {
     private Long goalId; // routineCode;
     private String title; //routineName;
     private Integer goalType ;//routineGoalType;
