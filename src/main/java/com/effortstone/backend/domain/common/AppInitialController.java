@@ -1,5 +1,6 @@
 package com.effortstone.backend.domain.common;
 
+import com.effortstone.backend.domain.common.dto.response.UserAggregateResponseDto;
 import com.effortstone.backend.domain.routine.service.RoutineService;
 import com.effortstone.backend.domain.todo.service.TodoService;
 import com.effortstone.backend.domain.user.repository.UserRepository;
@@ -49,5 +50,10 @@ public class AppInitialController {
         // 서버 상태 체크하기로직
         // oK 이면
         return ResponseEntity.ok(appInitialService.getAppInitialInfo(clientVersion));
+    }
+
+    @GetMapping("/linkedAccountData")
+    public ApiResponse<UserAggregateResponseDto> getLinkedAccountData() {
+        return appInitialService.getLinkedAccountData();
     }
 }
