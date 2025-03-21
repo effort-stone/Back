@@ -7,8 +7,6 @@ services:
       - POSTGRES_USER=${SPRING_DATASOURCE_USERNAME}
       - POSTGRES_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
       - POSTGRES_DB=${SPRING_DATASOURCE_NAME}
-    env_file:
-      - .env
     ports:
       - "5432:5432"
     volumes:
@@ -16,8 +14,8 @@ services:
 
   app:
     build: .
-#    depends_on:
-#      - db
+    depends_on:
+      - db
     environment:
       - SPRING_DATASOURCE_HOST=${SPRING_DATASOURCE_HOST}
       - SPRING_DATASOURCE_PORT=${SPRING_DATASOURCE_PORT}
@@ -29,16 +27,14 @@ services:
       - FIREBASE_AUTH_API=${FIREBASE_AUTH_API}
     ports:
       - "8080:8080"
-    env_file:
-      - .env
-    volumes:
-      - ./application.yml:/src/main/resources/application.yml
-      - ./effort-stone-firebase-admin.json:/src/main/resources/effort-stone-firebase-admin.json
+
   swagger:
     image: swaggerapi/swagger-ui
     container_name: swagger
-    env_file:
-      - .env
+    environment:
+      -  URLS_PRIMARY_NAME=my-api
+      - "URLS=[{ url: 'http://localhost:8080/v3/api-docs', name: 'My API' }]"
+      -  SUPPORTED_SUBMIT_METHODS=['get', 'post', 'put', 'delete']
     ports:
       - "8081:8080"
     depends_on:
@@ -46,3 +42,5 @@ services:
 
 volumes:
   postgres-data:
+
+
