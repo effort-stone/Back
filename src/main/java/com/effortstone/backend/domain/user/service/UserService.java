@@ -65,7 +65,7 @@ public class UserService {
         if (userDetails.getTopObj() != null) user.setUserTopObj(userDetails.getTopObj());
         if (userDetails.getPlayer() != null) user.setUserPlayer(userDetails.getPlayer());
         if (userDetails.getBgObj() != null) user.setUserBackGroundObj(userDetails.getBgObj());
-        if (userDetails.getFreeCoin() != null) user.setUserBackGroundObj(userDetails.getFreeCoin());
+        if (userDetails.getFreeCoin() != null) user.setUserFreeCoin(userDetails.getFreeCoin());
         if (userDetails.getAccountLinkType() != null) user.setUserLoginProvider(Provider.fromCode(userDetails.getAccountLinkType()));
         if (userDetails.getLinkDate() != null) user.setUserLinkDate(userDetails.getLinkDate());
         if (userDetails.getGender() != null) user.setUserGender(userDetails.getGender());
