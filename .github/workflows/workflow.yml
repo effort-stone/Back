@@ -30,9 +30,11 @@ jobs:
 
       - name: Create docker-compose.prod.yml from secret
         run: echo "${{ secrets.DOCKER_COMPOSE_PROD }}" > docker-compose.prod.yml
+      - run: cat docker-compose.prod.yml
 
       - name: Create docker-compose.test.yml from secret
         run: echo "${{ secrets.DOCKER_COMPOSE_TEST }}" > docker-compose.test.yml
+      - run: cat docker-compose.test.yml
 
 
 
