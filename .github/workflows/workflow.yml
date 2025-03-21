@@ -103,7 +103,7 @@ jobs:
         if: github.ref == 'refs/heads/develop'
         uses: appleboy/ssh-action@v1.2.0
         with:
-          host: ${{ secrets.TEST_HOST }}         # 테스트 서버 주소 (운영과 다르거나 동일 서버 내 포트 분리)
+          host: ${{ secrets.HOST }}         # 테스트 서버 주소 (운영과 다르거나 동일 서버 내 포트 분리)
           username: ubuntu
           key: ${{ secrets.KEY }}
           port: ${{ secrets.TEST_PORT }}           # 테스트 서버 SSH 포트 (필요시)
@@ -112,7 +112,7 @@ jobs:
             cd /home/ubuntu/
             # 테스트 환경용 .env 파일 생성
             sudo tee .env > /dev/null <<'EOF'
-            ${{ secrets.ENV_VARS_TEST }}
+            ${{ secrets.ENV_VARS }}
             EOF
             sudo chmod 666 /var/run/docker.sock
             # 기존 컨테이너 종료
