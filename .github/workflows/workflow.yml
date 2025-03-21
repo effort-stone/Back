@@ -106,7 +106,7 @@ jobs:
           host: ${{ secrets.HOST }}         # 테스트 서버 주소 (운영과 다르거나 동일 서버 내 포트 분리)
           username: ubuntu
           key: ${{ secrets.KEY }}
-          port: ${{ secrets.TEST_PORT }}           # 테스트 서버 SSH 포트 (필요시)
+          port: ${{ secrets.PORT }}           # 테스트 서버 SSH 포트 (필요시)
           envs: COMPOSE
           script: |
             cd /home/ubuntu/
