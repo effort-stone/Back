@@ -31,11 +31,13 @@ jobs:
 
       - name: Create docker-compose.prod.yml from secret
         run: |
+          touch ./home/ubuntu/docker-compose.prod.yml
           echo "${{ secrets.DOCKER_COMPOSE_PROD }}" > ./home/ubuntu/docker-compose.prod.yml
           cat ./home/ubuntu/docker-compose.prod.yml
 
       - name: Create docker-compose.test.yml from secret
         run: |
+          touch ./home/ubuntu/docker-compose.test.yml
           echo "${{ secrets.DOCKER_COMPOSE_TEST }}" > ./home/ubuntu/docker-compose.test.yml
           cat ./home/ubuntu/docker-compose.test.yml
       
