@@ -22,8 +22,14 @@ public class RoutineProgressController {
         return ResponseEntity.ok(ApiResponse.success(SuccessCode.ROUTINE_CREATE_SUCCESS, createdRoutine));
     }
     // 🔹 루틴상세 수정
-    @PutMapping("/{routine_progress_code}")
-    public ApiResponse<RoutineProgressDTO> updateRoutineProgress(@RequestBody RoutineProgressRequestDto routine, @PathVariable Long routine_progress_code) {
-        return routineProgressService.recordUpdateRoutineProgress(routine, routine_progress_code);
+    @PutMapping("")
+    public ApiResponse<RoutineProgressDTO> updateRoutineProgress(@RequestBody RoutineProgressRequestDto routine) {
+        return routineProgressService.recordUpdateRoutineProgress(routine);
+    }
+
+    // 🔹 루틴상세 삭제
+    @DeleteMapping("/{routine_progress_code}")
+    public ApiResponse<Boolean> deleteRoutineProgress(@PathVariable Long routine_progress_code) {
+        return routineProgressService.deleteRoutineProgress(routine_progress_code);
     }
 }

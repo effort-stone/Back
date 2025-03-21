@@ -10,15 +10,11 @@ import com.effortstone.backend.domain.user.entity.User;
 import com.effortstone.backend.domain.user.repository.UserRepository;
 import com.effortstone.backend.global.common.response.ApiResponse;
 import com.effortstone.backend.global.common.response.SuccessCode;
-import com.effortstone.backend.global.error.ErrorCode;
-import com.effortstone.backend.global.error.exception.CustomException;
 import com.effortstone.backend.global.security.SecurityUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.YearMonth;
 import java.util.*;
 
 @Service
@@ -93,7 +89,7 @@ public class RoutineProgressService {
      * 체크형이면 완료 시각을 기록하고, 시간 기록형이면 소요 시간을 기록합니다.
      */
     @Transactional
-    public ApiResponse<RoutineProgressDTO> recordUpdateRoutineProgress(RoutineProgressRequestDto dto, Long routine_progress_code) {
+    public ApiResponse<RoutineProgressDTO> recordUpdateRoutineProgress(RoutineProgressRequestDto dto) {
         String userCode = SecurityUtil.getCurrentUserCode();
         User user = userRepository.findById(userCode)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
@@ -110,21 +106,21 @@ public class RoutineProgressService {
         return ApiResponse.success(SuccessCode.ROUTINE_PROGRESS_UPDATE_SUCCESS, mapToDTO(optionalProgress));
     }
 
-//    /**
-//     * 루틴 진행 기록 취소
-//     * 해당 날짜의 진행 기록을 삭제하거나, 상태를 초기화합니다.
-//     */
-//    @Transactional
-//    public void cancelRoutineProgress(User user, Routine routine, LocalDate progressDate) {
-//        Optional<RoutineProgress> optionalProgress = routineProgressRepository.findByRoutineUserAndRoutineProgressDateBetween(
-//                user, progressDate, progressDate).stream().filter(p -> p.getRoutine().equals(routine)).findFirst();
-//        if (optionalProgress.isPresent()) {
-//            RoutineProgress progress = optionalProgress.get();
-//            // 상황에 따라 삭제하거나, 상태만 업데이트할 수 있습니다.
-//            // 여기서는 삭제 예시를 들겠습니다.
-//            routineProgressRepository.delete(progress);
-//        }
-//    }
+    /**
+     * 루틴 진행 기록 취소
+     * 해당 날짜의 진행 기록을 삭제하거나, 상태를 초기화합니다.
+     *
+     * @return
+     */
+    @Transactional
+    public ApiResponse<Boolean> deleteRoutineProgress(Long routine_progress_code) {
+        Optional<RoutineProgress> optionalProgress = routineProgressRepository.findById(routine_progress_code);
+        if (optionalProgress.isPresent()) {
+            RoutineProgress progress = optionalProgress.get();
+            routineProgressRepository.delete(progress);
+        }
+        return ApiResponse.success(SuccessCode.ROUTINE_PROGRESS_DELETE_SUCCESS,Boolean.TRUE);
+    }
 
     /**
      * 엔티티를 DTO로 변환

@@ -92,6 +92,7 @@ public enum SuccessCode {
 
     // ROUTINE_PROGRESS
     ROUTINE_PROGRESS_UPDATE_SUCCESS(OK,"루틴 상세 수정 성공" ), 
+    ROUTINE_PROGRESS_DELETE_SUCCESS(OK,"루틴 상세 삭제 성공" ),
     ITEM_GET_SUCCESS(OK, "아이템획득성공" );
 
 
