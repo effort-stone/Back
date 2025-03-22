@@ -36,9 +36,8 @@ public class RoutineController {
 
     // 🔹 내 루틴 목록 조회 (Firebase 토큰 기반)
     @GetMapping("/my")
-    public ApiResponse<List<Routine>> getUserRoutines() {
-        List<Routine> userRoutines = routineService.getUserRoutines();
-        return ApiResponse.success(SuccessCode.ROUTINE_USER_LIST_FETCH_SUCCESS, userRoutines);
+    public ApiResponse<List<RoutineResponseDto>> getUserRoutines() {
+        return routineService.getUserRoutines();
     }
 
     // 🔹 루틴 생성 (Firebase 토큰 기반)

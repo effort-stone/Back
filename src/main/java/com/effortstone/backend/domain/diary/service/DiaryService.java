@@ -39,6 +39,17 @@ public class DiaryService {
                 .orElseThrow(() -> new RuntimeException("Diary not found"));
     }
 
+    // 🔹 내 다이어리 전체 조회
+    public ApiResponse<List<DiaryResponseDto>> getMyAllDiaries() {
+        String userCode = SecurityUtil.getCurrentUserCode(); // 현재 로그인한 사용자의 userCode 가져오기
+        // 연관된 각 정보 조회 후 DTO 변환
+        List<DiaryResponseDto> diaryDtos = diaryRepository.findByUser_UserCode(userCode)
+                .stream()
+                .map(DiaryResponseDto::fromEntity)
+                .toList();
+        return ApiResponse.success(SuccessCode.DIARY_SEARCH_ALL_MY, diaryDtos);
+    }
+
     // 🔹 Diary 생성 (Builder 적용)
     public ApiResponse<DiaryResponseDto> createDiary(DiaryRequestDto diary) {
         String userCode = SecurityUtil.getCurrentUserCode(); // 현재 로그인한 사용자의 userCode 가져오기
@@ -49,7 +60,7 @@ public class DiaryService {
                 .diaryContent(diary.getContent()) // 요청 DTO에서 내용 설정
                 .build();
         diaryRepository.save(newDiary); // DB에 저장 후 생성된 Diary 반환
-        return ApiResponse.success(SuccessCode.DIARY_CREATE_OK, mapToDTO(newDiary));
+        return ApiResponse.success(SuccessCode.DIARY_CREATE_OK, DiaryResponseDto.fromEntity(newDiary));
     }
 
     // 🔹 Diary 수정 (Setter 적용)
@@ -57,7 +68,7 @@ public class DiaryService {
         Diary updatedDiary = getDiaryById(diaryCode); // 수정할 Diary 조회
         updatedDiary.setDiaryContent(diaryDetails.getContent()); // 새로운 내용으로 업데이트
         diaryRepository.save(updatedDiary); // 변경된 Diary를 DB에 저장
-        return ApiResponse.success(SuccessCode.DIARY_UPDATE_OK, mapToDTO(updatedDiary));
+        return ApiResponse.success(SuccessCode.DIARY_UPDATE_OK, DiaryResponseDto.fromEntity(updatedDiary));
     }
 
     // 🔹 Diary 삭제
@@ -94,13 +105,5 @@ public class DiaryService {
 //                .content(diary.getDiaryContent())
 //                .date(diary.getDiaryDate())
 //                .build();
-
-    private DiaryResponseDto mapToDTO(Diary diary) {
-        return DiaryResponseDto.builder()
-                .id(diary.getDiaryCode())
-                .content(diary.getDiaryContent())
-                .dateTime(LocalDate.from(diary.getCreatedAt()))
-                .build();
-    }
 
 }

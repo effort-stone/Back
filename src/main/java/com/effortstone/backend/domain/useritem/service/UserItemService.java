@@ -39,12 +39,12 @@ public class UserItemService {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new EntityNotFoundException("아이템을 찾을 수 없습니다."));
 
-        UserItem stoneitem = UserItem.builder()
+        UserItem userItem = UserItem.builder()
                 .user(user)
                 .item(item)
                 .build();
 
-        return userItemRepository.save(stoneitem);
+        return userItemRepository.save(userItem);
     }
 
 
@@ -55,9 +55,7 @@ public class UserItemService {
         User user = userRepository.findById(SecurityUtil.getCurrentUserCode()).orElseThrow(()->new CustomException(ErrorCode.USER_NOT_FOUND));
         return userItemRepository.findByUser(user)
                 .stream()
-                .map(item -> new UserItemResponseDto(
-                        item.getItem().getItemCode()      // 아이템 코드
-                ))
+                .map(UserItemResponseDto::fromEntity)
                 .collect(Collectors.toList());
     }
 
