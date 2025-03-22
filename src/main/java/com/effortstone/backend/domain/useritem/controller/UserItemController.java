@@ -34,12 +34,10 @@ public class UserItemController {
     /**
      * 사용자가 보유한 아이템 목록을 조회하는 API
      */
-    @GetMapping("/{stoneId}/items")
-    public ResponseEntity<ApiResponse<List<UserItemResponseDto>>> getOwnedItems(
-            @PathVariable Long stoneId) {
+    @GetMapping("/my")
+    public ApiResponse<List<UserItemResponseDto>> getOwnedItems() {
         List<UserItemResponseDto> response = userItemService.getOwnedItems();
-        return ResponseEntity.ok(
-                ApiResponse.success(SuccessCode.STONE_WEARABLE_ITEM_OWNED_FETCH_SUCCESS, response));
+        return ApiResponse.success(SuccessCode.USER_ITEM_SEARCH_SUCCESS, response);
     }
 
 
