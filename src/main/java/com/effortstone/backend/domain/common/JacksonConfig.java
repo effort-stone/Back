@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,7 +39,7 @@ public class JacksonConfig {
             module.addSerializer(Boolean.class, new BooleanToIntSerializer());
             module.addSerializer(boolean.class, new BooleanToIntSerializer());
             // 생성한 모듈을 ObjectMapper에 등록합니다.
-            builder.modules(module);
+            builder.modules(module,new JavaTimeModule());
         };
     }
 }
