@@ -78,7 +78,8 @@ jobs:
             # 7-4. Docker 소켓 권한 설정
             sudo chmod 666 /var/run/docker.sock
             
-            # nginx 설정 
+            # nginx 설정
+            sudo mkdir -p /etc/nginx
             sudo touch /etc/nginx/maintenance.enable
 
             # 7-5. 기존 컨테이너 종료 (주의: 운영 환경에서 신중히!)
@@ -92,4 +93,4 @@ jobs:
             sudo docker image prune -f
             
             # 유지보수 모드 해제
-            sudo rm /etc/nginx/maintenance.enable
+            sudo rm -f /etc/nginx/maintenance.enable
