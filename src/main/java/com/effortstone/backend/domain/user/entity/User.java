@@ -2,12 +2,14 @@ package com.effortstone.backend.domain.user.entity;
 
 
 import com.effortstone.backend.domain.common.BaseEntity;
+import com.effortstone.backend.domain.routine.entity.Routine;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 
 @Entity(name = "users")
@@ -111,5 +113,9 @@ public class User extends BaseEntity {
     @Builder.Default
     @Column(name = "user_role_type")
     private RoleType roleType = RoleType.USER;
+
+    // 유저 삭제시 관련 루틴도 삭제
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Routine> routines;
 
 }

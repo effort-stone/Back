@@ -82,4 +82,9 @@ public class Routine extends BaseEntity {
     //루틴 알람시간
     @Column(name = "routine_alert_time")
     private LocalTime routineAlertTime;
+
+
+    // 루틴 삭제시 관련 프로세스도 삭제되게 함.
+    @OneToMany(mappedBy = "routine", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<RoutineProgress> routineProgresses;
 }
