@@ -47,7 +47,8 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             # 유지보수 모드 활성화
-            sudo touch /etc/nginx/maintenance.enable
+            # Nginx 컨테이너 내부에서 유지보수 모드 파일 생성
+            sudo docker exec nginx-proxy touch /etc/nginx/maintenance.enable
 
       # 3. gradlew 파일 실행 권한 부여
       - name: Grant execute permission for Gradle wrapper
@@ -109,4 +110,5 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             # 유지보수 모드 해제
-            sudo rm /etc/nginx/maintenance.enable
+            # Nginx 컨테이너 내부에서 유지보수 모드 파일 제거
+            sudo docker exec nginx-proxy rm /etc/nginx/maintenance.enable
