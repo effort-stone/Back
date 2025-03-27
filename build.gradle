@@ -57,6 +57,9 @@ dependencies {
     implementation 'jakarta.annotation:jakarta.annotation-api:2.1.1'
 
 
+    // 구글 스토어 결제 검증
+    implementation 'com.google.apis:google-api-services-androidpublisher:v3-rev20230313-2.0.0'
+
 
 
 }
