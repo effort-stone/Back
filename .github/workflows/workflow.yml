@@ -37,6 +37,17 @@ jobs:
           dir: 'src/main/resources/'
 
 
+      # nginx 배포 중을 확인하기 위함.
+      - name: Activate Maintenance Mode
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ubuntu
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            # 유지보수 모드 활성화
+            sudo touch /etc/nginx/maintenance.enable
 
       # 3. gradlew 파일 실행 권한 부여
       - name: Grant execute permission for Gradle wrapper
@@ -70,6 +81,7 @@ jobs:
           envs: COMPOSE
           script: |
             cd /home/ubuntu/
+            
 
             # 7-3. .env 파일 생성
             sudo tee .env > /dev/null <<'EOF'
@@ -84,7 +96,17 @@ jobs:
 
             # 7-6. 최신 이미지 Pull 및 컨테이너 기동
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/my-web-image
-            sudo docker-compose -f docker-compose.yml --env-file ./.env up -d
+            sudo docker-compose -f docker-compose-AWS.yml --env-file ./.env up -d
 
             # 7-7. 사용하지 않는 Docker 이미지 정리
             sudo docker image prune -f
+      - name: Deactivate Maintenance Mode
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ubuntu
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            # 유지보수 모드 해제
+            sudo rm /etc/nginx/maintenance.enable
