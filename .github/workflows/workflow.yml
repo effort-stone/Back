@@ -36,20 +36,6 @@ jobs:
           json: ${{ secrets.FIREBASE_ADMIN_JSON }}
           dir: 'src/main/resources/'
 
-
-      # nginx 배포 중을 확인하기 위함.
-      - name: Activate Maintenance Mode
-        uses: appleboy/ssh-action@v1.2.0
-        with:
-          host: ${{ secrets.HOST }}
-          username: ubuntu
-          key: ${{ secrets.KEY }}
-          port: ${{ secrets.PORT }}
-          script: |
-            # 유지보수 모드 활성화
-            # Nginx 컨테이너 내부에서 유지보수 모드 파일 생성
-            touch ./nginx/maintenance.enable
-
       # 3. gradlew 파일 실행 권한 부여
       - name: Grant execute permission for Gradle wrapper
         run: chmod +x gradlew
@@ -91,6 +77,9 @@ jobs:
 
             # 7-4. Docker 소켓 권한 설정
             sudo chmod 666 /var/run/docker.sock
+            
+            # nginx 설정 
+            sudo touch /etc/nginx/maintenance.enable
 
             # 7-5. 기존 컨테이너 종료 (주의: 운영 환경에서 신중히!)
             sudo docker rm -f $(sudo docker ps -qa) || true
@@ -101,14 +90,6 @@ jobs:
 
             # 7-7. 사용하지 않는 Docker 이미지 정리
             sudo docker image prune -f
-      - name: Deactivate Maintenance Mode
-        uses: appleboy/ssh-action@v1.2.0
-        with:
-          host: ${{ secrets.HOST }}
-          username: ubuntu
-          key: ${{ secrets.KEY }}
-          port: ${{ secrets.PORT }}
-          script: |
+            
             # 유지보수 모드 해제
-            # Nginx 컨테이너 내부에서 유지보수 모드 파일 제거
-            rm ./nginx/maintenance.enable
+            sudo rm /etc/nginx/maintenance.enable
