@@ -74,9 +74,9 @@ public class UserController {
 
 
     // 🔹 사용자 삭제
-    @DeleteMapping("/{userCode}")
-    public ApiResponse<Void> deleteUser(@PathVariable String userCode) {
-        return userService.deleteUser(userCode);
+    @DeleteMapping("/")
+    public ApiResponse<Void> deleteUser() {
+        return userService.deleteUser();
     }
 
     // 🔹 사용자 월별 캘린더 조회

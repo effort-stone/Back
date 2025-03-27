@@ -85,7 +85,8 @@ public class UserService {
     }
 
     // 🔹 사용자 삭제
-    public ApiResponse<Void> deleteUser(String userCode) {
+    public ApiResponse<Void> deleteUser() {
+        String userCode = SecurityUtil.getCurrentUserCode();
         User user = getUserById(userCode);
         userRepository.delete(user);
         return ApiResponse.success(SuccessCode.USER_DELETE_SUCCESS, null);
