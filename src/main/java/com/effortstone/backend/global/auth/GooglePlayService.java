@@ -22,7 +22,8 @@ public class GooglePlayService {
     private static final String APPLICATION_NAME = "effort-stone";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     // 실제 서비스 계정 키 파일의 경로로 수정하세요.
-    private static final String SERVICE_ACCOUNT_KEY_FILE = "src/main/resources/effort-stone-service-account.json";
+    //private static final String SERVICE_ACCOUNT_KEY_FILE = "src/main/resources/effort-stone-service-account.json";
+    private static final String SERVICE_ACCOUNT_KEY_FILE = "effort-stone-service-account.json";
 
     public AndroidPublisher getAndroidPublisher() throws GeneralSecurityException, IOException {
         GoogleCredentials credentials = ServiceAccountCredentials

@@ -60,6 +60,11 @@ dependencies {
     // 구글 스토어 결제 검증
     implementation 'com.google.apis:google-api-services-androidpublisher:v3-rev20230313-2.0.0'
 
+    // Google Auth Library (OAuth2 HTTP)
+    implementation 'com.google.auth:google-auth-library-oauth2-http:1.14.0'
+
+    // Google HTTP Client (Jackson2)
+    implementation 'com.google.http-client:google-http-client-jackson2:1.41.5'
 
 
 }

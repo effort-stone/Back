@@ -36,7 +36,7 @@ jobs:
           json: ${{ secrets.FIREBASE_ADMIN_JSON }}
           dir: 'src/main/resources/'
 
-      - name: Create Firebase Admin JSON
+      - name: Create GOOGLE SERVICE ACCOUNT JSON
         id: create-json_account
         uses: jsdaniell/create-json@1.1.2
         with:
