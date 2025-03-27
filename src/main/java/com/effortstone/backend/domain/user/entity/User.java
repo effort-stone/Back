@@ -102,6 +102,10 @@ public class User extends BaseEntity {
     @Builder.Default
     private Boolean userIsAlert = false;
 
+    // 유저 일일 퀘스트 수
+    @Column(name="user_daily_count")
+    private Integer userDailyCount;
+
     @Enumerated(EnumType.ORDINAL)
     @Builder.Default
     @Column(name = "user_role_type")
