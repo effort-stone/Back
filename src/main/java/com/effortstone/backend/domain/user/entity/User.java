@@ -104,7 +104,8 @@ public class User extends BaseEntity {
 
     // 유저 일일 퀘스트 수
     @Column(name="user_daily_count")
-    private Integer userDailyCount;
+    @ColumnDefault("0")
+    private int userDailyCount;
 
     @Enumerated(EnumType.ORDINAL)
     @Builder.Default
