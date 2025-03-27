@@ -44,7 +44,7 @@ out/
 *.yml
 .env
 effort-stone-firebase-admin.json
-
+effort-stone-service-account.json
 
 # 로그 파일
 logs/
