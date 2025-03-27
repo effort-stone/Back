@@ -37,7 +37,7 @@ jobs:
           dir: 'src/main/resources/'
 
       - name: Create Firebase Admin JSON
-        id: create-json
+        id: create-json_account
         uses: jsdaniell/create-json@1.1.2
         with:
           name: "effort-stone-service-account.json"
