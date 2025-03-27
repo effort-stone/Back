@@ -75,6 +75,7 @@ public class UserService {
         if (userDetails.getAlram() != null) user.setUserIsAlert(userDetails.getAlram());
         if (userDetails.getSubscriptionEndDate() != null) user.setUserSubEnddate(userDetails.getSubscriptionEndDate());
         if (userDetails.getIsFreeTrialUsed() != null) user.setUserFreeSub(userDetails.getIsFreeTrialUsed());
+        if (userDetails.getDailyCount() != null) user.setUserDailyCount(userDetails.getDailyCount());
 
         // status는 User 엔티티에 없으므로 제외하거나 추가 필드 필요
 
@@ -84,8 +85,7 @@ public class UserService {
     }
 
     // 🔹 사용자 삭제
-    public ApiResponse<Void> deleteUser() {
-        String userCode = SecurityUtil.getCurrentUserCode();
+    public ApiResponse<Void> deleteUser(String userCode) {
         User user = getUserById(userCode);
         userRepository.delete(user);
         return ApiResponse.success(SuccessCode.USER_DELETE_SUCCESS, null);

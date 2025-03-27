@@ -41,10 +41,14 @@ public class RoutineService {
                 .orElseThrow(() -> new RuntimeException("Routine not found"));
     }
 
-    // 🔹 특정 사용자의 루틴 조회
-    public List<Routine> getUserRoutines() {
+    // 🔹 특정 사용자의 모든 루틴 조회
+    public ApiResponse<List<RoutineResponseDto>> getUserRoutines() {
         String userCode = SecurityUtil.getCurrentUserCode();
-        return routineRepository.findByUser_UserCode(userCode);
+        List<RoutineResponseDto> routineDtos = routineRepository.findByUser_UserCode(userCode)
+                .stream()
+                .map(RoutineResponseDto::fromEntity)
+                .toList();
+        return ApiResponse.success(SuccessCode.ROUTINE_LIST_FETCH_SUCCESS,routineDtos);
     }
 
 
@@ -71,7 +75,7 @@ public class RoutineService {
 
         Routine savedRoutine = routineRepository.save(newRoutine);
         // Routine -> RoutineDTO 변환
-        return ApiResponse.success(SuccessCode.ROUTINE_CREATE_SUCCESS,convertToRoutineDTO(savedRoutine));
+        return ApiResponse.success(SuccessCode.ROUTINE_CREATE_SUCCESS,RoutineResponseDto.fromEntity(savedRoutine));
     }
 
     // 🔹 루틴 수정 (Builder 적용)
@@ -100,7 +104,7 @@ public class RoutineService {
 
         Routine savedRoutine = routineRepository.save(updatedRoutine);
         // Routine -> RoutineDTO 변환
-        return ApiResponse.success(SuccessCode.ROUTINE_UPDATE_SUCCESS,convertToRoutineDTO(savedRoutine));
+        return ApiResponse.success(SuccessCode.ROUTINE_UPDATE_SUCCESS,RoutineResponseDto.fromEntity(savedRoutine));
     }
 
 

@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -41,7 +42,6 @@ public class AppInitialService {
     private final TodoRepository todoRepository;
     private final DiaryRepository diaryRepository;
     private final RoutineProgressRepository routineProgresses;
-    private final DtoMapper dtoMapper;
 
     // 현재 앱 버전 상수 (프로퍼티로 관리할 수도 있음)
     private static final String CURRENT_APP_VERSION = "1.0.0";
@@ -117,27 +117,27 @@ public class AppInitialService {
         // 연관된 각 정보 조회 후 DTO 변환
         List<DiaryResponseDto> diaryDtos = diaryRepository.findByUser_UserCode(userCode)
                 .stream()
-                .map(dtoMapper::toDiaryResponseDto)
+                .map(DiaryResponseDto::fromEntity)
                 .toList();
 
         List<RoutineResponseDto> routineDtos = routineRepository.findByUser_UserCode(userCode)
                 .stream()
-                .map(dtoMapper::toRoutineResponseDto)
+                .map(RoutineResponseDto::fromEntity)
                 .toList();
 
         List<TodoResponseDto> todoDtos = todoRepository.findByUser_UserCode(userCode)
                 .stream()
-                .map(dtoMapper::toTodoResponseDto)
+                .map(TodoResponseDto::fromEntity)
                 .toList();
 
         List<RoutineProgressResponseDto> routineProgressesDtos = routineProgresses.findByUserCodeWithRoutine(userCode)
                 .stream()
-                .map(dtoMapper::toRoutineProgressResponseDto)
+                .map(RoutineProgressResponseDto::fromEntity)
                 .toList();
 
         List<UserItemResponseDto> userItemDtos = userItemRepository.findByUser_UserCode(userCode)
                 .stream()
-                .map(dtoMapper::toUserItemResponseDto)
+                .map(UserItemResponseDto::fromEntity)
                 .toList();
 
         // DTO에 할당

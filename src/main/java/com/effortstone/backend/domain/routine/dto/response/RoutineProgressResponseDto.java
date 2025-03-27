@@ -1,5 +1,8 @@
 package com.effortstone.backend.domain.routine.dto.response;
 
+import com.effortstone.backend.domain.routine.entity.RoutineProgress;
+import com.effortstone.backend.domain.useritem.dto.response.UserItemResponseDto;
+import com.effortstone.backend.domain.useritem.entity.UserItem;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -18,4 +21,14 @@ public class RoutineProgressResponseDto {
     private LocalDateTime recordTime; //completionTime;
     private Integer currentEffortTime;  // routineProgressRecordedAmount
     //private boolean status; // status
+
+    public static RoutineProgressResponseDto fromEntity(RoutineProgress routineProgress) {
+        return RoutineProgressResponseDto.builder()
+                .goalId(routineProgress.getRoutine().getRoutineCode())
+                .recordId(routineProgress.getRoutineProgressCode())
+                .isAchieved(routineProgress.getRoutineProgressCompleted())
+                .recordTime(routineProgress.getRoutineProgressCompletionTime())
+                .currentEffortTime(routineProgress.getRoutineProgressRecordedAmount())
+                .build();
+    }
 }

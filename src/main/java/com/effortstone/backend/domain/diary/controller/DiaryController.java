@@ -37,10 +37,15 @@ public class DiaryController {
         // Optional을 사용해 Diary가 존재하면 성공 응답, 없으면 404 반환
         return ResponseEntity.ok(ApiResponse.success(SuccessCode.DIARY_SEARCH_CODE, diary));
     }
-
+    // 🔹 나의 모든 Diary 조회
+    @GetMapping("/my")
+    public ApiResponse<List<DiaryResponseDto>> getMyAllDiaries() {
+        // 요청 본문의 DiaryRequestDto를 사용해 새로운 Diary 생성 후 성공 응답 반환
+        return diaryService.getMyAllDiaries();
+    }
 
     // 🔹 Diary 생성
-    @PostMapping
+    @PostMapping("/")
     public ApiResponse<DiaryResponseDto> createDiary(@RequestBody DiaryRequestDto diary) {
         // 요청 본문의 DiaryRequestDto를 사용해 새로운 Diary 생성 후 성공 응답 반환
         return diaryService.createDiary(diary);

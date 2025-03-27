@@ -1,5 +1,8 @@
 package com.effortstone.backend.domain.todo.dto.response;
 
+import com.effortstone.backend.domain.routine.dto.response.RoutineProgressResponseDto;
+import com.effortstone.backend.domain.routine.entity.RoutineProgress;
+import com.effortstone.backend.domain.todo.entity.Todo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -23,4 +26,17 @@ public class TodoResponseDto {
 //    @Schema(example = "2025-05-05 15:33:22.777", type = "string")
 //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private LocalDate completedDate;
+
+
+    public static TodoResponseDto fromEntity(Todo todo) {
+        return TodoResponseDto.builder()
+                .id(todo.getTodoCode())
+                .title(todo.getTodoName())
+                .alram(todo.getTodoAlert())
+                .dateTime(todo.getTodoDate())
+                .memo(todo.getTodoDetail())
+                .completedDate(todo.getTodoCompletedDate())
+                .build();
+    }
+
 }

@@ -42,6 +42,7 @@ public enum SuccessCode {
     DIARY_SEARCH_CODE(OK,"특정 다이어리 조회 성공" ),
     DIARY_CREATE_OK(OK, "다이어리 생성 성공" ),
     DIARY_UPDATE_OK(OK,"다이어리 업데이트 성공" ),
+    DIARY_SEARCH_ALL_MY(OK,"내 모든 다이어리 조회 성공" ),
 
     // TODO
     TODO_LIST_FETCH_SUCCESS(OK, "투두 목록 조회 성공"),
@@ -59,19 +60,6 @@ public enum SuccessCode {
     ROUTINE_DELETE_SUCCESS(OK, "루틴 삭제 성공"),
     ROUTINE_CALENDAR_FETCH_SUCCESS(OK, "월간 캘린더 조회 성공"),
 
-    // STONE
-    STONE_CREATE_SUCCESS(OK, "돌 생성 성공"),
-    STONE_FETCH_SUCCESS(OK, "돌 조회 성공"),
-    STONE_UPDATE_SUCCESS(OK, "돌 수정 성공"),
-    STONE_DELETE_SUCCESS(OK, "돌 삭제 성공"),
-
-    // STONE_WEARABLE_ITEM
-    STONE_WEARABLE_ITEM_ACQUIRE_SUCCESS(OK,"아이템 획득에 성공했습니다."),
-    STONE_WEARABLE_ITEM_EQUIP_SUCCESS(OK,"아이템 장착에 성공했습니다."),
-    STONE_WEARABLE_ITEM_UNEQUIP_SUCCESS(OK,"아이템 장착 해제에 성공했습니다."),
-    STONE_WEARABLE_ITEM_OWNED_FETCH_SUCCESS(OK,"보유한 아이템 조회에 성공했습니다."),
-    STONE_WEARABLE_ITEM_EQUIPPED_FETCH_SUCCESS(OK,"장착한 아이템 조회에 성공했습니다."),
-    STONE_WEARABLE_ITEM_DELETE_SUCCESS(OK,"아이템 삭제에 성공했습니다."),
 
     // ITEM
     ITEM_CREATE_SUCCESS(OK,"Item created successfully."),
@@ -94,7 +82,8 @@ public enum SuccessCode {
     ROUTINE_PROGRESS_UPDATE_SUCCESS(OK,"루틴 상세 수정 성공" ), 
     ROUTINE_PROGRESS_DELETE_SUCCESS(OK,"루틴 상세 삭제 성공" ),
     ITEM_GET_SUCCESS(OK, "아이템획득성공" ),
-    ACCOUNT_LINK_DATA_SUCCESS(OK,"계정 연동 및 데이터 조회에 성공했습니다." );
+    ACCOUNT_LINK_DATA_SUCCESS(OK,"계정 연동 및 데이터 조회에 성공했습니다." ), 
+    USER_ITEM_SEARCH_SUCCESS(OK,"유저 아이템 조회 성공" );
 
 
 

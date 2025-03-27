@@ -67,6 +67,7 @@ public class UserRequestDto {
         @Schema(example = "2025-05-05 15:33:22.777", type = "string")
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
         private LocalDateTime subscriptionEndDate; // SQLite: subscriptionEndDate - User: userSubEnddate
+        private Integer dailyCount; //// SQLite: dailyCount - User: userDailyCount
         private Boolean isFreeTrialUsed;    // SQLite: isFreeTrialUsed - User: userFreeSub
     }
 }

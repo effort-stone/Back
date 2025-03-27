@@ -1,6 +1,5 @@
 package com.effortstone.backend.domain.user.dto.response;
 
-import com.effortstone.backend.domain.user.entity.Provider;
 import com.effortstone.backend.domain.user.entity.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -40,6 +39,7 @@ public class UserResponseDto {
     @Schema(example = "2025-05-05 15:33:22.777", type = "string")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private LocalDateTime subscriptionEndDate; // SQLite: subscriptionEndDate - User: userSubEnddate
+    private int dailyCount;  // SQLite: dailyCount - User: userDailyCount
     private Boolean isFreeTrialUsed;    // SQLite: isFreeTrialUsed - User: userFreeSub
 
 
@@ -65,6 +65,7 @@ public class UserResponseDto {
                 .player(user.getUserPlayer())
                 .bgObj(user.getUserBackGroundObj())
                 .freeCoin(user.getUserFreeCoin())
+                .dailyCount(user.getUserDailyCount())
                 .build();
     }
 }
