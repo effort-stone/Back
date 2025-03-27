@@ -36,7 +36,7 @@ public class User extends BaseEntity {
     private String userPhone;
 
     @Column(name = "user_gender")
-    private String userGender;
+    private Integer userGender;
 
 //    @Column(name = "user_email")
 //    private String userEmail;

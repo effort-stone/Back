@@ -32,7 +32,7 @@ public class UserResponseDto {
     @Schema(example = "2025-05-05 15:33:22.777", type = "string")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private LocalDateTime linkDate;     // SQLite: linkDate - User: userLinkDate
-    private String gender;              // SQLite: gender - User: userGender
+    private Integer gender;              // SQLite: gender - User: userGender
     private String birthDay;            // SQLite: birthDay - User: userBirth
     private String number;              // SQLite: number - User: userPhone
     private Boolean alram;              // SQLite: alram - User: userIsAlert
