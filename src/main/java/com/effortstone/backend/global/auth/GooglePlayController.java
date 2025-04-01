@@ -37,7 +37,7 @@ public class GooglePlayController {
             return ResponseEntity.ok(purchase);
         } catch (Exception e) {
             // 실제 운영 환경에서는 로그를 남기고 더 상세한 예외 처리를 할 수 있습니다.
-            System.out.println("💢 삐익 에러입니다. ");
+            System.out.println("💢 삐익 에러입니다. " +  e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error verifying purchase: " + e.getMessage());
         }
