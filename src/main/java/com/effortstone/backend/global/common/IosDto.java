@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class IosDto {
-    String purchaseToken;
+    Boolean purchaseToken;
     String isSandboxUser;
 }
