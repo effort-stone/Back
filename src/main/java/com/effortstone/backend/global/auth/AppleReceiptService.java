@@ -36,7 +36,7 @@ public class AppleReceiptService {
     public  Map<String, Object> verifyReceipt(IosDto iosDto) {
         // 요청 페이로드 준비: 영수증 데이터, shared secret, (옵션) 오래된 트랜잭션 제외 여부
         Map<String, Object> payload = new HashMap<>();
-        payload.put("receipt-data", iosDto.getReceiptData());
+        payload.put("receipt-data", iosDto.getPurchaseToken());
         payload.put("password", appleSharedSecret);
         payload.put("exclude-old-transactions", true);
 

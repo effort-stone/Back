@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class IosDto {
-    String receiptData;
-    String password;
-    Boolean excludeOldTransactions;
+    String purchaseToken;
+    String isSandboxUser;
 }
