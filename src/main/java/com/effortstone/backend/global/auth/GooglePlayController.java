@@ -48,7 +48,7 @@ public class GooglePlayController {
 
     // 간단테스트용
     @PostMapping("/verifyPurchase")
-    public ResponseEntity<?> verifyPurchase(@RequestParam Map<String, String> requestParams) {
+    public ResponseEntity<?> verifyPurchase(@RequestBody  Map<String, String> requestParams) {
         System.out.println("🔹 #####requestParams : " + requestParams.toString());
         try {
             // 요청 파라미터 Map에서 직접 값 조회
