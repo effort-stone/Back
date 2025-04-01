@@ -7,8 +7,8 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Entity(name = "payment")
-@Table(name = "payment")
+@Entity(name = "subscriptionpurchases")
+@Table(name = "subscriptionpurchases")
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder

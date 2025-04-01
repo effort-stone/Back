@@ -1,6 +1,7 @@
 package com.effortstone.backend.global.auth;
 
 import com.effortstone.backend.global.common.IosDto;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -23,12 +24,8 @@ public class AppleReceiptService {
     @Value(value = "${apple.shared.secret}")
     private String appleSharedSecret;
 
-    private final RestTemplate restTemplate;
+    private final RestTemplate restTemplate = new RestTemplate(); // ✅ 바로 사용 OK
 
-    public AppleReceiptService() {
-        // 필요한 경우 타임아웃 등의 설정을 추가할 수 있음
-        this.restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
-    }
 
     /**
      * iOS 영수증 검증 메서드
