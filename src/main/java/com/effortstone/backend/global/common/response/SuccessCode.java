@@ -83,7 +83,12 @@ public enum SuccessCode {
     ROUTINE_PROGRESS_DELETE_SUCCESS(OK,"루틴 상세 삭제 성공" ),
     ITEM_GET_SUCCESS(OK, "아이템획득성공" ),
     ACCOUNT_LINK_DATA_SUCCESS(OK,"계정 연동 및 데이터 조회에 성공했습니다." ), 
-    USER_ITEM_SEARCH_SUCCESS(OK,"유저 아이템 조회 성공" );
+    USER_ITEM_SEARCH_SUCCESS(OK,"유저 아이템 조회 성공" ),
+    NOTICE_CREATE_SUCCESS(OK,"공지사항 등록 성공"),
+    NOTICE_GET_ALL_SUCCESS(OK,"공지사항 전체조회 성공"),
+    NOTICE_GET_SUCCESS(OK,"공지사항 조회 성공"),
+    NOTICE_UPDATE_SUCCESS(OK,"공지사항 수정 성공" ),
+    NOTICE_DELETE_SUCCESS(OK,"공지사항 삭제 성공" );
 
 
 
