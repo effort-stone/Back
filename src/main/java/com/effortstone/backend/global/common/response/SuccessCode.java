@@ -88,7 +88,8 @@ public enum SuccessCode {
     NOTICE_GET_ALL_SUCCESS(OK,"공지사항 전체조회 성공"),
     NOTICE_GET_SUCCESS(OK,"공지사항 조회 성공"),
     NOTICE_UPDATE_SUCCESS(OK,"공지사항 수정 성공" ),
-    NOTICE_DELETE_SUCCESS(OK,"공지사항 삭제 성공" );
+    NOTICE_DELETE_SUCCESS(OK,"공지사항 삭제 성공" ), 
+    SUBSCRIPTION_PURCHASE_SUCCESS(OK,"구독 상품 결제 성공" );
 
 
 
