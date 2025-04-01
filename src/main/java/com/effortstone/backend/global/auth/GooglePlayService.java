@@ -61,6 +61,7 @@ public class GooglePlayService {
             throws IOException, GeneralSecurityException {
         String packageName = "com.goodday.effortStone";
         AndroidPublisher publisher = getAndroidPublisher();
+        System.out.println("$$$$$$$$$$$$$"+googleDto.toString());
         AndroidPublisher.Purchases.Products.Get request = publisher.purchases().products().get(packageName, googleDto.getProductId(),googleDto.getPurchaseToken());
         return request.execute();
     }
