@@ -1,6 +1,8 @@
 package com.effortstone.backend.global.auth;
 
+import com.effortstone.backend.domain.subscriptionpurchase.dto.Response.SubscriptionResponseDto;
 import com.effortstone.backend.global.common.GoogleDto;
+import com.effortstone.backend.global.common.response.ApiResponse;
 import com.google.api.services.androidpublisher.model.ProductPurchase;
 import com.google.api.services.androidpublisher.model.SubscriptionPurchase;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/v1/android")
 @RequiredArgsConstructor
 @Slf4j
 public class GooglePlayController {
@@ -35,7 +37,7 @@ public class GooglePlayController {
     public ResponseEntity<?> verifyPurchase(
             @RequestBody GoogleDto googleDto) {
         try {
-            SubscriptionPurchase purchase = googlePlayService.getProductPurchase(googleDto);
+            ApiResponse<SubscriptionResponseDto> purchase= googlePlayService.getProductPurchase(googleDto);
             System.out.println("🔹 purchase : " + purchase.toString());
             return ResponseEntity.ok(purchase);
         } catch (Exception e) {

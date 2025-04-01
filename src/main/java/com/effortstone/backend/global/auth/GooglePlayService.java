@@ -1,6 +1,11 @@
 package com.effortstone.backend.global.auth;
 
+import com.effortstone.backend.domain.subscriptionpurchase.dto.Response.SubscriptionResponseDto;
+import com.effortstone.backend.domain.subscriptionpurchase.entity.SubscriptionPurchases;
+import com.effortstone.backend.domain.subscriptionpurchase.repository.SubscriptionPurchasesRepository;
 import com.effortstone.backend.global.common.GoogleDto;
+import com.effortstone.backend.global.common.response.ApiResponse;
+import com.effortstone.backend.global.common.response.SuccessCode;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -10,16 +15,23 @@ import com.google.api.services.androidpublisher.model.SubscriptionPurchase;
 import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.auth.oauth2.ServiceAccountCredentials;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Collections;
 
 @Service
+@RequiredArgsConstructor
 public class GooglePlayService {
+
+    private final SubscriptionPurchasesRepository subscriptionPurchasesRepository;
     // 애플리케이션 이름 설정 (API 호출 시 사용됨)
     private static final String APPLICATION_NAME = "effort-stone";
     // JSON 처리를 위한 Jackson 기반의 JsonFactory 인스턴스 생성
@@ -65,7 +77,7 @@ public class GooglePlayService {
      * @throws IOException IO 관련 예외 발생 시
      * @throws GeneralSecurityException 보안 관련 예외 발생 시
      */
-    public SubscriptionPurchase getProductPurchase(GoogleDto googleDto)
+    public ApiResponse<SubscriptionResponseDto> getProductPurchase(GoogleDto googleDto)
             throws IOException, GeneralSecurityException {
         // 앱의 패키지 이름 (Google Play Developer Console에서 확인 가능)
         String packageName = "com.goodday.effortStone";
@@ -77,12 +89,34 @@ public class GooglePlayService {
         System.out.println("$$$$$$$$$$$$$" + googleDto.toString());
 
         System.out.println("구독 구매 검증 요청 처리");
+
         // 구독 구매 검증: 리턴 타입은 SubscriptionPurchase
-        return publisher.purchases().subscriptions().get(
+
+        SubscriptionPurchase purchase =publisher.purchases().subscriptions().get(
                 packageName,
                 googleDto.getProductId(),
                 googleDto.getPurchaseToken()
         ).execute();
+
+        // 밀리초 값을 LocalDateTime으로 변환 (시스템 기본 시간대 사용)
+        LocalDateTime startTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(purchase.getStartTimeMillis()),
+                ZoneId.systemDefault());
+        LocalDateTime expiryTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(purchase.getExpiryTimeMillis()),
+                ZoneId.systemDefault());
+
+        // Google API의 SubscriptionPurchase 정보를 DB 엔티티로 매핑
+        SubscriptionPurchases entity = new SubscriptionPurchases();
+        entity.setAutoRenewing(purchase.getAutoRenewing());
+        entity.setOrderId(purchase.getOrderId());
+        entity.setStartTime(startTime);
+        entity.setExpiryTime(expiryTime);
+
+        // 엔티티 DB 저장
+        SubscriptionPurchases savedEntity = subscriptionPurchasesRepository.save(entity);
+
+        // 저장된 엔티티를 DTO로 변환
+        SubscriptionResponseDto srdDto = SubscriptionResponseDto.fromEntity(savedEntity);
+        return ApiResponse.success(SuccessCode.SUBSCRIPTION_PURCHASE_SUCCESS,srdDto);
     }
 }
 
