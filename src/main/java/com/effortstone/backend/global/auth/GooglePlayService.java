@@ -6,13 +6,12 @@ import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.androidpublisher.AndroidPublisher;
 import com.google.api.services.androidpublisher.AndroidPublisherScopes;
-import com.google.api.services.androidpublisher.model.ProductPurchase;
+import com.google.api.services.androidpublisher.model.SubscriptionPurchase;
 import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.auth.oauth2.ServiceAccountCredentials;
 import org.springframework.stereotype.Service;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,14 +58,15 @@ public class GooglePlayService {
     }
 
     /**
-     * 인앱 또는 구독 구매 검증 메서드.
+     * 인앱 구매 검증 메서드.
      *
-     * @param googleDto 인앱 구매 관련 정보를 담은 객체 (패키지명, 제품ID, 구매 토큰, 구독 여부 포함)
-     * @return 구매 검증 결과 (인앱 상품일 경우 ProductPurchase, 구독일 경우 SubscriptionPurchase)
+     * @param googleDto 인앱 구매 관련 정보를 담은 객체 (패키지명, 제품ID, 구매 토큰 포함)
+     * @return Google Play에서 반환된 구매 정보(ProductPurchase 객체)
      * @throws IOException IO 관련 예외 발생 시
      * @throws GeneralSecurityException 보안 관련 예외 발생 시
      */
-    public Object getPurchase(GoogleDto googleDto) throws IOException, GeneralSecurityException {
+    public SubscriptionPurchase getProductPurchase(GoogleDto googleDto)
+            throws IOException, GeneralSecurityException {
         // 앱의 패키지 이름 (Google Play Developer Console에서 확인 가능)
         String packageName = "com.goodday.effortStone";
 
@@ -76,7 +76,6 @@ public class GooglePlayService {
         // 전달받은 googleDto 객체의 내용을 로그에 출력하여 디버깅에 활용
         System.out.println("$$$$$$$$$$$$$" + googleDto.toString());
 
-        // 만약 구독 구매라면 subscriptions endpoint를 사용하고, 인앱 상품이면 products endpoint를 사용합니다.
         System.out.println("구독 구매 검증 요청 처리");
         // 구독 구매 검증: 리턴 타입은 SubscriptionPurchase
         return publisher.purchases().subscriptions().get(
@@ -84,13 +83,6 @@ public class GooglePlayService {
                 googleDto.getProductId(),
                 googleDto.getPurchaseToken()
         ).execute();
-//        System.out.println("인앱 상품 구매 검증 요청 처리");
-//        // 인앱 상품 구매 검증: 리턴 타입은 ProductPurchase
-//        return publisher.purchases().products().get(
-//                packageName,
-//                googleDto.getProductId(),
-//                googleDto.getPurchaseToken()
-//        ).execute();
     }
 }
 

@@ -2,6 +2,7 @@ package com.effortstone.backend.global.auth;
 
 import com.effortstone.backend.global.common.GoogleDto;
 import com.google.api.services.androidpublisher.model.ProductPurchase;
+import com.google.api.services.androidpublisher.model.SubscriptionPurchase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class GooglePlayController {
     public ResponseEntity<?> verifyPurchase(
             @RequestBody GoogleDto googleDto) {
         try {
-            ProductPurchase purchase = googlePlayService.getProductPurchase(googleDto);
+            SubscriptionPurchase purchase = googlePlayService.getProductPurchase(googleDto);
             System.out.println("🔹 purchase : " + purchase.toString());
             return ResponseEntity.ok(purchase);
         } catch (Exception e) {
