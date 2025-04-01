@@ -13,7 +13,9 @@ import com.google.auth.oauth2.ServiceAccountCredentials;
 import org.springframework.stereotype.Service;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
 
@@ -24,11 +26,17 @@ public class GooglePlayService {
     // 실제 서비스 계정 키 파일의 경로로 수정하세요.
     //private static final String SERVICE_ACCOUNT_KEY_FILE = "src/main/resources/effort-stone-service-account.json";
 
-    private static final String SERVICE_ACCOUNT_KEY_FILE = "/src/main/resources/effort-stone-service-account.json";
+    private static final String SERVICE_ACCOUNT_KEY_FILE = "effort-stone-service-account.json";
 
     public AndroidPublisher getAndroidPublisher() throws GeneralSecurityException, IOException {
+        // 클래스 로더를 통해 클래스패스 리소스로부터 JSON 파일을 읽습니다.
+        InputStream serviceAccountStream = getClass().getClassLoader().getResourceAsStream(SERVICE_ACCOUNT_KEY_FILE);
+        if (serviceAccountStream == null) {
+            throw new FileNotFoundException("Resource not found: " + SERVICE_ACCOUNT_KEY_FILE);
+        }
+
         GoogleCredentials credentials = ServiceAccountCredentials
-                .fromStream(new FileInputStream(SERVICE_ACCOUNT_KEY_FILE))
+                .fromStream(serviceAccountStream)
                 .createScoped(Collections.singleton(AndroidPublisherScopes.ANDROIDPUBLISHER));
 
         return new AndroidPublisher.Builder(
@@ -38,6 +46,7 @@ public class GooglePlayService {
                 .setApplicationName(APPLICATION_NAME)
                 .build();
     }
+
 
     /**
      * 인앱 구매 검증.
