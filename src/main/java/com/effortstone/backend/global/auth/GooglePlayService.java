@@ -110,7 +110,7 @@ public class GooglePlayService {
         entity.setOrderId(purchase.getOrderId());
         entity.setStartTime(startTime);
         entity.setExpiryTime(expiryTime);
-        entity.setSource("GOOGLE");
+        entity.setSource("play_store");
 
         // 엔티티 DB 저장
         SubscriptionPurchases savedEntity = subscriptionPurchasesRepository.save(entity);

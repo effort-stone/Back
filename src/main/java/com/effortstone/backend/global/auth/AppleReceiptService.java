@@ -90,7 +90,7 @@ public class AppleReceiptService {
         entity.setOrderId((String) latest.get("original_transaction_id"));
         entity.setStartTime(startTime);
         entity.setExpiryTime(expiryTime);
-        entity.setSource("APPLE");
+        entity.setSource("app_store");
 
         // 엔티티 DB 저장
         SubscriptionPurchases savedEntity = subscriptionPurchasesRepository.save(entity);
