@@ -19,6 +19,8 @@ public class SubscriptionResponseDto {
     @Schema(example = "2025-05-05 15:33:22.777", type = "string")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private LocalDateTime expiryTime;
+    private String source;
+
 
     public static SubscriptionResponseDto fromEntity(SubscriptionPurchases subscriptionPurchases) {
         return SubscriptionResponseDto.builder()
@@ -26,6 +28,7 @@ public class SubscriptionResponseDto {
                 .orderId(subscriptionPurchases.getOrderId())
                 .startTime(subscriptionPurchases.getStartTime())
                 .expiryTime(subscriptionPurchases.getExpiryTime())
+                .source(subscriptionPurchases.getSource())
                 .build();
     }
 }

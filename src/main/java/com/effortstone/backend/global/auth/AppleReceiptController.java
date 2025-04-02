@@ -1,6 +1,8 @@
 package com.effortstone.backend.global.auth;
 
+import com.effortstone.backend.domain.subscriptionpurchase.dto.Response.SubscriptionResponseDto;
 import com.effortstone.backend.global.common.IosDto;
+import com.effortstone.backend.global.common.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +24,7 @@ public class AppleReceiptController {
     public ResponseEntity<?> verifyPurchase(@RequestBody IosDto requestDto) {
         System.out.println("IosDto는 어떻게 생겻을까"+requestDto.toString());
         try {
-            Map<String, Object> response = appleReceiptService.verifyReceipt(requestDto);
+            ApiResponse<SubscriptionResponseDto> response = appleReceiptService.verifyReceipt(requestDto);
             System.out.println("과연리스폰스가 나올까"+response.toString());
             return ResponseEntity.ok(response);
         }catch (Exception e) {

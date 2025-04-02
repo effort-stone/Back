@@ -1,15 +1,26 @@
 package com.effortstone.backend.global.auth;
 
+import com.effortstone.backend.domain.subscriptionpurchase.dto.Response.SubscriptionResponseDto;
+import com.effortstone.backend.domain.subscriptionpurchase.entity.SubscriptionPurchases;
+import com.effortstone.backend.domain.subscriptionpurchase.repository.SubscriptionPurchasesRepository;
 import com.effortstone.backend.global.common.IosDto;
+import com.effortstone.backend.global.common.response.ApiResponse;
+import com.effortstone.backend.global.common.response.SuccessCode;
+import com.google.api.services.androidpublisher.AndroidPublisher;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -25,6 +36,8 @@ public class AppleReceiptService {
     private String appleSharedSecret;
 
     private final RestTemplate restTemplate = new RestTemplate(); // ✅ 바로 사용 OK
+    @Autowired
+    private SubscriptionPurchasesRepository subscriptionPurchasesRepository;
 
 
     /**
@@ -33,7 +46,7 @@ public class AppleReceiptService {
      * @param iosDto 클라이언트에서 전달받은 영수증 데이터(Base64 인코딩된 receipt data)
      * @return iOS 구매 내역 응답 DTO
      */
-    public  Map<String, Object> verifyReceipt(IosDto iosDto) {
+    public  ApiResponse<SubscriptionResponseDto> verifyReceipt(IosDto iosDto) {
         // 요청 페이로드 준비: 영수증 데이터, shared secret, (옵션) 오래된 트랜잭션 제외 여부
         Map<String, Object> payload = new HashMap<>();
         payload.put("receipt-data", iosDto.getPurchaseToken());
@@ -54,6 +67,36 @@ public class AppleReceiptService {
         } catch (HttpClientErrorException ex) {
             throw new RuntimeException("iOS 영수증 검증 중 오류 발생: " + ex.getMessage(), ex);
         }
-        return response;
+
+        Map<String, Object> receipt = (Map<String, Object>) response.get("receipt");
+        List<Map<String, Object>> inAppList = (List<Map<String, Object>>) receipt.get("in_app");
+
+        Map<String, Object> latest = inAppList.get(0);
+
+        // 밀리초 기반 시간값 -> LocalDateTime으로 변환
+        String startMs = (String) latest.get("purchase_date_ms");
+        String expiryMs = (String) latest.get("expires_date_ms");
+
+
+        // 밀리초 값을 LocalDateTime으로 변환 (시스템 기본 시간대 사용)
+        LocalDateTime startTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(Long.parseLong(startMs)),
+                ZoneId.of("Asia/Seoul"));
+        LocalDateTime expiryTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(Long.parseLong(expiryMs)),
+                ZoneId.of("Asia/Seoul"));
+
+        // Google API의 SubscriptionPurchase 정보를 DB 엔티티로 매핑
+        SubscriptionPurchases entity = new SubscriptionPurchases();
+        entity.setAutoRenewing("true".equals(String.valueOf(response.get("auto_renew_status"))));
+        entity.setOrderId((String) latest.get("original_transaction_id"));
+        entity.setStartTime(startTime);
+        entity.setExpiryTime(expiryTime);
+        entity.setSource("APPLE");
+
+        // 엔티티 DB 저장
+        SubscriptionPurchases savedEntity = subscriptionPurchasesRepository.save(entity);
+
+        // 저장된 엔티티를 DTO로 변환
+        SubscriptionResponseDto srdDto = SubscriptionResponseDto.fromEntity(savedEntity);
+        return ApiResponse.success(SuccessCode.SUBSCRIPTION_PURCHASE_SUCCESS,srdDto);
     }
 }

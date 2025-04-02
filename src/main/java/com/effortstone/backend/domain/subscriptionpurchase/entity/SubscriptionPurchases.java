@@ -24,13 +24,20 @@ public class SubscriptionPurchases extends BaseEntity {
     private Long subscriptionPurchaseCode;
 
     // 자동 결제 여부
+    @Column(name = "auto_renewing")
     private Boolean autoRenewing;
     // 주문 아이디
+    @Column(name = "order_id")
     private String orderId;
     // 구독 시작일을 LocalDateTime으로 저장
+    @Column(name = "start_time")
     private LocalDateTime startTime;
     // 구독 만료일을 LocalDateTime으로 저장
+    @Column(name = "expiry_time")
     private LocalDateTime expiryTime;
+    //결제한 스토어
+    @Column(name = "source")
+    private String source;
 
 
 }
