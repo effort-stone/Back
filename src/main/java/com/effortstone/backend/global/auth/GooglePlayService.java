@@ -96,8 +96,8 @@ public class GooglePlayService {
         // 전달받은 googleDto 객체의 내용을 로그에 출력하여 디버깅에 활용
         System.out.println("$$$$$$$$$$$$$" + googleDto.toString());
         System.out.println("구독 구매 검증 요청 처리");
-        // 구독 구매 검증: 리턴 타입은 SubscriptionPurchase
 
+        // 구독 구매 검증: 리턴 타입은 SubscriptionPurchase
         List<SubscriptionPurchases> allToSave = new ArrayList<>();
 
         for (GoogleDto dto : googleDto) {

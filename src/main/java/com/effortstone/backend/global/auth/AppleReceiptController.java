@@ -1,6 +1,7 @@
 package com.effortstone.backend.global.auth;
 
 import com.effortstone.backend.domain.subscriptionpurchase.dto.Response.SubscriptionResponseDto;
+import com.effortstone.backend.global.common.GoogleDto;
 import com.effortstone.backend.global.common.IosDto;
 import com.effortstone.backend.global.common.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +23,18 @@ public class AppleReceiptController {
     private final AppleReceiptService appleReceiptService;
 
     @PostMapping("/verifyPurchase")
-    public ResponseEntity<?> verifyPurchase(@RequestBody List<IosDto> requestDto) {
+    public ResponseEntity<?> verifyPurchase(@RequestBody Map<String, List<Map<String, String>>> wrapper) {
         //System.out.println("IosDto는 어떻게 생겻을까"+requestDto.toString());
+        // 내부 리스트 꺼냄
+        List<Map<String, String>> dtoList = wrapper.get("purchaseToken");
+        // DTO 변환 (선택)
+        List<IosDto> requestDto = dtoList.stream()
+                .map(m -> {
+                    IosDto dto = new IosDto();
+                    dto.setPurchaseToken(m.get("purchaseToken"));
+                    return dto;
+                })
+                .toList();
         try {
             ApiResponse<List<SubscriptionResponseDto>> response = appleReceiptService.verifyReceipt(requestDto);
             //System.out.println("과연리스폰스가 나올까"+response.toString());

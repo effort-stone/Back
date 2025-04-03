@@ -2,6 +2,7 @@ package com.effortstone.backend.global.auth;
 
 import com.effortstone.backend.domain.subscriptionpurchase.dto.Response.SubscriptionResponseDto;
 import com.effortstone.backend.global.common.GoogleDto;
+import com.effortstone.backend.global.common.IosDto;
 import com.effortstone.backend.global.common.response.ApiResponse;
 import com.google.api.services.androidpublisher.model.ProductPurchase;
 import com.google.api.services.androidpublisher.model.SubscriptionPurchase;
@@ -30,13 +31,22 @@ public class GooglePlayController {
      *
      * 예시 요청: GET /api/googleplay/verifyPurchase?packageName=com.example.app&productId=product_001&purchaseToken=abcdefg
      *
-     * @param googleDto 구매한 제품의 ID
-     * @param googleDto 구매 토큰
      * @return 검증된 구매 정보(ProductPurchase 객체) 또는 오류 메시지
      */
     @PostMapping("/verifyPurchase")
     public ResponseEntity<?> verifyPurchase(
-            @RequestBody List<GoogleDto> googleDto) {
+            @RequestBody Map<String, List<Map<String, String>>> wrapper) {
+        // 내부 리스트 꺼냄
+        List<Map<String, String>> dtoList = wrapper.get("purchaseToken");
+        // DTO 변환 (선택)
+        List<GoogleDto> googleDto = dtoList.stream()
+                .map(m -> {
+                    GoogleDto dto = new GoogleDto();
+                    dto.setPurchaseToken(m.get("purchaseToken"));
+                    dto.setProductId(m.get("productId"));
+                    return dto;
+                })
+                .toList();
         try {
             ApiResponse<List<SubscriptionResponseDto>> purchase= googlePlayService.getProductPurchase(googleDto);
             System.out.println("🔹 purchase : " + purchase.toString());

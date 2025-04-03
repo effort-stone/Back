@@ -13,6 +13,7 @@ import com.effortstone.backend.global.error.exception.CustomException;
 import com.effortstone.backend.global.security.SecurityUtil;
 import com.google.api.services.androidpublisher.AndroidPublisher;
 import jakarta.annotation.PostConstruct;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,6 +50,10 @@ public class AppleReceiptService {
     @Autowired
     private UserRepository userRepository;
 
+    @Data
+    public static class IosDtoWrapper {
+        private List<IosDto> purchaseToken;
+    }
 
     /**
      * iOS 영수증 검증 메서드
@@ -57,6 +62,8 @@ public class AppleReceiptService {
      * @return iOS 구매 내역 응답 DTO
      */
     public ApiResponse<List<SubscriptionResponseDto>> verifyReceipt(List<IosDto> iosDtos) {
+
+
         // 가장 최근 내역만 가져옴
         IosDto iosDto = iosDtos.get(iosDtos.size()-1);
         // 요청 페이로드 준비: 영수증 데이터, shared secret, (옵션) 오래된 트랜잭션 제외 여부
