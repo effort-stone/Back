@@ -6,11 +6,14 @@ import com.effortstone.backend.domain.subscriptionpurchase.repository.Subscripti
 import com.effortstone.backend.global.common.IosDto;
 import com.effortstone.backend.global.common.response.ApiResponse;
 import com.effortstone.backend.global.common.response.SuccessCode;
+import com.effortstone.backend.global.error.ErrorCode;
+import com.effortstone.backend.global.error.exception.CustomException;
 import com.google.api.services.androidpublisher.AndroidPublisher;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -58,7 +61,6 @@ public class AppleReceiptService {
         try {
             // 우선 생산(Production) URL로 요청
             response = restTemplate.postForObject(APPLE_PRODUCTION_VERIFY_URL, payload, Map.class);
-
             // 응답의 status 값이 21007이면, 이는 샌드박스 영수증임을 의미하므로 샌드박스 URL로 재요청
             if (response != null && response.get("status") != null &&
                     Integer.parseInt(response.get("status").toString()) == 21007) {
@@ -93,10 +95,15 @@ public class AppleReceiptService {
         entity.setSource("app_store");
 
         // 엔티티 DB 저장
-        SubscriptionPurchases savedEntity = subscriptionPurchasesRepository.save(entity);
-
-        // 저장된 엔티티를 DTO로 변환
-        SubscriptionResponseDto srdDto = SubscriptionResponseDto.fromEntity(savedEntity);
-        return ApiResponse.success(SuccessCode.SUBSCRIPTION_PURCHASE_SUCCESS,srdDto);
+        try{
+            SubscriptionPurchases savedEntity = subscriptionPurchasesRepository.save(entity);
+            // 저장된 엔티티를 DTO로 변환
+            SubscriptionResponseDto srdDto = SubscriptionResponseDto.fromEntity(savedEntity);
+            return ApiResponse.success(SuccessCode.SUBSCRIPTION_PURCHASE_SUCCESS,srdDto);
+        }catch (DuplicateKeyException e){
+            throw new CustomException(ErrorCode.IS_SUBSCRIPTION_PURCHASE);
+        }catch (Exception e ){
+            throw new RuntimeException();
+        }
     }
 }

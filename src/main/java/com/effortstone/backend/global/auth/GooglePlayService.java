@@ -6,6 +6,8 @@ import com.effortstone.backend.domain.subscriptionpurchase.repository.Subscripti
 import com.effortstone.backend.global.common.GoogleDto;
 import com.effortstone.backend.global.common.response.ApiResponse;
 import com.effortstone.backend.global.common.response.SuccessCode;
+import com.effortstone.backend.global.error.ErrorCode;
+import com.effortstone.backend.global.error.exception.CustomException;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -16,11 +18,13 @@ import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.auth.oauth2.ServiceAccountCredentials;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.rmi.server.ExportException;
 import java.security.GeneralSecurityException;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -113,11 +117,16 @@ public class GooglePlayService {
         entity.setSource("play_store");
 
         // 엔티티 DB 저장
+        try{
         SubscriptionPurchases savedEntity = subscriptionPurchasesRepository.save(entity);
-
         // 저장된 엔티티를 DTO로 변환
         SubscriptionResponseDto srdDto = SubscriptionResponseDto.fromEntity(savedEntity);
         return ApiResponse.success(SuccessCode.SUBSCRIPTION_PURCHASE_SUCCESS,srdDto);
+        }catch (DuplicateKeyException e){
+            throw new CustomException(ErrorCode.IS_SUBSCRIPTION_PURCHASE);
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
     }
 }
 

@@ -25,7 +25,8 @@ public enum ErrorCode {
     SMS_VERIFY_FAIL("E115", "휴대폰 인증번호 검증 실패"),
     USER_ADMIN_LOGIN_FAIL("E116", "관리자 권한이 없는 계정입니다."),
     ITEM_NOT_FOUND("E117", "아이템이 없습니다." ),
-    ITEM_NOT_OWNED("E118", "사용자가 착용 중인 아이템이 아닙니다." );
+    ITEM_NOT_OWNED("E118", "사용자가 착용 중인 아이템이 아닙니다." ),
+    IS_SUBSCRIPTION_PURCHASE("E119","이미 있는 결제 내역입니다." );
 
     private final String code;
     private final String message;
