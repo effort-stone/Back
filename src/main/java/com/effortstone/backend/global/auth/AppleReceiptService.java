@@ -22,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,21 +76,28 @@ public class AppleReceiptService {
 
         Map<String, Object> latest = inAppList.get(0);
 
-        // 밀리초 기반 시간값 -> LocalDateTime으로 변환
         String startMs = (String) latest.get("purchase_date_ms");
         String expiryMs = (String) latest.get("expires_date_ms");
 
+        ZoneId seoulZone = ZoneId.of("Asia/Seoul");
 
-        // 밀리초 값을 LocalDateTime으로 변환 (시스템 기본 시간대 사용)
-        LocalDateTime startTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(Long.parseLong(startMs)),
-                ZoneId.of("Asia/Seoul"));
-        LocalDateTime expiryTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(Long.parseLong(expiryMs)),
-                ZoneId.of("Asia/Seoul"));
+        LocalDateTime startTime = Instant.ofEpochMilli(Long.parseLong(startMs))
+                .atZone(seoulZone)
+                .toLocalDateTime();
+
+        LocalDateTime expiryTime = Instant.ofEpochMilli(Long.parseLong(expiryMs))
+                .atZone(seoulZone)
+                .toLocalDateTime();
+
+
+        System.out.println("UTC 기준 시간: " + Instant.ofEpochMilli(Long.parseLong(startMs)));
+        System.out.println("서울 시간: " + startTime); // ZonedDateTime 또는 LocalDateTime
+
 
         // Google API의 SubscriptionPurchase 정보를 DB 엔티티로 매핑
         SubscriptionPurchases entity = new SubscriptionPurchases();
         entity.setAutoRenewing("true".equals(String.valueOf(response.get("auto_renew_status"))));
-        entity.setOrderId((String) latest.get("original_transaction_id"));
+        entity.setOrderId((String) latest.get("transaction_id"));
         entity.setStartTime(startTime);
         entity.setExpiryTime(expiryTime);
         entity.setSource("app_store");
