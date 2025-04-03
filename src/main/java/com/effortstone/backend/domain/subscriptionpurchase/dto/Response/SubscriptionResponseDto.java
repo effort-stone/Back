@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 public class SubscriptionResponseDto {
     private Boolean autoRenewing;
-    //private String orderId;
+    private String id;
     @Schema(example = "2025-05-05 15:33:22.777", type = "string")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private LocalDateTime startDate;
@@ -25,7 +25,7 @@ public class SubscriptionResponseDto {
     public static SubscriptionResponseDto fromEntity(SubscriptionPurchases subscriptionPurchases) {
         return SubscriptionResponseDto.builder()
                 .autoRenewing(subscriptionPurchases.getAutoRenewing())
-                //.orderId(subscriptionPurchases.getOrderId())
+                .id(subscriptionPurchases.getOrderId())
                 .startDate(subscriptionPurchases.getStartTime())
                 .endDate(subscriptionPurchases.getExpiryTime())
                 //.source(subscriptionPurchases.getSource())
