@@ -78,9 +78,10 @@ public class AppleReceiptService {
 
         Map<String, Object> receipt = (Map<String, Object>) response.get("receipt");
         List<Map<String, Object>> inAppList = (List<Map<String, Object>>) receipt.get("in_app");
-        List<Map<String, Object>> inAppTimeList = (List<Map<String, Object>>) receipt.get("latest_receipt_info");
+        List<Map<String, Object>> inAppTimeList = (List<Map<String, Object>>) response.get("latest_receipt_info");
 
         Map<String, Object> latest = inAppList.get(0);
+        //Map<String, Object> lastInApp = inAppList.get(inAppList.size() - 1);
         Map<String, Object> latestTime = inAppTimeList.get(0);
 
         String startMs = (String) latest.get("purchase_date_ms");
