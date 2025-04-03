@@ -92,7 +92,7 @@ public class AppleReceiptService {
 
         // in_app 저장
         List<Map<String, Object>> inAppList = (List<Map<String, Object>>) receipt.get("in_app");
-        Map<String, Object> finalResponse = response;
+        Map<String, Object> finalResponse = (Map<String, Object>) response.get("pending_renewal_info");
         List<SubscriptionPurchases> toSave = inAppList.stream()
                 .filter(item -> {
                     String orderId = String.valueOf(item.get("web_order_line_item_id"));
