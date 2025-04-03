@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -24,7 +25,7 @@ public class AppleReceiptController {
     public ResponseEntity<?> verifyPurchase(@RequestBody IosDto requestDto) {
         //System.out.println("IosDto는 어떻게 생겻을까"+requestDto.toString());
         try {
-            ApiResponse<SubscriptionResponseDto> response = appleReceiptService.verifyReceipt(requestDto);
+            ApiResponse<List<SubscriptionResponseDto>> response = appleReceiptService.verifyReceipt(requestDto);
             //System.out.println("과연리스폰스가 나올까"+response.toString());
             return ResponseEntity.ok(response);
         }catch (Exception e) {

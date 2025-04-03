@@ -55,7 +55,7 @@ public class AppleReceiptService {
      * @param iosDto 클라이언트에서 전달받은 영수증 데이터(Base64 인코딩된 receipt data)
      * @return iOS 구매 내역 응답 DTO
      */
-    public  ApiResponse<SubscriptionResponseDto> verifyReceipt(IosDto iosDto) {
+    public ApiResponse<List<SubscriptionResponseDto>> verifyReceipt(IosDto iosDto) {
         // 요청 페이로드 준비: 영수증 데이터, shared secret, (옵션) 오래된 트랜잭션 제외 여부
         Map<String, Object> payload = new HashMap<>();
         payload.put("receipt-data", iosDto.getPurchaseToken());
@@ -77,56 +77,43 @@ public class AppleReceiptService {
         }
 
         Map<String, Object> receipt = (Map<String, Object>) response.get("receipt");
-        //List<Map<String, Object>> inAppList = (List<Map<String, Object>>) receipt.get("in_app");
-        List<Map<String, Object>> inAppTimeList = (List<Map<String, Object>>) response.get("latest_receipt_info");
-
-
-        //Map<String, Object> latest = inAppList.get(0);
-        //Map<String, Object> lastInApp = inAppList.get(inAppList.size() - 1);
-        Map<String, Object> latestTime = inAppTimeList.get(0);
-
-//        String startMs = (String) latest.get("purchase_date_ms");
-//        String expiryMs = (String) latest.get("expires_date_ms");
-        String startMsTime = (String) latestTime.get("purchase_date_ms");
-        String expiryMsTime = (String) latestTime.get("expires_date_ms");
-
-        ZoneId seoulZone = ZoneId.of("Asia/Seoul");
-
-//        LocalDateTime startTime = Instant.ofEpochMilli(Long.parseLong(startMs))
-//                .atZone(seoulZone)
-//                .toLocalDateTime();
-//        LocalDateTime expiryTime = Instant.ofEpochMilli(Long.parseLong(expiryMs))
-//                .atZone(seoulZone)
-//                .toLocalDateTime();
-        LocalDateTime startTime = Instant.ofEpochMilli(Long.parseLong(startMsTime))
-                .atZone(seoulZone)
-                .toLocalDateTime();
-        LocalDateTime expiryTime = Instant.ofEpochMilli(Long.parseLong(expiryMsTime))
-        .atZone(seoulZone)
-        .toLocalDateTime();
-
 
         User user = userRepository.findById(SecurityUtil.getCurrentUserCode()).orElseThrow();
 
-        // Google API의 SubscriptionPurchase 정보를 DB 엔티티로 매핑
-        SubscriptionPurchases entity = new SubscriptionPurchases();
-        entity.setAutoRenewing("true".equals(String.valueOf(response.get("auto_renew_status"))));
-        entity.setOrderId((String) latestTime.get("web_order_line_item_id"));
-        entity.setStartTime(startTime);
-        entity.setExpiryTime(expiryTime);
-        entity.setSource("app_store");
-        entity.setUser(user);
+        // in_app 저장
+        List<Map<String, Object>> inAppList = (List<Map<String, Object>>) receipt.get("in_app");
+        List<SubscriptionPurchases> toSave = inAppList.stream()
+                .map(item -> {
+                    SubscriptionPurchases purchase = new SubscriptionPurchases();
+                    purchase.setOrderId(String.valueOf(item.get("web_order_line_item_id")));
+                    purchase.setStartTime(
+                            Instant.ofEpochMilli(Long.parseLong(String.valueOf(item.get("purchase_date_ms"))))
+                                    .atZone(ZoneId.of("Asia/Seoul"))
+                                    .toLocalDateTime()
+                    );
+                    purchase.setExpiryTime(
+                            Instant.ofEpochMilli(Long.parseLong(String.valueOf(item.get("expires_date_ms"))))
+                                    .atZone(ZoneId.of("Asia/Seoul"))
+                                    .toLocalDateTime()
+                    );
+                    purchase.setUser(user);
+                    purchase.setSource("app_store");
+                    return purchase;
+                })
+                .toList();
 
-        // 엔티티 DB 저장
-        try{
-            SubscriptionPurchases savedEntity = subscriptionPurchasesRepository.save(entity);
-            // 저장된 엔티티를 DTO로 변환
-            SubscriptionResponseDto srdDto = SubscriptionResponseDto.fromEntity(savedEntity);
-            return ApiResponse.success(SuccessCode.SUBSCRIPTION_PURCHASE_SUCCESS,srdDto);
-        }catch (DuplicateKeyException e){
-            throw new CustomException(ErrorCode.IS_SUBSCRIPTION_PURCHASE);
+        // 저장
+        try {
+            List<SubscriptionPurchases> savedEntities = subscriptionPurchasesRepository.saveAll(toSave);
+            // 응답 DTO로 변환
+            List<SubscriptionResponseDto> srdDtoList = savedEntities.stream()
+                    .map(SubscriptionResponseDto::fromEntity)
+                    .toList();
+
+            return ApiResponse.success(SuccessCode.SUBSCRIPTION_PURCHASE_SUCCESS,srdDtoList);
         }catch (Exception e ){
             throw new RuntimeException();
         }
+
     }
 }
