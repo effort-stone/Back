@@ -83,9 +83,11 @@ public class AppleReceiptService {
 
         // in_app 저장
         List<Map<String, Object>> inAppList = (List<Map<String, Object>>) receipt.get("in_app");
+        Map<String, Object> finalResponse = response;
         List<SubscriptionPurchases> toSave = inAppList.stream()
                 .map(item -> {
                     SubscriptionPurchases purchase = new SubscriptionPurchases();
+                    purchase.setAutoRenewing("1".equals(String.valueOf(finalResponse.get("auto_renew_status"))));
                     purchase.setOrderId(String.valueOf(item.get("web_order_line_item_id")));
                     purchase.setStartTime(
                             Instant.ofEpochMilli(Long.parseLong(String.valueOf(item.get("purchase_date_ms"))))
