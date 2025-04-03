@@ -126,16 +126,11 @@ public class AppleReceiptService {
         // 저장
         try {
             List<SubscriptionPurchases> savedEntities = subscriptionPurchasesRepository.saveAll(toSave);
-            try {
-                List<SubscriptionPurchases> savedUserEntities = subscriptionPurchasesRepository.findAllByUser(user);
-                System.out.println("💟💟💟 새로운 리턴값 이였습니당."+savedUserEntities);
-            }catch (Exception e){
-                throw new RuntimeException();
-            }
             System.out.println("💟💟💟 ㅊ초반 리턴값 이였습니당."+savedEntities);
 
+            List<SubscriptionPurchases> savedUserEntities = subscriptionPurchasesRepository.findAllByUser(user);
             // 응답 DTO로 변환
-            List<SubscriptionResponseDto> srdDtoList = savedEntities.stream()
+            List<SubscriptionResponseDto> srdDtoList = savedUserEntities.stream()
                     .sorted(Comparator.comparing(SubscriptionPurchases::getExpiryTime)) // 오름차순
                     .map(SubscriptionResponseDto::fromEntity)
                     .toList();
