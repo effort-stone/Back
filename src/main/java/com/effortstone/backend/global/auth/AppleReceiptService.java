@@ -26,6 +26,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -107,9 +108,9 @@ public class AppleReceiptService {
             List<SubscriptionPurchases> savedEntities = subscriptionPurchasesRepository.saveAll(toSave);
             // 응답 DTO로 변환
             List<SubscriptionResponseDto> srdDtoList = savedEntities.stream()
+                    .sorted(Comparator.comparing(SubscriptionPurchases::getExpiryTime)) // 오름차순
                     .map(SubscriptionResponseDto::fromEntity)
                     .toList();
-
             return ApiResponse.success(SuccessCode.SUBSCRIPTION_PURCHASE_SUCCESS,srdDtoList);
         }catch (Exception e ){
             throw new RuntimeException();
