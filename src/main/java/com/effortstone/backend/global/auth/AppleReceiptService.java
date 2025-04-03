@@ -57,17 +57,15 @@ public class AppleReceiptService {
      * @return iOS 구매 내역 응답 DTO
      */
     public ApiResponse<List<SubscriptionResponseDto>> verifyReceipt(List<IosDto> iosDtos) {
+        // 가장 최근 내역만 가져옴
+        IosDto iosDto = iosDtos.get(iosDtos.size()-1);
         // 요청 페이로드 준비: 영수증 데이터, shared secret, (옵션) 오래된 트랜잭션 제외 여부
-        IosDto iosDto = iosDtos.get(0);
-
         Map<String, Object> payload = new HashMap<>();
         payload.put("receipt-data", iosDto.getPurchaseToken());
         payload.put("password", appleSharedSecret);
         payload.put("exclude-old-transactions", true);
 
         Map<String, Object> response;
-
-
 
         try {
             // 우선 생산(Production) URL로 요청
@@ -89,10 +87,15 @@ public class AppleReceiptService {
         List<Map<String, Object>> inAppList = (List<Map<String, Object>>) receipt.get("in_app");
         Map<String, Object> finalResponse = response;
         List<SubscriptionPurchases> toSave = inAppList.stream()
+                .filter(item -> {
+                    String orderId = String.valueOf(item.get("web_order_line_item_id"));
+                    return !subscriptionPurchasesRepository.existsByOrderId(orderId);
+                })
                 .map(item -> {
                     SubscriptionPurchases purchase = new SubscriptionPurchases();
                     purchase.setAutoRenewing("1".equals(String.valueOf(finalResponse.get("auto_renew_status"))));
-                    purchase.setOrderId(String.valueOf(item.get("web_order_line_item_id")));
+                    String orderId = String.valueOf(item.get("web_order_line_item_id"));
+                    purchase.setOrderId(orderId);
                     purchase.setStartTime(
                             Instant.ofEpochMilli(Long.parseLong(String.valueOf(item.get("purchase_date_ms"))))
                                     .atZone(ZoneId.of("Asia/Seoul"))
