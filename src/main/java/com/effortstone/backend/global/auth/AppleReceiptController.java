@@ -22,7 +22,7 @@ public class AppleReceiptController {
     private final AppleReceiptService appleReceiptService;
 
     @PostMapping("/verifyPurchase")
-    public ResponseEntity<?> verifyPurchase(@RequestBody IosDto requestDto) {
+    public ResponseEntity<?> verifyPurchase(@RequestBody List<IosDto> requestDto) {
         //System.out.println("IosDto는 어떻게 생겻을까"+requestDto.toString());
         try {
             ApiResponse<List<SubscriptionResponseDto>> response = appleReceiptService.verifyReceipt(requestDto);

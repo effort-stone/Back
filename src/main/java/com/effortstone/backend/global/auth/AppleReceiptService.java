@@ -53,17 +53,21 @@ public class AppleReceiptService {
     /**
      * iOS 영수증 검증 메서드
      *
-     * @param iosDto 클라이언트에서 전달받은 영수증 데이터(Base64 인코딩된 receipt data)
+     * @param iosDtos 클라이언트에서 전달받은 영수증 데이터(Base64 인코딩된 receipt data)
      * @return iOS 구매 내역 응답 DTO
      */
-    public ApiResponse<List<SubscriptionResponseDto>> verifyReceipt(IosDto iosDto) {
+    public ApiResponse<List<SubscriptionResponseDto>> verifyReceipt(List<IosDto> iosDtos) {
         // 요청 페이로드 준비: 영수증 데이터, shared secret, (옵션) 오래된 트랜잭션 제외 여부
+        IosDto iosDto = iosDtos.get(0);
+
         Map<String, Object> payload = new HashMap<>();
         payload.put("receipt-data", iosDto.getPurchaseToken());
         payload.put("password", appleSharedSecret);
         payload.put("exclude-old-transactions", true);
 
         Map<String, Object> response;
+
+
 
         try {
             // 우선 생산(Production) URL로 요청
@@ -104,7 +108,6 @@ public class AppleReceiptService {
                     return purchase;
                 })
                 .toList();
-
         // 저장
         try {
             List<SubscriptionPurchases> savedEntities = subscriptionPurchasesRepository.saveAll(toSave);
@@ -117,6 +120,5 @@ public class AppleReceiptService {
         }catch (Exception e ){
             throw new RuntimeException();
         }
-
     }
 }

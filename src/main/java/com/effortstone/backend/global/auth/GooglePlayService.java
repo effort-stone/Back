@@ -32,7 +32,7 @@ import java.security.GeneralSecurityException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Collections;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -85,7 +85,7 @@ public class GooglePlayService {
      * @throws IOException IO 관련 예외 발생 시
      * @throws GeneralSecurityException 보안 관련 예외 발생 시
      */
-    public ApiResponse<SubscriptionResponseDto> getProductPurchase(GoogleDto googleDto)
+    public ApiResponse<List<SubscriptionResponseDto>> getProductPurchase(List<GoogleDto> googleDto)
             throws IOException, GeneralSecurityException {
         // 앱의 패키지 이름 (Google Play Developer Console에서 확인 가능)
         String packageName = "com.goodday.effortStone";
@@ -93,46 +93,49 @@ public class GooglePlayService {
 
         // 인증된 AndroidPublisher 클라이언트 생성
         AndroidPublisher publisher = getAndroidPublisher();
-
         // 전달받은 googleDto 객체의 내용을 로그에 출력하여 디버깅에 활용
         System.out.println("$$$$$$$$$$$$$" + googleDto.toString());
-
         System.out.println("구독 구매 검증 요청 처리");
-
         // 구독 구매 검증: 리턴 타입은 SubscriptionPurchase
 
-        SubscriptionPurchase purchase =publisher.purchases().subscriptions().get(
-                packageName,
-                googleDto.getProductId(),
-                googleDto.getPurchaseToken()
-        ).execute();
+        List<SubscriptionPurchases> allToSave = new ArrayList<>();
 
-        // 밀리초 값을 LocalDateTime으로 변환 (시스템 기본 시간대 사용)
-        LocalDateTime startTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(purchase.getStartTimeMillis()),
-                ZoneId.systemDefault());
-        LocalDateTime expiryTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(purchase.getExpiryTimeMillis()),
-                ZoneId.systemDefault());
+        for (GoogleDto dto : googleDto) {
+            SubscriptionPurchase purchase = publisher.purchases().subscriptions().get(
+                    packageName,
+                    dto.getProductId(),
+                    dto.getPurchaseToken()
+            ).execute();
 
-        // Google API의 SubscriptionPurchase 정보를 DB 엔티티로 매핑
-        SubscriptionPurchases entity = new SubscriptionPurchases();
-        entity.setAutoRenewing(purchase.getAutoRenewing());
-        entity.setOrderId(purchase.getOrderId());
-        entity.setStartTime(startTime);
-        entity.setExpiryTime(expiryTime);
-        entity.setSource("play_store");
-        entity.setUser(user);
+            String orderId = purchase.getOrderId();
 
-        // 엔티티 DB 저장
-        try{
-        SubscriptionPurchases savedEntity = subscriptionPurchasesRepository.save(entity);
-        // 저장된 엔티티를 DTO로 변환
-        SubscriptionResponseDto srdDto = SubscriptionResponseDto.fromEntity(savedEntity);
-        return ApiResponse.success(SuccessCode.SUBSCRIPTION_PURCHASE_SUCCESS,srdDto);
-        }catch (DuplicateKeyException e){
-            throw new CustomException(ErrorCode.IS_SUBSCRIPTION_PURCHASE);
-        }catch (Exception e){
-            throw new RuntimeException(e);
+            // 이미 저장된 주문 ID인지 확인
+            boolean exists = subscriptionPurchasesRepository.existsByOrderId(orderId);
+            if (exists) continue;
+            LocalDateTime startTime = LocalDateTime.ofInstant(
+                    Instant.ofEpochMilli(purchase.getStartTimeMillis()), ZoneId.systemDefault());
+            LocalDateTime expiryTime = LocalDateTime.ofInstant(
+                    Instant.ofEpochMilli(purchase.getExpiryTimeMillis()), ZoneId.systemDefault());
+
+            SubscriptionPurchases entity = new SubscriptionPurchases();
+            entity.setAutoRenewing(purchase.getAutoRenewing());
+            entity.setOrderId(orderId);
+            entity.setStartTime(startTime);
+            entity.setExpiryTime(expiryTime);
+            entity.setSource("play_store");
+            entity.setUser(user);
+
+            allToSave.add(entity);
         }
+        List<SubscriptionPurchases> savedEntities = subscriptionPurchasesRepository.saveAll(allToSave);
+
+        List<SubscriptionResponseDto> srdDtoList = savedEntities.stream()
+                .sorted(Comparator.comparing(SubscriptionPurchases::getExpiryTime))
+                .map(SubscriptionResponseDto::fromEntity)
+                .toList();
+
+        return ApiResponse.success(SuccessCode.SUBSCRIPTION_PURCHASE_SUCCESS, srdDtoList);
+
     }
 }
 

@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SubscriptionPurchasesRepository extends JpaRepository<SubscriptionPurchases, Long> {
 
+    boolean existsByOrderId(String orderId);
 }

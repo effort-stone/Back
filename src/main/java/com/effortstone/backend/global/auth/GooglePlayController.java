@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -35,9 +36,9 @@ public class GooglePlayController {
      */
     @PostMapping("/verifyPurchase")
     public ResponseEntity<?> verifyPurchase(
-            @RequestBody GoogleDto googleDto) {
+            @RequestBody List<GoogleDto> googleDto) {
         try {
-            ApiResponse<SubscriptionResponseDto> purchase= googlePlayService.getProductPurchase(googleDto);
+            ApiResponse<List<SubscriptionResponseDto>> purchase= googlePlayService.getProductPurchase(googleDto);
             System.out.println("🔹 purchase : " + purchase.toString());
             return ResponseEntity.ok(purchase);
         } catch (Exception e) {
