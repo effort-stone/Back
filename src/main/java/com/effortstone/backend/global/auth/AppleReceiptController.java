@@ -22,10 +22,10 @@ public class AppleReceiptController {
 
     @PostMapping("/verifyPurchase")
     public ResponseEntity<?> verifyPurchase(@RequestBody IosDto requestDto) {
-        System.out.println("IosDto는 어떻게 생겻을까"+requestDto.toString());
+        //System.out.println("IosDto는 어떻게 생겻을까"+requestDto.toString());
         try {
             ApiResponse<SubscriptionResponseDto> response = appleReceiptService.verifyReceipt(requestDto);
-            System.out.println("과연리스폰스가 나올까"+response.toString());
+            //System.out.println("과연리스폰스가 나올까"+response.toString());
             return ResponseEntity.ok(response);
         }catch (Exception e) {
             // 실제 운영 환경에서는 로그를 남기고 더 상세한 예외 처리를 할 수 있습니다.

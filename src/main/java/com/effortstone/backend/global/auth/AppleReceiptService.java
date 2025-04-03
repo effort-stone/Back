@@ -80,6 +80,11 @@ public class AppleReceiptService {
         List<Map<String, Object>> inAppList = (List<Map<String, Object>>) receipt.get("in_app");
         List<Map<String, Object>> inAppTimeList = (List<Map<String, Object>>) response.get("latest_receipt_info");
 
+        System.out.println("❤❤전체 영수증"+response);
+        System.out.println("💨💨in_app 영수증"+inAppList);
+        System.out.println("💦💦최근 트랜잭션 정보"+inAppTimeList);
+
+
         Map<String, Object> latest = inAppList.get(0);
         //Map<String, Object> lastInApp = inAppList.get(inAppList.size() - 1);
         Map<String, Object> latestTime = inAppTimeList.get(0);
