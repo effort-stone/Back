@@ -3,11 +3,14 @@ package com.effortstone.backend.global.auth;
 import com.effortstone.backend.domain.subscriptionpurchase.dto.Response.SubscriptionResponseDto;
 import com.effortstone.backend.domain.subscriptionpurchase.entity.SubscriptionPurchases;
 import com.effortstone.backend.domain.subscriptionpurchase.repository.SubscriptionPurchasesRepository;
+import com.effortstone.backend.domain.user.entity.User;
+import com.effortstone.backend.domain.user.repository.UserRepository;
 import com.effortstone.backend.global.common.GoogleDto;
 import com.effortstone.backend.global.common.response.ApiResponse;
 import com.effortstone.backend.global.common.response.SuccessCode;
 import com.effortstone.backend.global.error.ErrorCode;
 import com.effortstone.backend.global.error.exception.CustomException;
+import com.effortstone.backend.global.security.SecurityUtil;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -42,6 +45,7 @@ public class GooglePlayService {
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     // 서비스 계정 키 파일의 파일명. 이 파일은 클래스패스에 존재해야 함.
     private static final String SERVICE_ACCOUNT_KEY_FILE = "effort-stone-service-account.json";
+    private final UserRepository userRepository;
 
     /**
      * Google Play AndroidPublisher 클라이언트를 생성하여 반환합니다.
@@ -85,6 +89,7 @@ public class GooglePlayService {
             throws IOException, GeneralSecurityException {
         // 앱의 패키지 이름 (Google Play Developer Console에서 확인 가능)
         String packageName = "com.goodday.effortStone";
+        User user = userRepository.findById(SecurityUtil.getCurrentUserCode()).orElseThrow();
 
         // 인증된 AndroidPublisher 클라이언트 생성
         AndroidPublisher publisher = getAndroidPublisher();
@@ -115,6 +120,7 @@ public class GooglePlayService {
         entity.setStartTime(startTime);
         entity.setExpiryTime(expiryTime);
         entity.setSource("play_store");
+        entity.setUser(user);
 
         // 엔티티 DB 저장
         try{

@@ -3,11 +3,14 @@ package com.effortstone.backend.global.auth;
 import com.effortstone.backend.domain.subscriptionpurchase.dto.Response.SubscriptionResponseDto;
 import com.effortstone.backend.domain.subscriptionpurchase.entity.SubscriptionPurchases;
 import com.effortstone.backend.domain.subscriptionpurchase.repository.SubscriptionPurchasesRepository;
+import com.effortstone.backend.domain.user.entity.User;
+import com.effortstone.backend.domain.user.repository.UserRepository;
 import com.effortstone.backend.global.common.IosDto;
 import com.effortstone.backend.global.common.response.ApiResponse;
 import com.effortstone.backend.global.common.response.SuccessCode;
 import com.effortstone.backend.global.error.ErrorCode;
 import com.effortstone.backend.global.error.exception.CustomException;
+import com.effortstone.backend.global.security.SecurityUtil;
 import com.google.api.services.androidpublisher.AndroidPublisher;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +45,8 @@ public class AppleReceiptService {
     private final RestTemplate restTemplate = new RestTemplate(); // ✅ 바로 사용 OK
     @Autowired
     private SubscriptionPurchasesRepository subscriptionPurchasesRepository;
+    @Autowired
+    private UserRepository userRepository;
 
 
     /**
@@ -93,6 +98,7 @@ public class AppleReceiptService {
         System.out.println("UTC 기준 시간: " + Instant.ofEpochMilli(Long.parseLong(startMs)));
         System.out.println("서울 시간: " + startTime); // ZonedDateTime 또는 LocalDateTime
 
+        User user = userRepository.findById(SecurityUtil.getCurrentUserCode()).orElseThrow();
 
         // Google API의 SubscriptionPurchase 정보를 DB 엔티티로 매핑
         SubscriptionPurchases entity = new SubscriptionPurchases();
@@ -101,6 +107,7 @@ public class AppleReceiptService {
         entity.setStartTime(startTime);
         entity.setExpiryTime(expiryTime);
         entity.setSource("app_store");
+        entity.setUser(user);
 
         // 엔티티 DB 저장
         try{
