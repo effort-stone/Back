@@ -27,6 +27,7 @@ public class AppleReceiptController {
         //System.out.println("IosDto는 어떻게 생겻을까"+requestDto.toString());
         // 내부 리스트 꺼냄
         List<Map<String, String>> dtoList = wrapper.get("purchaseToken");
+        System.out.println(wrapper.toString());
         // DTO 변환 (선택)
         List<IosDto> requestDto = dtoList.stream()
                 .map(m -> {
