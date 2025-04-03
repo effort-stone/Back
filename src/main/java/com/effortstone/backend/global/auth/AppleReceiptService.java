@@ -77,48 +77,41 @@ public class AppleReceiptService {
         }
 
         Map<String, Object> receipt = (Map<String, Object>) response.get("receipt");
-        List<Map<String, Object>> inAppList = (List<Map<String, Object>>) receipt.get("in_app");
+        //List<Map<String, Object>> inAppList = (List<Map<String, Object>>) receipt.get("in_app");
         List<Map<String, Object>> inAppTimeList = (List<Map<String, Object>>) response.get("latest_receipt_info");
 
-        System.out.println("❤❤전체 영수증"+response);
-        System.out.println("💨💨in_app 영수증"+inAppList);
-        System.out.println("💦💦최근 트랜잭션 정보"+inAppTimeList);
 
-
-        Map<String, Object> latest = inAppList.get(0);
+        //Map<String, Object> latest = inAppList.get(0);
         //Map<String, Object> lastInApp = inAppList.get(inAppList.size() - 1);
         Map<String, Object> latestTime = inAppTimeList.get(0);
 
-        String startMs = (String) latest.get("purchase_date_ms");
-        String expiryMs = (String) latest.get("expires_date_ms");
+//        String startMs = (String) latest.get("purchase_date_ms");
+//        String expiryMs = (String) latest.get("expires_date_ms");
         String startMsTime = (String) latestTime.get("purchase_date_ms");
         String expiryMsTime = (String) latestTime.get("expires_date_ms");
 
         ZoneId seoulZone = ZoneId.of("Asia/Seoul");
 
-        LocalDateTime startTime = Instant.ofEpochMilli(Long.parseLong(startMs))
+//        LocalDateTime startTime = Instant.ofEpochMilli(Long.parseLong(startMs))
+//                .atZone(seoulZone)
+//                .toLocalDateTime();
+//        LocalDateTime expiryTime = Instant.ofEpochMilli(Long.parseLong(expiryMs))
+//                .atZone(seoulZone)
+//                .toLocalDateTime();
+        LocalDateTime startTime = Instant.ofEpochMilli(Long.parseLong(startMsTime))
                 .atZone(seoulZone)
                 .toLocalDateTime();
-        LocalDateTime startTimeTime = Instant.ofEpochMilli(Long.parseLong(startMsTime))
-                .atZone(seoulZone)
-                .toLocalDateTime();
+        LocalDateTime expiryTime = Instant.ofEpochMilli(Long.parseLong(expiryMsTime))
+        .atZone(seoulZone)
+        .toLocalDateTime();
 
-        LocalDateTime expiryTime = Instant.ofEpochMilli(Long.parseLong(expiryMs))
-                .atZone(seoulZone)
-                .toLocalDateTime();
-
-
-        System.out.println("UTC 기준 시간: " + Instant.ofEpochMilli(Long.parseLong(startMs)));
-        System.out.println("UTC 기준 시간 새롭게: " + Instant.ofEpochMilli(Long.parseLong(startMsTime)));
-        System.out.println("서울 시간: " + startTime); // ZonedDateTime 또는 LocalDateTime
-        System.out.println("서울 시간 새롭게: " + startTimeTime); // ZonedDateTime 또는 LocalDateTime
 
         User user = userRepository.findById(SecurityUtil.getCurrentUserCode()).orElseThrow();
 
         // Google API의 SubscriptionPurchase 정보를 DB 엔티티로 매핑
         SubscriptionPurchases entity = new SubscriptionPurchases();
         entity.setAutoRenewing("true".equals(String.valueOf(response.get("auto_renew_status"))));
-        entity.setOrderId((String) latest.get("transaction_id"));
+        entity.setOrderId((String) latestTime.get("web_order_line_item_id"));
         entity.setStartTime(startTime);
         entity.setExpiryTime(expiryTime);
         entity.setSource("app_store");
