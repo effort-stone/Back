@@ -99,7 +99,8 @@ public class RoutineProgressService {
         // 동일 루틴/날짜에 대한 진행 기록이 있는지 확인
         // ✅ 단건 조회 사용
         RoutineProgress optionalProgress = routineProgressRepository
-                .findByRoutineAndRoutineProgressCompletionTime(routine, dto.getRecordTime()).orElseThrow(null);
+                .findByRoutineAndRoutineProgressCompletionTime(routine, dto.getRecordTime())
+                .orElseThrow(() -> new RuntimeException("루틴 진행 기록을 찾을 수 없습니다.")); // 고쳤음
         optionalProgress.setRoutineProgressCompleted(dto.getIsAchieved());
         optionalProgress.setRoutineProgressCompletionTime(dto.getRecordTime());
         routineProgressRepository.save(optionalProgress);
