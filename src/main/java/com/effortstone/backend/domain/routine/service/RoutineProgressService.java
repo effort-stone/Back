@@ -105,6 +105,7 @@ public class RoutineProgressService {
 //                .orElseThrow(() -> new RuntimeException("루틴 진행 기록을 찾을 수 없습니다.")); // 고쳤음
         optionalProgress.setRoutineProgressCompleted(dto.getIsAchieved());
         optionalProgress.setRoutineProgressCompletionTime(dto.getRecordTime());
+        optionalProgress.setRoutineProgressRecordedAmount(dto.getCurrentEffortTime());
         routineProgressRepository.save(optionalProgress);
 
         return ApiResponse.success(SuccessCode.ROUTINE_PROGRESS_UPDATE_SUCCESS, mapToDTO(optionalProgress));
