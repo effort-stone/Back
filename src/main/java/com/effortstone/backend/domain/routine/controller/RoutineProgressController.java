@@ -1,6 +1,7 @@
 package com.effortstone.backend.domain.routine.controller;
 
 import com.effortstone.backend.domain.routine.dto.requset.RoutineProgressRequestDto;
+import com.effortstone.backend.domain.routine.dto.requset.RoutineProgressUpdateRequestDto;
 import com.effortstone.backend.domain.routine.dto.response.RoutineProgressResponseDto;
 import com.effortstone.backend.domain.routine.service.RoutineProgressService;
 import com.effortstone.backend.global.common.response.ApiResponse;
@@ -23,7 +24,7 @@ public class RoutineProgressController {
     }
     // 🔹 루틴상세 수정
     @PutMapping("")
-    public ApiResponse<RoutineProgressResponseDto> updateRoutineProgress(@RequestBody RoutineProgressRequestDto routine) {
+    public ApiResponse<RoutineProgressResponseDto> updateRoutineProgress(@RequestBody RoutineProgressUpdateRequestDto routine) {
         return routineProgressService.recordUpdateRoutineProgress(routine);
     }
 

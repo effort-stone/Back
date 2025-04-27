@@ -1,6 +1,7 @@
 package com.effortstone.backend.domain.routine.service;
 
 import com.effortstone.backend.domain.routine.dto.requset.RoutineProgressRequestDto;
+import com.effortstone.backend.domain.routine.dto.requset.RoutineProgressUpdateRequestDto;
 import com.effortstone.backend.domain.routine.dto.response.RoutineProgressResponseDto;
 import com.effortstone.backend.domain.routine.entity.Routine;
 import com.effortstone.backend.domain.routine.entity.RoutineProgress;
@@ -89,7 +90,7 @@ public class RoutineProgressService {
      * 체크형이면 완료 시각을 기록하고, 시간 기록형이면 소요 시간을 기록합니다.
      */
     @Transactional
-    public ApiResponse<RoutineProgressResponseDto> recordUpdateRoutineProgress(RoutineProgressRequestDto dto) {
+    public ApiResponse<RoutineProgressResponseDto> recordUpdateRoutineProgress(RoutineProgressUpdateRequestDto dto) {
         String userCode = SecurityUtil.getCurrentUserCode();
         User user = userRepository.findById(userCode)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
